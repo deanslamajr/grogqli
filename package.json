@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "init": "lerna clean --y && lerna bootstrap && lerna exec -- npm link",
+    "dev": "lerna run dev --parallel",
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
