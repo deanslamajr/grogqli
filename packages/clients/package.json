@@ -1,17 +1,13 @@
 {
-  "name": "@groqli/clients",
+  "name": "@grogqli/clients",
   "version": "0.0.1",
   "description": "Clients for consumption of Grogqli data",
   "author": "Dean Slama <deanslamajr@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",
-  "module": "dist/groqli-interceptor.esm.js",
+  "module": "dist/clients.esm.js",
   "typings": "dist/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "dist",
     "src"

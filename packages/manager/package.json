@@ -1,7 +1,7 @@
 {
-  "name": "@groqli/manager",
+  "name": "@grogqli/manager",
   "version": "0.0.1",
-  "description": "backend api and web app client to manage interceptor behavior",
+  "description": "backend api and web server",
   "author": "Dean Slama <deanslamajr@gmail.com>",
   "homepage": "",
   "license": "ISC",

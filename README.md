@@ -10,8 +10,8 @@ The backend api and client webserver
 
 ## Commands
 ### add a dependency
-* `lerna add razzle-dev-utils packages/manager/`
-* devDependencies - `lerna add razzle-dev-utils packages/manager/ --dev`
+* `lerna add <name-of-package-to-import> packages/<name-of-importing-package>/`
+* devDependencies - `lerna add <name-of-package-to-import> packages/<name-of-package>/ --dev`
 
 ### remove a dependency
 * remove the reference in the associated `package.json`
