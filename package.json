@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "init": "lerna clean --y && lerna bootstrap && lerna exec -- npm link",
-    "dev": "lerna run dev --parallel",
+    "start": "lerna run dev --parallel",
     "build": "lerna run build --stream",
     "test": "lerna run test --stream"
   },

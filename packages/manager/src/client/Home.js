@@ -8,7 +8,9 @@ const Home = () => {
     console.log('button clicked!')
   }
   return (<div className="Home">
-    <input className="Button" onClick={handleButtonClick} type="button" value="Click The Button"/>
+    <div className="ButtonContainer">
+      <input className="Button" onClick={handleButtonClick} type="button" value="Click The Button!"/>
+    </div>
   </div>);
 }
 
