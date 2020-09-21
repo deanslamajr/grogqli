@@ -1,17 +1,14 @@
 import gql from 'graphql-tag';
 import editJsonFile from 'edit-json-file';
 
-import { recordingFilename } from './constants';
+import { getConfig } from './getConfig';
 
-export const recordQuery = (locals) => (req, res) => {
-  // console.log('locals', locals)
-  //
-
+export const recordQuery = (req, res) => {
   const query = gql`
     ${req.body.query}
   `;
 
-  const file = editJsonFile(`${locals.saveDirectory}/${recordingFilename}.json`);
+  const file = editJsonFile(`${getConfig().recordingsSaveDirectory}/${getConfig().recordingsFilename}.json`);
 
   const recording = {
     type: query.definitions[0].operation,
@@ -25,10 +22,8 @@ export const recordQuery = (locals) => (req, res) => {
   res.sendStatus(200);
 };
 
-export const updateRecording = (locals) => (req, res) => {
-  // console.log('locals', locals)
-
-  const file = editJsonFile(`${locals.saveDirectory}/${recordingFilename}.json`);
+export const updateRecording = (req, res) => {
+  const file = editJsonFile(`${getConfig().recordingsSaveDirectory}/${getConfig().recordingsFilename}.json`);
 
   const existingRecording = file.get(req.params.id);
   const updatedRecording = {

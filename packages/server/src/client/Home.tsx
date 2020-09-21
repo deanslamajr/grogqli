@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import './Home.css';
 
-const Home = () => {
+const Home: React.FC = () => {
   const handleButtonClick = () => {
     console.log('button clicked!')
   }
