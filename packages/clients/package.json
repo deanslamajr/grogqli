@@ -37,5 +37,6 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
-  }
+  },
+  "gitHead": "e0d2d2313caa8f98c98cb28f85e0f3e57dcb99eb"
 }
