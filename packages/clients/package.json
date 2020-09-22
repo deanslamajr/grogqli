@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/clients",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Clients for consumption of Grogqli data",
   "author": "Dean Slama <deanslamajr@gmail.com>",
   "homepage": "",
