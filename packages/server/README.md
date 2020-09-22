@@ -1,5 +1,7 @@
 # Razzle TypeScript Example
 
+Taken from https://github.com/jaredpalmer/razzle/tree/finch/examples/with-typescript
+
 ## How to use
 
 <!-- START install generated instructions please keep comment here to allow auto update -->

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { OperationDefinitionNode, FieldNode} from 'graphql';
 import editJsonFile from 'edit-json-file';
 
 import { getConfig } from './getConfig';
@@ -11,8 +12,8 @@ export const recordQuery = (req, res) => {
   const file = editJsonFile(`${getConfig().recordingsSaveDirectory}/${getConfig().recordingsFilename}.json`);
 
   const recording = {
-    type: query.definitions[0].operation,
-    name: query.definitions[0].selectionSet.selections[0].name.value,
+    type: (query.definitions[0] as OperationDefinitionNode).operation,
+    name: ((query.definitions[0] as OperationDefinitionNode).selectionSet.selections[0] as FieldNode).name.value,
   };
 
   file.set(req.params.id, recording);
