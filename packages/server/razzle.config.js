@@ -1,6 +1,7 @@
 'use strict';
 
 // https://razzle-git-canary.jared.vercel.app/docs/customization#extending-webpack
+// the sauce -> https://github.com/jaredpalmer/razzle/blob/e3cfbe568e4c8ae202603cb8a41ab19c2d65b963/packages/razzle/config/createConfig.js
 module.exports = {
   modifyWebpackConfig(
     { env: {

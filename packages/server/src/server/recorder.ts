@@ -4,12 +4,14 @@ import editJsonFile from 'edit-json-file';
 
 import { getConfig } from './getConfig';
 
-export const recordQuery = (req, res) => {
+export const recordQuery = async (req, res) => {
   const query = gql`
     ${req.body.query}
   `;
 
-  const file = editJsonFile(`${getConfig().recordingsSaveDirectory}/${getConfig().recordingsFilename}.json`);
+  const config = await getConfig();
+
+  const file = editJsonFile(`${config.recordingsSaveDirectory}/${config.recordingsFilename}.json`);
 
   const recording = {
     type: (query.definitions[0] as OperationDefinitionNode).operation,
@@ -23,8 +25,9 @@ export const recordQuery = (req, res) => {
   res.sendStatus(200);
 };
 
-export const updateRecording = (req, res) => {
-  const file = editJsonFile(`${getConfig().recordingsSaveDirectory}/${getConfig().recordingsFilename}.json`);
+export const updateRecording = async (req, res) => {
+  const config = await getConfig();
+  const file = editJsonFile(`${config.recordingsSaveDirectory}/${config.recordingsFilename}.json`);
 
   const existingRecording = file.get(req.params.id);
   const updatedRecording = {

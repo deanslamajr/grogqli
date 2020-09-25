@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "build/server.js",
   "bin": {
-    "grogqli": "./startServer.js"
+    "grogqli": "scripts/startServer.js"
   },
   "scripts": {
     "start:tsc": "tsc -b -w --preserveWatchOutput",
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "edit-json-file": "^1.4.1",
     "express": "^4.17.1",
+    "find-up": "^5.0.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "react": "^16.13.1",
