@@ -20,6 +20,7 @@ export const getConfig = async (): Promise<GrogqliConfig> => {
   // if file isn't found at root directory, return DEFAULT_CONFIG
   const configLocation = await findUp(CONFIG_FILE_NAME);
 
+  
   console.log('configLocation', configLocation)
 
   // TODO
