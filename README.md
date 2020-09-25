@@ -32,6 +32,9 @@ npm run grogqli
 * `npm run start` - starts the development runtimes for each package
 
 ## Commands
+### Publish
+* `npm run publish`
+
 ### add a dependency
 * `lerna add <name-of-package-to-import> packages/<name-of-importing-package>/`
 * devDependencies - `lerna add <name-of-package-to-import> packages/<name-of-package>/ --dev`

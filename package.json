@@ -5,6 +5,7 @@
     "init": "lerna clean --y && lerna bootstrap && lerna exec -- npm link",
     "start": "lerna run dev --parallel",
     "build": "lerna run build --stream",
+    "publish": "npm run init && npm run build && lerna publish",
     "test": "lerna run test --stream"
   },
   "devDependencies": {
