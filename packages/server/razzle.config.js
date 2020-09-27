@@ -25,6 +25,31 @@ module.exports = {
       appConfig.externals = [];
     }
 
+    // console.log('appConfig.module.rules', appConfig.module.rules)
+    // console.log('webpackOptions.babelRule.loader', webpackOptions.babelRule.loader)
+    // console.log('webpackOptions.babelRule.options', webpackOptions.babelRule.options)
+
+    // Graphql
+    appConfig.module.rules.push({
+      test: /\.graphql$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: webpackOptions.babelRule.loader,
+          options: webpackOptions.babelRule.options
+        },
+        {
+          loader: 'graphql-let/loader'
+        }
+      ]
+    });
+
+    appConfig.module.rules.push({
+      test: /\.graphqls$/,
+      exclude: /node_modules/,
+      use: ['graphql-let/schema/loader'],
+    });
+
     return appConfig;
   },
 };
