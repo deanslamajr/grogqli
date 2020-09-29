@@ -51,6 +51,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "name": "@grogqli/schema",
   "author": "Dean Slama",
   "module": "dist/schema.esm.js",
