@@ -16,7 +16,7 @@
     "access": "public"
   },
   "scripts": {
-    "dev": "tsdx watch --verbose",
+    "dev": "wait-on http://localhost:4000 && tsdx watch --verbose",
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
@@ -30,7 +30,8 @@
     "@types/shortid": "^0.0.29",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "wait-on": "^5.2.0"
   },
   "prettier": {
     "printWidth": 80,

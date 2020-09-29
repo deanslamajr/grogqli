@@ -1,18 +1,31 @@
-import React from 'react';
-import axios from 'axios';
-import {useGetRecordingsQuery} from './GetRecordings.graphql';
+import React, { useEffect, useState} from 'react';
+import { useQuery } from '@apollo/client';
+import {GetRecordingsDocument} from '@grogqli/schema';
 
 import './Home.css';
 
-const Home: React.FC = () => {
+const Test: React.FC = () => {
   const handleButtonClick = () => {
     console.log('button clicked!')
   }
-  // const {data} = useGetRecordingsQuery();
+  const {data, loading} = useQuery(GetRecordingsDocument);
+
   console.log('data', data)
+  return (<>
+    {loading ? <>Loading</> : <input className="Button" onClick={handleButtonClick} type="button" value="Click The Button!!!"/>}
+  </>);
+}
+
+const Home: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    setIsLoading(false);
+  }, [])
+  
   return (<div className="Home">
     <div className="ButtonContainer">
-      <input className="Button" onClick={handleButtonClick} type="button" value="Click The Button!"/>
+      {isLoading ? <>Loading...</> : <Test></Test>}
     </div>
   </div>);
 }

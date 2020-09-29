@@ -101,7 +101,6 @@ export const renderApp = async (req: express.Request, res: express.Response) => 
           <script>
             window.__APOLLO_STATE__=${JSON.stringify(apolloState).replace(/</g, '\\u003c')};
           </script>
-          }} />
       </body>
     </html>
   `);

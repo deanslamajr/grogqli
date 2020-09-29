@@ -1,0 +1,8 @@
+schema: http://localhost:4000/grogqli
+documents: "**/*.graphql"
+plugins:
+  - typescript
+  - typescript-operations
+  - typed-document-node
+respectGitIgnore: true
+cacheDir: src/generated

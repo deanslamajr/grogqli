@@ -13,9 +13,10 @@ const server = express()
   .use(cors())
   .use(bodyParser.json())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .post(grogqliPath, apolloServer.createHandler({ path: grogqliPath }))
   .post('/recording/:id', recordQuery)
   .put('/recording/:id', updateRecording)
   .get('/*', renderApp);
+
+apolloServer.applyMiddleware({ app: server, path: grogqliPath });
 
 export default server;

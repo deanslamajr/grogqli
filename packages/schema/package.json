@@ -1,0 +1,87 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "watch": {
+    "build:dev": {
+      "patterns": [
+        "src"
+      ],
+      "ignore": [
+        "src/generated",
+        "src/queries/*.d.ts",
+        "dist"
+      ],
+      "extensions": [
+        "graphql"
+      ],
+      "quiet": false
+    }
+  },
+  "scripts": {
+    "build:dev": "graphql-let && tsdx watch --verbose",
+    "dev": "wait-on http://localhost:4000 && npm-watch build:dev",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "@grogqli/schema",
+  "author": "Dean Slama",
+  "module": "dist/schema.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/schema.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/schema.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.8",
+    "@graphql-codegen/plugin-helpers": "^1.17.8",
+    "@graphql-codegen/typed-document-node": "^1.17.9",
+    "@graphql-codegen/typescript": "^1.17.9",
+    "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@graphql-typed-document-node/core": "^3.1.0",
+    "@size-limit/preset-small-lib": "^4.6.0",
+    "graphql-let": "^0.16.1",
+    "husky": "^4.3.0",
+    "npm-watch": "^0.7.0",
+    "size-limit": "^4.6.0",
+    "tsdx": "^0.14.0",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.3",
+    "wait-on": "^5.2.0"
+  },
+  "dependencies": {
+    "graphql": "^15.3.0"
+  }
+}
