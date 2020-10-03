@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import { typeDefs } from './types';
+import { typeDefs } from '@grogqli/schema';
+
 import {resolvers} from './resolvers';
 
 const schema = makeExecutableSchema({

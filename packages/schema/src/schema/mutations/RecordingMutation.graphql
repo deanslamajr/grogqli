@@ -1,0 +1,9 @@
+type RecordingMutation {
+  create(input: CreateRecordingInput!): Recording!
+}
+
+input CreateRecordingInput {
+  operationName: String!
+  query: String!
+  variables: String!
+}

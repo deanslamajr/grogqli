@@ -4,8 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
@@ -28,7 +27,8 @@
   },
   "scripts": {
     "build:dev": "graphql-let && tsdx watch --verbose",
-    "dev": "wait-on http://localhost:4000 && npm-watch build:dev",
+    "watch": "tsdx watch --verbose",
+    "dev": "npm-watch build:dev",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
@@ -78,6 +78,7 @@
     "graphql-let": "^0.16.1",
     "husky": "^4.3.0",
     "npm-watch": "^0.7.0",
+    "rollup-plugin-graphql-tag": "^0.1.0",
     "size-limit": "^4.6.0",
     "tsdx": "^0.14.0",
     "tslib": "^2.0.1",

@@ -12,11 +12,12 @@ const server = express()
   .disable('x-powered-by')
   .use(cors())
   .use(bodyParser.json())
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .post('/recording/:id', recordQuery)
-  .put('/recording/:id', updateRecording)
-  .get('/*', renderApp);
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!));
 
 apolloServer.applyMiddleware({ app: server, path: grogqliPath });
+
+server.post('/recording/:id', recordQuery)
+  .put('/recording/:id', updateRecording)
+  .get('/*', renderApp);
 
 export default server;

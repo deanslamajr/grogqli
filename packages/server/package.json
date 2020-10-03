@@ -9,10 +9,9 @@
   "scripts": {
     "watch:tsc": "tsc -b -w --preserveWatchOutput",
     "watch:razzle": "razzle start",
-    "codegen": "graphql-let",
     "start:watchers": "concurrently \"npm:watch:tsc\" \"npm:watch:razzle\"",
-    "dev": "npm run codegen && npm run start:watchers",
-    "build": "npm run codegen && tsc -b && razzle build",
+    "dev": "npm run start:watchers",
+    "build": "tsc -b && razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
@@ -31,7 +30,7 @@
     "find-up": "^5.0.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
-    "graphql-tools": "^6.2.3",
+    "graphql-tools": "^6.2.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2"

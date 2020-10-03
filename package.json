@@ -2,12 +2,13 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "init": "lerna clean --y && lerna bootstrap && lerna exec -- npm link",
+    "dev": "npm run init && npm start",
+    "publish": "npm run init && npm run build && lerna publish",
+    "test": "lerna run test --stream",
+    "init": "lerna clean --y && lerna bootstrap --force-local",
     "init:publish": "lerna clean --y && lerna bootstrap",
-    "start": "lerna run dev --parallel",
-    "build": "lerna run build --stream",
-    "publish": "npm run init:publish && npm run build && lerna publish",
-    "test": "lerna run test --stream"
+    "start": "lerna run dev --parallel --no-bail",
+    "build": "lerna run build --stream"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
