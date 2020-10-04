@@ -27,11 +27,15 @@ module.exports = {
 
     return appConfig;
   },
-  experimental: {
-    newBabel: true,
-    newExternals: true,
-    newSplitChunks: true,
-    newContentHash: true,
-    newMainFields: true,
-  }
+  options: {
+    verbose: true,
+    useReactRefresh: true
+  },
+  // experimental: {
+  //   newBabel: true,
+  //   newExternals: true,
+  //   newSplitChunks: true,
+  //   newContentHash: true,
+  //   newMainFields: true,
+  // }
 };

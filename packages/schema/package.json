@@ -10,7 +10,7 @@
     "node": ">=10"
   },
   "watch": {
-    "build:dev": {
+    "build:types": {
       "patterns": [
         "src"
       ],
@@ -26,9 +26,10 @@
     }
   },
   "scripts": {
-    "build:dev": "graphql-let && tsdx watch --verbose",
-    "watch": "tsdx watch --verbose",
-    "dev": "npm-watch build:dev",
+    "build:types": "graphql-let",
+    "watch:build:types": "npm-watch build:types",
+    "dev": "concurrently --raw npm:watch:build:types npm:watch:tsdx",
+    "watch:tsdx": "tsdx watch --verbose",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
@@ -75,6 +76,7 @@
     "@graphql-codegen/typescript-operations": "^1.17.8",
     "@graphql-typed-document-node/core": "^3.1.0",
     "@size-limit/preset-small-lib": "^4.6.0",
+    "concurrently": "^5.3.0",
     "graphql-let": "^0.16.1",
     "husky": "^4.3.0",
     "npm-watch": "^0.7.0",

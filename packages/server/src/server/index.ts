@@ -7,7 +7,7 @@ import {recordQuery, updateRecording} from './recorder';
 import {renderApp} from './renderApp';
 
 const grogqliPath = '/grogqli';
-
+const taco: number = 'taco';
 const server = express()
   .disable('x-powered-by')
   .use(cors())

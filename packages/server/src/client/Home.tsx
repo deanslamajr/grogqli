@@ -6,7 +6,7 @@ import './Home.css';
 
 const Test: React.FC = () => {
   const handleButtonClick = () => {
-    console.log('button clicked!')
+    console.log('button clicked')
   }
   const {data, loading} = useQuery(GetRecordingsDocument);
 
