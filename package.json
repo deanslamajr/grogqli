@@ -7,7 +7,7 @@
     "test": "lerna run test --stream",
     "init": "lerna clean --y && lerna bootstrap --force-local",
     "init:publish": "lerna clean --y && lerna bootstrap",
-    "start": "lerna run dev --parallel --no-bail",
+    "start": "lerna run dev --parallel",
     "build": "lerna run build --stream"
   },
   "devDependencies": {
