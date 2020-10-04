@@ -23,6 +23,8 @@
     "prepare": "tsdx build"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.2",
+    "@grogqli/schema": "^0.1.0",
     "msw": "^0.21.2",
     "shortid": "^2.2.15"
   },

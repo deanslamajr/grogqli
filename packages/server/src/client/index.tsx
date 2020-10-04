@@ -8,7 +8,7 @@ import App from './App';
 import {createApolloClient} from './createApolloClient';
 import { HttpLink, from } from '@apollo/client';
 
-const grogqliPath = '/grogqli';
+const grogqliPath = 'http://localhost:4000/grogqli';
 
 const httpLink = new HttpLink({
   uri: grogqliPath,

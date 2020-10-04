@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { useQuery } from '@apollo/client';
-import {GetRecordingsDocument} from '@grogqli/schema';
+import {GetRecordings} from '@grogqli/schema';
 
 import './Home.css';
 
@@ -8,7 +8,7 @@ const Test: React.FC = () => {
   const handleButtonClick = () => {
     console.log('button clicked')
   }
-  const {data, loading} = useQuery(GetRecordingsDocument);
+  const {data, loading} = useQuery(GetRecordings.GetRecordingsDocument);
 
   console.log('data', data)
   return (<>

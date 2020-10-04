@@ -1,9 +1,12 @@
 import { graphql, GraphQLResponseResolver } from 'msw';
 import shortid from 'shortid';
+import {CreateRecording} from '@grogqli/schema';
 
-import { groqlServerPort } from '../constants';
+import {getClient} from './ApolloClient';
 
-const groqlServerHost = `localhost:${groqlServerPort}`;
+import { serverUrl } from '../constants';
+
+const {CreateRecordingDocument} = CreateRecording;
 
 const isRecording = true;
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
@@ -19,20 +22,27 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
   };
 
   if (isRecording) {
+    const apolloClient = getClient({
+      url: serverUrl,
+      fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch']
+    });
+
     const recordingId = shortid.generate();
-    await ctx.fetch(`http://${groqlServerHost}/recording/${recordingId}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(req.body),
+    await apolloClient.mutate({
+      mutation: CreateRecordingDocument,
+      variables: {
+        input: {
+          operationName: req.body?.operationName,
+          query: req.body?.query,
+          variables: JSON.stringify(req.body?.variables)
+        }
+      }
     });
 
     const fetchResponse = await ctx.fetch(req);
     responseData = await fetchResponse.json();    
 
-    await ctx.fetch(`http://${groqlServerHost}/recording/${recordingId}`, {
+    await ctx.fetch(`${serverUrl}/recording/${recordingId}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json, text/plain, */*',
@@ -41,21 +51,7 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       body: JSON.stringify(responseData),
     });
   } else {
-    console.log('req', req);
-    // const response = await ctx.fetch(`http://${groqlServerHost}/mock/${}`)
-    const taco = await ctx.fetch(`http://${groqlServerHost}/mock`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        body: req.body,
-        url: req.url.toString(),
-      }),
-    });
-
-    console.log('taco', taco);
+    console.log('not recording');
   }
 
   return res(ctx.data(responseData?.data || null));

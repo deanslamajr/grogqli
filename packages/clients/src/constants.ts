@@ -1,3 +1,2 @@
-export const groqlServerPort = 4000;
-export const urlsToListenFor = ['http://localhost:3000/api/graphql'];
+export const serverUrl = 'http://localhost:4000';
 export const recordingFilename = 'groql_rec';

@@ -1,0 +1,9 @@
+mutation CreateRecording ($input: CreateRecordingInput!) {
+  recording {
+    create(input: $input) {
+      operationName
+      query
+      variables
+    }
+  }
+}
