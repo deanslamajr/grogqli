@@ -4,5 +4,11 @@ plugins:
   - typescript
   - typescript-operations
   - typed-document-node
+  - typescript-resolvers
+schemaEntrypoint: "src/schema/schema.graphql"
 respectGitIgnore: true
 cacheDir: src/generated
+config:
+  avoidOptionals: true
+  useIndexSignature: true
+  defaultMapper: Partial<{T}>

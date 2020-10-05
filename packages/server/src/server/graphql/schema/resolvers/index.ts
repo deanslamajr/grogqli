@@ -1,3 +1,9 @@
-import { queryResolver } from './queries';
+import {Resolvers} from '@grogqli/schema';
 
-export const resolvers = { Query: queryResolver };
+import { queryResolver } from './queries';
+import {mutationResolver } from './mutations'
+
+export const resolvers: Partial<Resolvers> = {
+  Query: queryResolver,
+  Mutation: mutationResolver
+};

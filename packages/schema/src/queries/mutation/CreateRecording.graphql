@@ -1,6 +1,6 @@
 mutation CreateRecording ($input: CreateRecordingInput!) {
-  recording {
-    create(input: $input) {
+  createRecording(input: $input) {
+    newRecording {
       operationName
       query
       variables

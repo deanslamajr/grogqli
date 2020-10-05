@@ -32,8 +32,8 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       mutation: CreateRecordingDocument,
       variables: {
         input: {
-          operationName: req.body?.operationName,
-          query: req.body?.query,
+          operationName: req.body?.operationName || 'unknownOperation',
+          query: req.body?.query || 'unknownQuery',
           variables: JSON.stringify(req.body?.variables)
         }
       }

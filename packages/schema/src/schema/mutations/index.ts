@@ -1,8 +1,8 @@
 import Mutation from './Mutation.graphql';
 
-import RecordingMutation from './RecordingMutation.graphql';
+import CreateRecording from './CreateRecording.graphql';
 
 export const typeDefs = [
   Mutation,
-  RecordingMutation,
+  CreateRecording,
 ];
