@@ -1,4 +1,5 @@
 type Recording {
+  id: ID!
   operationName: String!
   query: String!
   variables: String!

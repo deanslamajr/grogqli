@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import {apolloServer} from './graphql';
 
-import {recordQuery, updateRecording} from './recorder';
+import {updateRecording} from './recorder';
 import {renderApp} from './renderApp';
 
 const grogqliPath = '/grogqli';
@@ -16,8 +16,7 @@ const server = express()
 
 apolloServer.applyMiddleware({ app: server, path: grogqliPath });
 
-server.post('/recording/:id', recordQuery)
-  .put('/recording/:id', updateRecording)
+server.put('/recording/:id', updateRecording)
   .get('/*', renderApp);
 
 export default server;

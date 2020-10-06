@@ -28,4 +28,4 @@ The graphql schema SDLs, queries SDLs, and the generated Typescript types associ
 
 #### remove a dependency
 * remove the reference in the associated `package.json`
-* `npm run init`
+* `npm run dev`
