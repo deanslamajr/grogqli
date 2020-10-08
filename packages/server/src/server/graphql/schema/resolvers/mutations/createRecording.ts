@@ -5,6 +5,8 @@ import editJsonFile from 'edit-json-file';
 import fs from 'fs';
 import shortid from 'shortid';
 
+import {pubSub} from '../pubSub';
+import {RECORDING_SAVED} from '../subscriptions/recordingSavedResolver'
 import { getConfig } from '../../../../getConfig';
 
 const getRecordingFile = async (): Promise<editJsonFile.JsonEditor> => {
@@ -17,18 +19,25 @@ const getRecordingFile = async (): Promise<editJsonFile.JsonEditor> => {
   return editJsonFile(`${recordingsSaveDirectory}/${config('recordingsFilename')}.json`);
 }
 
-export const createRecordingResolver: MutationResolvers['createRecording'] = async (_parent, args, context, _info) => {
-  console.log('inside resolver! args', args)
+export const createRecordingResolver: MutationResolvers['createRecording'] = async (_parent, args, _context, _info) => {
   const {input: {
     operationName, query: _query, variables: _variables
   }} = args;
-  const variables = JSON.parse(_variables);
+  let variables;
+  try {
+    variables = JSON.parse(_variables);
+  }
+  catch(e) {
+    console.error(e);
+  }
+  
+  // TODO protect against invalid input
   const query = gql`${_query}`;
   
   const recording = {
     type: (query.definitions[0] as OperationDefinitionNode).operation,
     name: ((query.definitions[0] as OperationDefinitionNode).selectionSet.selections[0] as FieldNode).name.value,
-    variables
+    variables: variables || ''
   };
 
   const recordingId: string = shortid.generate();
@@ -37,12 +46,16 @@ export const createRecordingResolver: MutationResolvers['createRecording'] = asy
   file.set(recordingId, recording);
   file.save();
 
+  const newRecording = {
+    id: recordingId,
+    operationName,
+    query: _query,
+    variables: _variables
+  };
+
+  pubSub.publish(RECORDING_SAVED, {recordingSaved: newRecording});
+
   return {
-    newRecording: {
-      id: recordingId,
-      operationName,
-      query: _query,
-      variables: _variables
-    }
+    newRecording
   }
 };

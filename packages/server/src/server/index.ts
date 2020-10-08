@@ -1,22 +1,27 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import {apolloServer} from './graphql';
 
 import {updateRecording} from './recorder';
 import {renderApp} from './renderApp';
 
-const grogqliPath = '/grogqli';
+import { apolloServer } from './graphql';
+
+const name = 'grogqli';
+const grogqliPath = `/${name}`;
+// console.log(`\/((?!${name}).)*`)
+// replace with https://github.com/jfromaniello/express-unless
+const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`)
 
 const server = express()
   .disable('x-powered-by')
   .use(cors())
   .use(bodyParser.json())
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!));
+  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .put('/recording/:id', updateRecording)
+  // .get(everything_but_grogqli_path, renderApp);
 
-apolloServer.applyMiddleware({ app: server, path: grogqliPath });
-
-server.put('/recording/:id', updateRecording)
-  .get('/*', renderApp);
-
-export default server;
+export default {
+  server,
+  apolloServer
+};
