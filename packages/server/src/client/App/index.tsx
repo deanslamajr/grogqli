@@ -4,7 +4,7 @@ import { ApolloProvider, ApolloClient } from '@apollo/react-hooks';
 
 import Home from './Home';
 
-import './App.css';
+import './index.css';
 
 interface Props {
   apolloClient: ApolloClient<any>;

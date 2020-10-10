@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { useQuery, useSubscription } from '@apollo/client';
 import {GetRecordings, OnRecordingSaved} from '@grogqli/schema';
 
-import './Home.css';
+import './index.css';
 
 
 const Test: React.FC = () => {
