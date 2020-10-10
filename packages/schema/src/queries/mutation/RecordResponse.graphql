@@ -1,5 +1,5 @@
-mutation CreateRecording ($input: CreateRecordingInput!) {
-  createRecording(input: $input) {
+mutation RecordResponse ($input: RecordResponseInput!) {
+  recordResponse(input: $input) {
     newRecording {
       id
       operationName

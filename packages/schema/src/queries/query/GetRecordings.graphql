@@ -1,5 +1,9 @@
 query GetRecordings {
-  getRecordings {
-    replaceThisBullshxt
+  recordings {
+    id
+    operationName
+    query
+    variables
+    response
   }
 }

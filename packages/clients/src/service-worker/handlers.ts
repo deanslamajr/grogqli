@@ -1,22 +1,27 @@
 import { graphql, GraphQLResponseResolver } from 'msw';
-import shortid from 'shortid';
-import {CreateRecording} from '@grogqli/schema';
+import {CreateRecording, RecordResponse} from '@grogqli/schema';
 
 import {getClient} from './ApolloClient';
 
 import { serverUrl } from '../constants';
 
 const {CreateRecordingDocument} = CreateRecording;
+const {RecordResponseDocument} = RecordResponse;
 
 const isRecording = true;
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
+
+interface ResponseData {
+  data: any;
+  errors: any;
+}
 
 const universalHandler: GraphQLResponseResolver<any, any> = async (
   req,
   res,
   ctx
 ) => {
-  let responseData = {
+  let responseData: ResponseData = {
     data: null,
     errors: null,
   };
@@ -27,8 +32,8 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch']
     });
 
-    const recordingId = shortid.generate();
-    await apolloClient.mutate({
+    let recordingId;
+    const {data: createRecordingResponse, errors} = await apolloClient.mutate({
       mutation: CreateRecordingDocument,
       variables: {
         input: {
@@ -39,17 +44,42 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       }
     });
 
-    const fetchResponse = await ctx.fetch(req);
-    responseData = await fetchResponse.json();    
+    if (errors) {
+      errors.forEach(error => console.error(error));
+    } else {
+      recordingId = createRecordingResponse?.createRecording.newRecording.id;
+    }
 
-    await ctx.fetch(`${serverUrl}/recording/${recordingId}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(responseData),
-    });
+    // Make the real request
+    const fetchResponse = await ctx.fetch(req);
+    responseData = await fetchResponse.json();
+
+    const response = JSON.stringify(responseData);
+
+    if (recordingId) {
+      const {errors} = await apolloClient.mutate({
+        mutation: RecordResponseDocument,
+        variables: {
+          input: {
+            recordingId,
+            response
+          }
+        }
+      });
+  
+      if (errors) {
+        errors.forEach(error => console.error(error));
+      }
+    }
+
+    // await ctx.fetch(`${serverUrl}/recording/${recordingId}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     Accept: 'application/json, text/plain, */*',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(responseData),
+    // });
   } else {
     console.log('not recording');
   }

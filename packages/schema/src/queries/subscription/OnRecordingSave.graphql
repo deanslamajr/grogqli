@@ -4,5 +4,6 @@ subscription OnRecordingSave {
     operationName
     query
     variables
+    response
   }
 }

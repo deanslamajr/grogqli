@@ -1,3 +1,4 @@
 type Mutation {
   createRecording(input: CreateRecordingInput!): CreateRecordingResponse!
+  recordResponse(input: RecordResponseInput!): RecordResponseResponse!
 }

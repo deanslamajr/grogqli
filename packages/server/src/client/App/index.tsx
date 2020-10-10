@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ApolloProvider, ApolloClient } from '@apollo/react-hooks';
 
-import Home from './Home';
+import Transactions from './Transactions';
 
 import './index.css';
 
@@ -13,7 +13,7 @@ interface Props {
 const App: React.FC<Props> = ({apolloClient}) => (
   <ApolloProvider client={apolloClient}>
     <Switch>
-      <Route exact={true} path="/" component={Home} />
+      <Route exact={true} path="/" component={Transactions} />
     </Switch>
   </ApolloProvider>
 );
