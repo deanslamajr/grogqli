@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import {updateRecording} from './recorder';
 import {renderApp} from './renderApp';
 
-import { apolloServer } from './graphql';
+export { apolloServer } from './graphql';
 
 const name = 'grogqli';
 const grogqliPath = `/${name}`;
@@ -13,15 +13,10 @@ const grogqliPath = `/${name}`;
 // replace with https://github.com/jfromaniello/express-unless
 const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`)
 
-const server = express()
+export const server = express()
   .disable('x-powered-by')
   .use(cors())
   .use(bodyParser.json())
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .put('/recording/:id', updateRecording)
-  // .get(everything_but_grogqli_path, renderApp);
-
-export default {
-  server,
-  apolloServer
-};
+  .get(everything_but_grogqli_path, renderApp);

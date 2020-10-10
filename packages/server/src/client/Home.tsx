@@ -1,19 +1,17 @@
 import React, { useEffect, useState} from 'react';
-import { useQuery } from '@apollo/client';
-import {GetRecordings} from '@grogqli/schema';
+import { useQuery, useSubscription } from '@apollo/client';
+import {GetRecordings, OnRecordingSaved} from '@grogqli/schema';
 
 import './Home.css';
 
 
 const Test: React.FC = () => {
-  const handleButtonClick = () => {
-    console.log('button clicked')
-  }
   const {data, loading} = useQuery(GetRecordings.GetRecordingsDocument);
+  // const {data, loading} = useSubscription(OnRecordingSaved.OnRecordingSaveDocument);
 
   console.log('data', data)
   return (<>
-    {loading ? <>Loading</> : <input className="Button" onClick={handleButtonClick} type="button" value="Click The Button!!!"/>}
+    {loading ? <>Loading</> : <>{JSON.stringify(data?.recordingSaved)}</>}
   </>);
 }
 

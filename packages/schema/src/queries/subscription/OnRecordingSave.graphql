@@ -1,0 +1,8 @@
+subscription OnRecordingSave {
+  recordingSaved {
+    id
+    operationName
+    query
+    variables
+  }
+}
