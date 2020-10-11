@@ -76,7 +76,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 }) => {
   React.useEffect(() => {
     subscribeToRecordings();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="Home">

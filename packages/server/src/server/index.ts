@@ -8,10 +8,10 @@ import { renderApp } from './renderApp';
 export { apolloServer } from './graphql';
 
 const name = 'grogqli';
-const grogqliPath = `/${name}`;
+// const grogqliPath = `/${name}`;
 // console.log(`\/((?!${name}).)*`)
 // replace with https://github.com/jfromaniello/express-unless
-const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`);
+const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`); // eslint-disable-line no-useless-escape
 
 export const server = express()
   .disable('x-powered-by')

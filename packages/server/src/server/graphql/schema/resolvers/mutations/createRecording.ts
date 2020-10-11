@@ -1,6 +1,4 @@
 import { MutationResolvers, Recording } from '@grogqli/schema';
-import gql from 'graphql-tag';
-import { OperationDefinitionNode, FieldNode } from 'graphql';
 import shortid from 'shortid';
 
 import { getRecordingFile } from '../files';
