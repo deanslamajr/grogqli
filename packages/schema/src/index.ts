@@ -1,5 +1,5 @@
 // schema
-export {typeDefs} from './schema';
+export { typeDefs } from './schema';
 export * from './generated/src/schema/schema.graphql';
 
 // queries

@@ -1,5 +1,3 @@
 import Query from './Query.graphql';
 
-export const typeDefs = [
-  Query,
-];
+export const typeDefs = [Query];

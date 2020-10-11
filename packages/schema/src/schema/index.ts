@@ -7,5 +7,5 @@ export const typeDefs = [
   ...queryTypes,
   ...mutationTypes,
   ...sharedTypes,
-  ...subscriptionTypes
+  ...subscriptionTypes,
 ];

@@ -1,5 +1,3 @@
 import Subscription from './Subscription.graphql';
 
-export const typeDefs = [
-  Subscription
-];
+export const typeDefs = [Subscription];
