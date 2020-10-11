@@ -10,6 +10,12 @@ import { HttpLink, from, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 
+declare global {
+  interface Window {
+    __APOLLO_STATE__: any;
+  }
+}
+
 const grogqliPath = 'http://localhost:4000/grogqli';
 const grogqliWsPath = 'ws://localhost:4000/graphql';
 
@@ -49,7 +55,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = from([errorLink, splitLink]);
 
-const apolloClient = createApolloClient({ link });
+const apolloClient = createApolloClient({
+  link,
+  initialState: window.__APOLLO_STATE__,
+});
 
 hydrate(
   <BrowserRouter>
