@@ -14,6 +14,9 @@ The graphql schema SDLs, queries SDLs, and the generated Typescript types associ
 * `npm run dev` - clears out all `node_modules`, reinstalls dependencies, links packages, and starts the development runtimes for each package
 * `npm run start` - starts the development runtimes for each package (helpful for quickly restarting the dev environment without reinitializing all dependencies, linking, etc).
 
+### Lint on Save
+To enable automatic prettier lint error correction on save (in vscode editor), install and enable the [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
 ### Notes
 * If types don't seems to be properly updated after making changed (e.g. changes in `@grogqli/schema` not cascading to `@grogqli/server`):
   * in vscode: press f1 and then begin typing `reload window` and select the option for `Developer: Reload Window`
