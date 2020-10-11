@@ -4,7 +4,9 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -24,25 +26,21 @@ export type Query = {
   getRecordings: Array<Maybe<Recording>>;
 };
 
-export type GetRecordingsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetRecordingsQueryVariables = Exact<{ [key: string]: never }>;
 
-
-export type GetRecordingsQuery = (
-  { __typename?: 'Query' }
-  & { getRecordings: Array<Maybe<(
-    { __typename?: 'Recording' }
-    & Pick<Recording, 'replaceThisBullshxt'>
-  )>> }
-);
-
+export type GetRecordingsQuery = { __typename?: 'Query' } & {
+  getRecordings: Array<
+    Maybe<{ __typename?: 'Recording' } & Pick<Recording, 'replaceThisBullshxt'>>
+  >;
+};
 
 export const GetRecordingsDocument = gql`
-    query GetRecordings {
-  getRecordings {
-    replaceThisBullshxt
+  query GetRecordings {
+    getRecordings {
+      replaceThisBullshxt
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetRecordingsQuery__
@@ -59,12 +57,35 @@ export const GetRecordingsDocument = gql`
  *   },
  * });
  */
-export function useGetRecordingsQuery(baseOptions?: Apollo.QueryHookOptions<GetRecordingsQuery, GetRecordingsQueryVariables>) {
-        return Apollo.useQuery<GetRecordingsQuery, GetRecordingsQueryVariables>(GetRecordingsDocument, baseOptions);
-      }
-export function useGetRecordingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecordingsQuery, GetRecordingsQueryVariables>) {
-          return Apollo.useLazyQuery<GetRecordingsQuery, GetRecordingsQueryVariables>(GetRecordingsDocument, baseOptions);
-        }
-export type GetRecordingsQueryHookResult = ReturnType<typeof useGetRecordingsQuery>;
-export type GetRecordingsLazyQueryHookResult = ReturnType<typeof useGetRecordingsLazyQuery>;
-export type GetRecordingsQueryResult = Apollo.QueryResult<GetRecordingsQuery, GetRecordingsQueryVariables>;
+export function useGetRecordingsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetRecordingsQuery,
+    GetRecordingsQueryVariables
+  >
+) {
+  return Apollo.useQuery<GetRecordingsQuery, GetRecordingsQueryVariables>(
+    GetRecordingsDocument,
+    baseOptions
+  );
+}
+export function useGetRecordingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetRecordingsQuery,
+    GetRecordingsQueryVariables
+  >
+) {
+  return Apollo.useLazyQuery<GetRecordingsQuery, GetRecordingsQueryVariables>(
+    GetRecordingsDocument,
+    baseOptions
+  );
+}
+export type GetRecordingsQueryHookResult = ReturnType<
+  typeof useGetRecordingsQuery
+>;
+export type GetRecordingsLazyQueryHookResult = ReturnType<
+  typeof useGetRecordingsLazyQuery
+>;
+export type GetRecordingsQueryResult = Apollo.QueryResult<
+  GetRecordingsQuery,
+  GetRecordingsQueryVariables
+>;

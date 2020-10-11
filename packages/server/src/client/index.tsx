@@ -5,7 +5,7 @@ import { onError } from '@apollo/client/link/error';
 
 import App from './App';
 
-import {createApolloClient} from './createApolloClient';
+import { createApolloClient } from './createApolloClient';
 import { HttpLink, from, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -21,8 +21,8 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: grogqliWsPath,
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 });
 
 const splitLink = split(
@@ -34,7 +34,7 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink,
+  httpLink
 );
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -53,7 +53,7 @@ const apolloClient = createApolloClient({ link });
 
 hydrate(
   <BrowserRouter>
-    <App apolloClient={apolloClient}/>
+    <App apolloClient={apolloClient} />
   </BrowserRouter>,
   document.getElementById('root')
 );

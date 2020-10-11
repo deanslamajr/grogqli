@@ -1,13 +1,18 @@
-import {MutationResolvers, Recording} from '@grogqli/schema';
+import { MutationResolvers, Recording } from '@grogqli/schema';
 
-import { getRecordingFile} from '../files';
-import {pubSub} from '../pubSub';
-import {RECORDING_SAVED} from '../subscriptions/recordingSavedResolver'
+import { getRecordingFile } from '../files';
+import { pubSub } from '../pubSub';
+import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
-export const recordResponseResolver: MutationResolvers['recordResponse'] = async (_parent, args, _context, _info) => {
-  const {input: {
-    response, recordingId
-  }} = args;
+export const recordResponseResolver: MutationResolvers['recordResponse'] = async (
+  _parent,
+  args,
+  _context,
+  _info
+) => {
+  const {
+    input: { response, recordingId },
+  } = args;
   const file = await getRecordingFile();
   const recording: Recording = file.get(recordingId);
 
@@ -20,9 +25,9 @@ export const recordResponseResolver: MutationResolvers['recordResponse'] = async
   file.set(recordingId, recording);
   file.save();
 
-  pubSub.publish(RECORDING_SAVED, {recordingSaved: recording});
+  pubSub.publish(RECORDING_SAVED, { recordingSaved: recording });
 
   return {
-    newRecording: recording
+    newRecording: recording,
   };
 };

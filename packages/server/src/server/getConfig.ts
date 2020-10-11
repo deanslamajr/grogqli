@@ -11,7 +11,7 @@ export interface GrogqliConfig {
 
 const DEFAULT_CONFIG: GrogqliConfig = {
   recordingsSaveDirectory: process.cwd(),
-  recordingsFilename: 'groql_rec'
+  recordingsFilename: 'groql_rec',
 };
 
 type GetGrogqliConfigValue = (configKey: keyof GrogqliConfig) => string;
@@ -20,12 +20,15 @@ export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
   // recursively try to open a file with filename === CONFIG_FILE_NAME
   // if file doesn't exist, try again in parent directory
   // if file isn't found at root directory, return DEFAULT_CONFIG
-  const configLocation = await findUp(async directory => {
-    const hasConfig = await findUp.exists(path.join(directory, CONFIG_FILE_NAME));
-    return hasConfig
-      ? directory
-      : undefined;
-  }, {type: 'directory'});
+  const configLocation = await findUp(
+    async (directory) => {
+      const hasConfig = await findUp.exists(
+        path.join(directory, CONFIG_FILE_NAME)
+      );
+      return hasConfig ? directory : undefined;
+    },
+    { type: 'directory' }
+  );
 
   let configFromFile: editJsonFile.JsonEditor;
 
@@ -38,8 +41,11 @@ export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
     let configValue: any;
     if (configFromFile) {
       configValue = configFromFile.get(configKey);
-      if (configKey === 'recordingsSaveDirectory' && configValue !== undefined) {
-        configValue = `${configLocation}/${configValue}`
+      if (
+        configKey === 'recordingsSaveDirectory' &&
+        configValue !== undefined
+      ) {
+        configValue = `${configLocation}/${configValue}`;
       }
     }
     if (configValue === undefined) {
@@ -49,4 +55,4 @@ export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
   };
 
   return getGrogqliConfigValue;
-}
+};

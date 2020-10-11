@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-import {updateRecording} from './recorder';
-import {renderApp} from './renderApp';
+import { updateRecording } from './recorder';
+import { renderApp } from './renderApp';
 
 export { apolloServer } from './graphql';
 
@@ -11,7 +11,7 @@ const name = 'grogqli';
 const grogqliPath = `/${name}`;
 // console.log(`\/((?!${name}).)*`)
 // replace with https://github.com/jfromaniello/express-unless
-const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`)
+const everything_but_grogqli_path = new RegExp(`\/((?!${name}).)*`);
 
 export const server = express()
   .disable('x-powered-by')

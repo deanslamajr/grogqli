@@ -10,7 +10,7 @@ interface Props {
   apolloClient: ApolloClient<any>;
 }
 
-const App: React.FC<Props> = ({apolloClient}) => (
+const App: React.FC<Props> = ({ apolloClient }) => (
   <ApolloProvider client={apolloClient}>
     <Switch>
       <Route exact={true} path="/" component={Transactions} />

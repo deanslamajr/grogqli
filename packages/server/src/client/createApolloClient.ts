@@ -20,4 +20,4 @@ export const createApolloClient = (params: CreateApolloClientParams) => {
     cache,
     // ssrForceFetchDelay: 100,
   });
-}
+};

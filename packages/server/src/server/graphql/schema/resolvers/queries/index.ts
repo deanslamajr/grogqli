@@ -1,4 +1,4 @@
-import {QueryResolvers} from '@grogqli/schema';
+import { QueryResolvers } from '@grogqli/schema';
 import { resolver as recordingsResolver } from './recordings';
 
 export const queryResolver: QueryResolvers = {

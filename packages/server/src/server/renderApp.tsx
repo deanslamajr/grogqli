@@ -3,15 +3,20 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouterContext } from 'react-router';
 import { StaticRouter } from 'react-router-dom';
-import { ApolloClient, ApolloLink, from, NormalizedCacheObject } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  from,
+  NormalizedCacheObject,
+} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { SchemaLink } from 'apollo-link-schema';
-import {renderToStringWithData} from '@apollo/react-ssr';
+import { renderToStringWithData } from '@apollo/react-ssr';
 
 import gqlSchema from './graphql/schema';
 
 import App from '../client/App';
-import {createApolloClient as createClient} from '../client/createApolloClient';
+import { createApolloClient as createClient } from '../client/createApolloClient';
 
 let assets: any;
 
@@ -33,16 +38,19 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
       );
     if (networkError) console.log(`[Network error]: ${networkError}`);
   });
-  
-  const link = from([errorLink, schemaLink as unknown as ApolloLink]);
+
+  const link = from([errorLink, (schemaLink as unknown) as ApolloLink]);
 
   return createClient({
     link,
-    isSSRMode:true
+    isSSRMode: true,
   });
-}
+};
 
-export const renderApp = async (req: express.Request, res: express.Response) => {
+export const renderApp = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const context = {} as StaticRouterContext;
 
   const apolloClient = createApolloClient();
@@ -99,7 +107,10 @@ export const renderApp = async (req: express.Request, res: express.Response) => 
       <body>
           <div id="root">${markup}</div>
           <script>
-            window.__APOLLO_STATE__=${JSON.stringify(apolloState).replace(/</g, '\\u003c')};
+            window.__APOLLO_STATE__=${JSON.stringify(apolloState).replace(
+              /</g,
+              '\\u003c'
+            )};
           </script>
       </body>
     </html>
