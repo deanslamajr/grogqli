@@ -1,12 +1,12 @@
 import { graphql, GraphQLResponseResolver } from 'msw';
-import {CreateRecording, RecordResponse} from '@grogqli/schema';
+import { CreateRecording, RecordResponse } from '@grogqli/schema';
 
-import {getClient} from './ApolloClient';
+import { getClient } from './ApolloClient';
 
 import { serverUrl } from '../constants';
 
-const {CreateRecordingDocument} = CreateRecording;
-const {RecordResponseDocument} = RecordResponse;
+const { CreateRecordingDocument } = CreateRecording;
+const { RecordResponseDocument } = RecordResponse;
 
 const isRecording = true;
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
@@ -29,20 +29,22 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
   if (isRecording) {
     const apolloClient = getClient({
       url: serverUrl,
-      fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch']
+      fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch'],
     });
 
     let recordingId;
-    const {data: createRecordingResponse, errors} = await apolloClient.mutate({
-      mutation: CreateRecordingDocument,
-      variables: {
-        input: {
-          operationName: req.body?.operationName || 'unknownOperation',
-          query: req.body?.query || 'unknownQuery',
-          variables: JSON.stringify(req.body?.variables)
-        }
+    const { data: createRecordingResponse, errors } = await apolloClient.mutate(
+      {
+        mutation: CreateRecordingDocument,
+        variables: {
+          input: {
+            operationName: req.body?.operationName || 'unknownOperation',
+            query: req.body?.query || 'unknownQuery',
+            variables: JSON.stringify(req.body?.variables),
+          },
+        },
       }
-    });
+    );
 
     if (errors) {
       errors.forEach(error => console.error(error));
@@ -57,16 +59,16 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
     const response = JSON.stringify(responseData);
 
     if (recordingId) {
-      const {errors} = await apolloClient.mutate({
+      const { errors } = await apolloClient.mutate({
         mutation: RecordResponseDocument,
         variables: {
           input: {
             recordingId,
-            response
-          }
-        }
+            response,
+          },
+        },
       });
-  
+
       if (errors) {
         errors.forEach(error => console.error(error));
       }
@@ -90,7 +92,7 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
 type Handlers = [
   ReturnType<typeof graphql.query>,
   ReturnType<typeof graphql.mutation>
-]
+];
 
 export const handlers: Handlers = [
   graphql.query(anyAlphaNumericStringReqExp, universalHandler),

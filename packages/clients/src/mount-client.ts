@@ -4,9 +4,11 @@ const groqliAppUrl = 'http://localhost:4000';
 
 export const mountClient = () => {
   // if in a browser context
-  //   AND if iframe hasn't already been created i.e. if this isn't a HMR reload 
+  //   AND if iframe hasn't already been created i.e. if this isn't a HMR reload
   if (typeof window !== 'undefined' && !window[iFrameSingletonKey]) {
-    const iFrame = window[iFrameSingletonKey] = document.createElement('iframe');
+    const iFrame = (window[iFrameSingletonKey] = document.createElement(
+      'iframe'
+    ));
 
     iFrame.setAttribute('id', iFrameId);
     iFrame.style.cssText = `

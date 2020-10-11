@@ -1,15 +1,19 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client/core';
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+} from '@apollo/client/core';
 
 interface GetClientParams {
   url: string;
   fetch: WindowOrWorkerGlobalScope['fetch'];
 }
 
-export const getClient = ({url, fetch}: GetClientParams) => {
+export const getClient = ({ url, fetch }: GetClientParams) => {
   const cache = new InMemoryCache();
   const link = createHttpLink({
     uri: `${url}/grogqli`,
-    fetch
+    fetch,
   });
 
   return new ApolloClient({
@@ -20,8 +24,8 @@ export const getClient = ({url, fetch}: GetClientParams) => {
         fetchPolicy: 'network-only',
       },
       mutate: {
-        fetchPolicy: 'no-cache'
-      }
+        fetchPolicy: 'no-cache',
+      },
     },
-  })
+  });
 };
