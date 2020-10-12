@@ -48,7 +48,7 @@ const TransactionsWithData: React.FC = () => {
                 Object.assign(recordedRequest, newFeedItem);
                 return newSet;
               } else {
-                return [newFeedItem, ...newSet];
+                return [...newSet, newFeedItem];
               }
             };
 
