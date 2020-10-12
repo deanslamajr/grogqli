@@ -5,7 +5,7 @@ import { onError } from '@apollo/client/link/error';
 
 import App from './App';
 
-import { createApolloClient } from './createApolloClient';
+import { createApolloClient } from '../shared/createApolloClient';
 import { HttpLink, from, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';

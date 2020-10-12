@@ -1,4 +1,5 @@
 import express from 'express';
+import unless from 'express-unless';
 import React from 'react';
 import { StaticRouterContext } from 'react-router';
 import { StaticRouter } from 'react-router-dom';
@@ -15,7 +16,8 @@ import { renderToStringWithData } from '@apollo/react-ssr';
 import gqlSchema from './graphql/schema';
 
 import App from '../client/App';
-import { createApolloClient as createClient } from '../client/createApolloClient';
+import { createApolloClient as createClient } from '../shared/createApolloClient';
+import { grogqliPath } from '../shared/constants';
 
 let assets: any;
 
@@ -46,10 +48,7 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   });
 };
 
-export const renderApp = async (
-  req: express.Request,
-  res: express.Response
-) => {
+const renderApp = async (req: express.Request, res: express.Response) => {
   const context = {} as StaticRouterContext;
 
   const apolloClient = createApolloClient();
@@ -115,3 +114,16 @@ export const renderApp = async (
     </html>
   `);
 };
+
+type RouterWithUnless = express.Router & {
+  unless?: typeof unless;
+};
+const renderAppForAllGetPaths: RouterWithUnless = express
+  .Router()
+  .get('/*', renderApp);
+renderAppForAllGetPaths.unless = unless;
+export const renderAppForAllGetPathsExceptGraphql: RouterWithUnless = renderAppForAllGetPaths.unless(
+  {
+    path: grogqliPath,
+  }
+);
