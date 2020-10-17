@@ -1,8 +1,7 @@
 import React from 'react';
 import { useQuery, ApolloError } from '@apollo/client';
 import { GetRecordings, OnRecordingSaved, Recording } from '@grogqli/schema';
-
-import './index.css';
+import styled from 'styled-components';
 
 const TransactionsWithData: React.FC = () => {
   const { data, loading, error, subscribeToMore } = useQuery(
@@ -70,6 +69,40 @@ interface TransactionsProps {
   subscribeToRecordings: () => void;
 }
 
+const TransactionsContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+`;
+
+const StyledRow = styled.tr`
+  &:nth-child(odd) {
+    background-color: #eee;
+  }
+
+  &:hover {
+    background-color: aquamarine;
+    cursor: pointer;
+  }
+`;
+
+const StyledHeader = styled.th`
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  padding: 0.5em 1em;
+`;
+
+const StyledCell = styled.td`
+  text-align: left;
+  padding: 0.5em 1em;
+`;
+
 const Transactions: React.FC<TransactionsProps> = ({
   recordings,
   subscribeToRecordings,
@@ -79,20 +112,20 @@ const Transactions: React.FC<TransactionsProps> = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="Home">
-      <table>
+    <TransactionsContainer>
+      <StyledTable>
         <thead>
-          <tr>
-            <th>op name</th>
-          </tr>
+          <StyledRow>
+            <StyledHeader>op name</StyledHeader>
+          </StyledRow>
         </thead>
         <tbody>
           {recordings.map((transaction) => (
             <Transaction key={transaction.id} transaction={transaction} />
           ))}
         </tbody>
-      </table>
-    </div>
+      </StyledTable>
+    </TransactionsContainer>
   );
 };
 
@@ -102,9 +135,9 @@ interface TransactionProps {
 
 const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
   return (
-    <tr>
-      <td>{transaction.operationName}</td>
-    </tr>
+    <StyledRow>
+      <StyledCell>{transaction.operationName}</StyledCell>
+    </StyledRow>
   );
 };
 

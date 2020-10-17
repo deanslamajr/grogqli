@@ -7,4 +7,9 @@ export const recordingSavedResolver: SubscriptionResolvers['recordingSaved'] = {
   subscribe: () => {
     return pubSub.asyncIterator(RECORDING_SAVED);
   },
+  // resolve: (payload) => {
+  //   return {
+  //     customData: payload,
+  //   };
+  // }
 };

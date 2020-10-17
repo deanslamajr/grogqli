@@ -12,6 +12,7 @@ import {
 import { onError } from '@apollo/client/link/error';
 import { SchemaLink } from 'apollo-link-schema';
 import { renderToStringWithData } from '@apollo/react-ssr';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import gqlSchema from './graphql/schema';
 
@@ -53,31 +54,29 @@ const renderApp = async (req: express.Request, res: express.Response) => {
 
   const apolloClient = createApolloClient();
   let markup: string;
+  const sheet = new ServerStyleSheet();
+  let styleTags;
   try {
     // Run all GraphQL queries
     markup = await renderToStringWithData(
       <StaticRouter context={context} location={req.url}>
-        <App apolloClient={apolloClient} />
+        <StyleSheetManager sheet={sheet.instance}>
+          <App apolloClient={apolloClient} />
+        </StyleSheetManager>
       </StaticRouter>
     );
+    styleTags = sheet.getStyleTags();
   } catch (error) {
     // Prevent Apollo Client GraphQL errors from crashing SSR.
     // Handle them in components via the data.error prop:
     // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
     console.error('Error while running `renderToStringWithData`', error);
     return res.sendStatus(500);
+  } finally {
+    sheet.seal();
   }
 
-  // Extract query data from the Apollo store
-  // const apolloState = apolloClient.cache.extract();
   const apolloState = apolloClient.extract();
-
-  // const markup = renderToString(
-  //   <StaticRouter context={context} location={req.url}>
-  //     <App apolloClient={apolloClient} />
-  //   </StaticRouter>
-  // );
-
   // context.url will contain the URL to redirect to if a <Redirect> was used
   // TODO needs to be tested
   // if (context.url) {
@@ -89,7 +88,7 @@ const renderApp = async (req: express.Request, res: express.Response) => {
       <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Razzle TypeScript</title>
+        <title>Grogqli</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${
           assets.client.css
@@ -101,6 +100,7 @@ const renderApp = async (req: express.Request, res: express.Response) => {
             ? `<script src="${assets.client.js}" defer></script>`
             : `<script src="${assets.client.js}" defer crossorigin></script>`
         }
+        ${styleTags || ''}
       </head>
       <body>
           <div id="root">${markup}</div>
