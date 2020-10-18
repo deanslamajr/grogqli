@@ -1,9 +1,14 @@
-import React from 'react';
-import { useQuery, ApolloError } from '@apollo/client';
+import React, { useState, useCallback } from 'react';
+import { useQuery } from '@apollo/client';
 import { GetRecordings, OnRecordingSaved, Recording } from '@grogqli/schema';
-import styled from 'styled-components';
+
+import Transactions from './Transactions';
+
+export type CheckedState = { [id: string]: boolean };
 
 const TransactionsWithData: React.FC = () => {
+  const [checkedState, updateCheckedState] = useState<CheckedState>({});
+  const [allAreChecked, setAllAreChecked] = useState(false);
   const { data, loading, error, subscribeToMore } = useQuery(
     GetRecordings.GetRecordingsDocument
     // { variables: {  } }
@@ -13,11 +18,50 @@ const TransactionsWithData: React.FC = () => {
     console.error(error);
   }
 
+  const toggleCheck = useCallback(
+    (id: string) => {
+      const newCheckedState = { ...checkedState };
+      newCheckedState[id] = !Boolean(newCheckedState[id]);
+      updateCheckedState(newCheckedState);
+
+      const everyRecordingIsChecked = data?.recordings?.every(({ id }) => {
+        return newCheckedState[id];
+      });
+
+      if (everyRecordingIsChecked) {
+        setAllAreChecked(true);
+      } else {
+        if (allAreChecked) {
+          setAllAreChecked(false);
+        }
+      }
+    },
+    [checkedState, allAreChecked, data?.recordings]
+  );
+
+  const toggleAllChecked = useCallback(() => {
+    if (allAreChecked) {
+      updateCheckedState({});
+      setAllAreChecked(false);
+    } else {
+      const newCheckedState = {};
+      data?.recordings?.forEach(({ id }) => {
+        newCheckedState[id] = true;
+      });
+      updateCheckedState(newCheckedState);
+      setAllAreChecked(true);
+    }
+  }, [allAreChecked, data?.recordings]);
+
   return (
     <Transactions
+      allAreChecked={allAreChecked}
+      checkedState={checkedState}
+      toggleCheck={toggleCheck}
       recordings={data?.recordings || []}
       loading={loading}
       error={error}
+      toggleAllChecked={toggleAllChecked}
       subscribeToRecordings={() => {
         return subscribeToMore({
           document: OnRecordingSaved.OnRecordingSaveDocument,
@@ -59,85 +103,6 @@ const TransactionsWithData: React.FC = () => {
         });
       }}
     />
-  );
-};
-
-interface TransactionsProps {
-  recordings: GetRecordings.Recording[];
-  loading: boolean;
-  error?: ApolloError;
-  subscribeToRecordings: () => void;
-}
-
-const TransactionsContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-`;
-
-const StyledRow = styled.tr`
-  &:nth-child(odd) {
-    background-color: #eee;
-  }
-
-  &:hover {
-    background-color: aquamarine;
-    cursor: pointer;
-  }
-`;
-
-const StyledHeader = styled.th`
-  position: sticky;
-  top: 0; /* Don't forget this, required for the stickiness */
-  background-color: #555;
-  color: #fff;
-  text-align: left;
-  padding: 0.5em 1em;
-`;
-
-const StyledCell = styled.td`
-  text-align: left;
-  padding: 0.5em 1em;
-`;
-
-const Transactions: React.FC<TransactionsProps> = ({
-  recordings,
-  subscribeToRecordings,
-}) => {
-  React.useEffect(() => {
-    subscribeToRecordings();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  return (
-    <TransactionsContainer>
-      <StyledTable>
-        <thead>
-          <StyledRow>
-            <StyledHeader>op name</StyledHeader>
-          </StyledRow>
-        </thead>
-        <tbody>
-          {recordings.map((transaction) => (
-            <Transaction key={transaction.id} transaction={transaction} />
-          ))}
-        </tbody>
-      </StyledTable>
-    </TransactionsContainer>
-  );
-};
-
-interface TransactionProps {
-  transaction: GetRecordings.Recording;
-}
-
-const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
-  return (
-    <StyledRow>
-      <StyledCell>{transaction.operationName}</StyledCell>
-    </StyledRow>
   );
 };
 
