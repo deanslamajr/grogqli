@@ -1,6 +1,6 @@
 import { MutationResolvers, Recording } from '@grogqli/schema';
 
-import { getRecordingFile } from '../files';
+import { getQueryRecordingsFile } from '../files';
 import { pubSub } from '../pubSub';
 import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
@@ -13,7 +13,7 @@ export const recordResponseResolver: MutationResolvers['recordResponse'] = async
   const {
     input: { response, recordingId },
   } = args;
-  const file = await getRecordingFile();
+  const file = await getQueryRecordingsFile();
   const recording: Recording = file.get(recordingId);
 
   if (!recording) {

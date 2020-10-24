@@ -1,7 +1,8 @@
 import { MutationResolvers, Recording } from '@grogqli/schema';
 import shortid from 'shortid';
+import fs from 'fs';
 
-import { getRecordingFile } from '../files';
+import { getQueryRecordingsFile, getSchemaRecordingsPath } from '../files';
 import { pubSub } from '../pubSub';
 import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
@@ -12,9 +13,20 @@ export const createRecordingResolver: MutationResolvers['createRecording'] = asy
   _info
 ) => {
   const {
-    input: { operationName, query: _query, variables: _variables },
+    input: {
+      operationName,
+      query: _query,
+      variables: _variables,
+      schema: { url: schemaUrl, content: schemaString },
+      referrer,
+    },
   } = args;
   const recordingId: string = shortid.generate();
+
+  if (schemaString) {
+    const schemaRecordingsPath = await getSchemaRecordingsPath();
+    fs.writeFileSync(`${schemaRecordingsPath}/test.json`, schemaString);
+  }
 
   const newRecording: Recording = {
     id: recordingId,
@@ -22,9 +34,11 @@ export const createRecordingResolver: MutationResolvers['createRecording'] = asy
     query: _query,
     variables: _variables,
     response: null,
+    schemaUrl,
+    referrer,
   };
 
-  const file = await getRecordingFile();
+  const file = await getQueryRecordingsFile();
   file.set(recordingId, newRecording);
   file.save();
 

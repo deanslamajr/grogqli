@@ -28,7 +28,7 @@ const CheckAllHeader = styled(StyledHeader)<{
   isChecked: boolean;
 }>`
   padding: 0;
-  background-color: ${(props) => (props.isChecked ? '#555' : 'white')};
+  background-color: ${(props) => (props.isChecked ? 'aquamarine' : 'white')};
   width: 3rem;
   height: 3rem;
 `;

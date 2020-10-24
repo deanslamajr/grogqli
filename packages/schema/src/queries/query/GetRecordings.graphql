@@ -5,5 +5,7 @@ query GetRecordings {
     query
     variables
     response
+    schemaUrl
+    referrer
   }
 }

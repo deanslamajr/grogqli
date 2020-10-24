@@ -13,4 +13,4 @@ public/static
 .env.test.local
 .env.production.local
 
-groql_rec.json
+grogqli/__unsaved

@@ -1,7 +1,14 @@
 input CreateRecordingInput {
+  schema: SchemaInput!
+  referrer: String!
   operationName: String!
   query: String!
   variables: String!
+}
+
+input SchemaInput {
+  url: String!
+  content: String
 }
 
 type CreateRecordingResponse {

@@ -4,4 +4,6 @@ type Recording {
   query: String!
   variables: String!
   response: String
+  schemaUrl: String!
+  referrer: String!
 }

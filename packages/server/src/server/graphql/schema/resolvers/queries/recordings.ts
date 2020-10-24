@@ -1,5 +1,5 @@
 import { QueryResolvers, Recording } from '@grogqli/schema';
-import { getRecordingFile } from '../files';
+import { getQueryRecordingsFile } from '../files';
 
 export const resolver: QueryResolvers['recordings'] = async (
   _parent,
@@ -7,7 +7,7 @@ export const resolver: QueryResolvers['recordings'] = async (
   context,
   _info
 ) => {
-  const file = await getRecordingFile();
+  const file = await getQueryRecordingsFile();
   const recordingsFromFile = file.get();
   const recordings =
     recordingsFromFile && Object.values(recordingsFromFile).length

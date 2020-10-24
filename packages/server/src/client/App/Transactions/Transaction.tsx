@@ -7,7 +7,7 @@ interface CheckBoxProps {
 }
 
 export const CheckBox = styled.td<CheckBoxProps>`
-  background-color: ${(props) => (props.isChecked ? '#555' : 'white')};
+  background-color: ${(props) => (props.isChecked ? 'aquamarine' : 'white')};
   width: 3rem;
   height: 3rem;
 `;
