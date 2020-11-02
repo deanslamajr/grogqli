@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResolvers should return a resolver configuration that includes each type in the schema (ignoring gql internal types) 1`] = `
+Object {
+  "Account": Object {
+    "email": undefined,
+  },
+  "Chore": Object {
+    "description": undefined,
+    "dueDate": undefined,
+    "id": undefined,
+    "summary": undefined,
+    "version": undefined,
+  },
+  "CompleteChoreResponse": Object {
+    "hasAccountSession": undefined,
+    "wasSuccess": undefined,
+  },
+  "CreateChoreResponse": Object {
+    "hasAccountSession": undefined,
+    "newChore": undefined,
+    "wasCreateSuccess": undefined,
+  },
+  "FinishAccountCreateResponse": Object {
+    "accountCreateSuccess": undefined,
+    "wasTokenValid": undefined,
+  },
+  "GetChoresResponse": Object {
+    "chores": undefined,
+    "hasAccountSession": undefined,
+  },
+  "LoginAccountResponse": Object {
+    "wasLoginSuccess": undefined,
+  },
+  "LogoutAccountResponse": Object {
+    "wasLogoutSuccess": undefined,
+  },
+  "Mutation": Object {
+    "completeChore": undefined,
+    "createChore": undefined,
+    "finishAccountCreate": undefined,
+    "loginAccount": undefined,
+    "logoutAccount": undefined,
+    "sendAccountCreateEmail": undefined,
+    "updateChore": undefined,
+  },
+  "Query": Object {
+    "getAccountFromSession": undefined,
+    "getChores": undefined,
+  },
+  "SendAccountCreateEmailResponse": Object {
+    "emailSendSuccess": undefined,
+    "recaptchaPassed": undefined,
+  },
+  "UpdateChoreResponse": Object {
+    "doesChoreExist": undefined,
+    "hasAccountSession": undefined,
+    "updatedChore": undefined,
+    "wasUpdateSuccess": undefined,
+  },
+}
+`;

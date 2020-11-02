@@ -1,7 +1,4 @@
-import {
-  resolveQueryFromRecording,
-  ResolveQueryFromRecordingParams,
-} from '../resolveQueryFromRecording';
+import { resolveQueryFromRecording, ResolveQueryFromRecordingParams } from '..';
 
 describe('resolveQueryFromRecording', () => {
   it('should execute the given query', async () => {
@@ -11,6 +8,7 @@ describe('resolveQueryFromRecording', () => {
       query,
     };
     const actual = await resolveQueryFromRecording(queryConfig);
+    console.log('actual', actual);
     expect(actual).toMatchSnapshot();
   });
 });

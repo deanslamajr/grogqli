@@ -22,15 +22,16 @@ interface ResponseData {
   errors: any;
 }
 
-interface FetchAndSaveSchemaParams {
+interface FetchSchemaParams {
   req: GraphQLMockedRequest<any>;
   ctx: GraphQLMockedContext<any>;
 }
 
-const fetchAndSaveSchema = async ({
+// TODO add a version field to the schema datastructure
+const fetchSchema = async ({
   req,
   ctx,
-}: FetchAndSaveSchemaParams): Promise<string> => {
+}: FetchSchemaParams): Promise<string> => {
   const introspectionReq = { ...req, body: {} };
   introspectionReq.body = JSON.stringify({
     query: getIntrospectionQuery(),
@@ -60,7 +61,7 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
     // TODO Ensure that __typename fields are associated with every type on the query
 
     // TODO only do this once per session per schema
-    const schemaFromIntrospection = await fetchAndSaveSchema({ req, ctx });
+    const schemaFromIntrospection = await fetchSchema({ req, ctx });
 
     let recordingId;
     // TODO refactor 'unknownOperation' case:

@@ -4,6 +4,33 @@ import path from 'path';
 
 import { getConfig } from '../../../getConfig';
 
+export interface WorkflowData {
+  version: number;
+  name: string;
+  recordings: {
+    [opId: string]: {
+      rootTypeRecordingId: string;
+    };
+  };
+}
+
+// Directory structure
+//
+// /grogqli
+//   /schemas
+//     schemas.json
+//     /<schemaId>
+//       schema.json
+//       types.json
+//   /types
+//     someTypeId.json
+//   /workflows
+//     someWorkFlowId.json
+//   /__unsaved
+//     appState.json
+//     /schemas
+//     /queries
+const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TEMP_FOLDER_NAME = '__unsaved';
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
@@ -19,6 +46,29 @@ const getRecordingsRootDir = async (): Promise<string> => {
   const recordingsRootDir = config('recordingsSaveDirectory');
   createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
+};
+
+export const getWorkflowById = async (
+  workflowId: string
+): Promise<WorkflowData | null> => {
+  if (!workflowId) {
+    return null;
+  }
+  let workflow: WorkflowData;
+  const recordingsRootDir = await getRecordingsRootDir();
+  const pathToWorkflow = path.join(
+    recordingsRootDir,
+    WORKFLOWS_FOLDER_NAME,
+    `${workflowId}.json`
+  );
+
+  try {
+    workflow = require(pathToWorkflow);
+  } catch (error) {
+    return null;
+  }
+
+  return workflow;
 };
 
 export const getSchemaRecordingsPath = async (): Promise<string> => {

@@ -14,10 +14,9 @@ const DEFAULT_CONFIG: GrogqliConfig = {
   recordingsFilename: 'groql_rec',
 };
 
-type GetGrogqliConfigValue = (configKey: keyof GrogqliConfig) => string;
-
 let getGrogqliConfigValue: GetGrogqliConfigValue | undefined;
 
+type GetGrogqliConfigValue = (configKey: keyof GrogqliConfig) => string;
 export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
   // return early if the response is cached
   if (getGrogqliConfigValue) {
@@ -44,7 +43,12 @@ export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
     configFromFile = editJsonFile(configFileAbsolutePath);
   }
 
-  getGrogqliConfigValue = (configKey) => {
+  getGrogqliConfigValue = (configKey: string) => {
+    if (configKey === undefined) {
+      throw new Error(
+        'Invalid use of getGrogqliConfigValue: must provide a key'
+      );
+    }
     let configValue: any;
     if (configLocation && configFromFile) {
       configValue = configFromFile.get(configKey);

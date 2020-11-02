@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "name": "Some workflow",
+  "recordings": {
+    "someOpId": "someRecordingId"
+  }
+}

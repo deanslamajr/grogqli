@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`files getWorkflowById should return the given workflow file contents 1`] = `
+Object {
+  "name": "Some workflow",
+  "recordings": Object {
+    "someOpId": "someRecordingId",
+  },
+  "version": 1,
+}
+`;
