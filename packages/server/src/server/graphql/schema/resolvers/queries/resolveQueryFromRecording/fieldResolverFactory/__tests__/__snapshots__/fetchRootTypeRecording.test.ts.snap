@@ -2,11 +2,7 @@
 
 exports[`fetchRootTypeRecording should resolve a recording 1`] = `
 Object {
-  "getChores": Object {
-    "chores": Array [
-      1234,
-    ],
-    "hasAccountSession": true,
-  },
+  "anotherFieldName": "either a value or a typeInstanceId",
+  "someFieldName": "either a value or a typeInstanceId",
 }
 `;

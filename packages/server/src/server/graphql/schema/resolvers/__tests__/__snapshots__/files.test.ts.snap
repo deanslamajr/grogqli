@@ -1,10 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`files getTypeRecording should return the correct type recording 1`] = `
+Object {
+  "id": "someTypeRecordingId",
+  "value": Object {
+    "anotherFieldName": "either a value or a typeInstanceId",
+    "someFieldName": "either a value or a typeInstanceId",
+  },
+  "version": 1,
+}
+`;
+
 exports[`files getWorkflowById should return the given workflow file contents 1`] = `
 Object {
+  "id": "someWorkflowId",
   "name": "Some workflow",
   "recordings": Object {
-    "someOpId": "someRecordingId",
+    "someOpId": Object {
+      "rootTypeRecordingId": "someTypeRecordingId",
+    },
   },
   "version": 1,
 }

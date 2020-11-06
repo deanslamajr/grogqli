@@ -5,7 +5,8 @@ import path from 'path';
 import { getConfig } from '../../../getConfig';
 
 export interface WorkflowData {
-  version: number;
+  version: 1;
+  id: string;
   name: string;
   recordings: {
     [opId: string]: {
@@ -31,6 +32,7 @@ export interface WorkflowData {
 //     /schemas
 //     /queries
 const WORKFLOWS_FOLDER_NAME = 'workflows';
+const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = '__unsaved';
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
@@ -69,6 +71,56 @@ export const getWorkflowById = async (
   }
 
   return workflow;
+};
+
+export type TypeRecordingValue = { [fieldName: string]: any };
+interface TypeRecording {
+  version: 1;
+  id: string;
+  value: TypeRecordingValue;
+}
+interface TypeRecordings {
+  id: string;
+  version: 1;
+  recordings: { [recordingId: string]: TypeRecording };
+}
+interface GetTypeRecordingParams {
+  typeId: string;
+  recordingId: string;
+}
+export const getTypeRecording = async ({
+  typeId,
+  recordingId,
+}: GetTypeRecordingParams): Promise<TypeRecording> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const pathToTypeRecordings = path.join(
+    recordingsRootDir,
+    TYPES_FOLDER_NAME,
+    `${typeId}.json`
+  );
+
+  let typeRecordings: TypeRecordings;
+  try {
+    typeRecordings = require(pathToTypeRecordings);
+  } catch (error) {
+    console.error(error);
+    // TODO handle case where file does not exist for given typeId
+    throw new Error(
+      `Handle case where type file does not exist. typeId:${typeId}`
+    );
+  }
+
+  const typeRecording: TypeRecording | undefined =
+    typeRecordings.recordings[recordingId];
+
+  if (typeRecording === undefined) {
+    // TODO handle case where type file does not have a recording for the given recordingId
+    throw new Error(
+      `Handle case where type file does not have a recording for the given id. typeId:${typeId} recordingId:${recordingId}`
+    );
+  }
+
+  return typeRecording;
 };
 
 export const getSchemaRecordingsPath = async (): Promise<string> => {

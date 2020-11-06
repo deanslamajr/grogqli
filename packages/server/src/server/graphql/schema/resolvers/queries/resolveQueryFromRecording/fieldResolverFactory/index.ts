@@ -66,6 +66,11 @@ export const fieldResolverFactory = ({
     const isRootField = isTopLevelField({ schema, parentTypeName });
     if (isRootField) {
       // TODO handle args
+      // TODO optimization: should only need to do this once for all root level fields of the given query execution
+      //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
+      //  * after acquiring semaphore, check cache for resolved value
+      //  * If exists, release semaphore and return value
+      //  * Else, do the work below, set cache, release semaphore, and return value
       const rootTypeRecording = fetchRootTypeRecording({
         opName,
         operationsData,
@@ -95,7 +100,12 @@ export const fieldResolverFactory = ({
       // (would it be enough to just check if "parent" is a string)
       // parent is a typeRecordingId and needs to be resolved
       if (typeof parent === 'string') {
-        //   TODO handle args
+        // TODO handle args
+        // TODO optimization: should only need to do this once for all root level fields of the given query execution
+        //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
+        //  * after acquiring semaphore, check cache for resolved value
+        //  * If exists, release semaphore and return value
+        //  * Else, do the work below, set cache, release semaphore, and return value
         //   fieldValueFromRecording = fetchTypeRecordingById({
         //     type: info.returnType,
         //     id: fieldValue,

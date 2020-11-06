@@ -1,4 +1,9 @@
-import { getWorkflowById, WorkflowData } from '../../../files';
+import {
+  getTypeRecording,
+  getWorkflowById,
+  TypeRecordingValue,
+  WorkflowData,
+} from '../../../files';
 
 interface OperationsData {
   version: number;
@@ -44,22 +49,25 @@ const getRootTypeRecordingId = async ({
     );
   }
   const operationsWorkflowData = workflowData.recordings[opId];
-  // TODO handle case where a workflow file is not found for the given workflowId
+  // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {
     throw new Error(
       'TODO handle case where the workflow file does not have a recording for the given opId'
     );
   }
+
   return operationsWorkflowData.rootTypeRecordingId;
 };
 
-interface GetTypeRecordingParams {
+interface GetTypeRecordingValue {
   typeId: string;
   recordingId: string;
 }
-const getTypeRecording = ({ typeId, recordingId }: GetTypeRecordingParams) => {
-  // get path to root type recordings json eg path.join('path/to/grogqli', 'types', rootTypeId)
-  // const recording = require(`${path}.json`);
+const getTypeRecordingValue = async (
+  params: GetTypeRecordingValue
+): Promise<TypeRecordingValue> => {
+  const typeRecording = await getTypeRecording(params);
+  return typeRecording.value;
 };
 
 export interface FetchRootTypeRecordingParams {
@@ -82,9 +90,8 @@ export const fetchRootTypeRecording = async ({
     opId,
     workflowId,
   });
-  const rootTypeRecording = getTypeRecording({
+  return getTypeRecordingValue({
     typeId: rootTypeId,
     recordingId: rootTypeRecordingId,
   });
-  return rootTypeRecording;
 };

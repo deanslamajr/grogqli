@@ -1,10 +1,21 @@
+import path from 'path';
 import {
   fetchRootTypeRecording,
   FetchRootTypeRecordingParams,
 } from '../fetchRootTypeRecording';
+import { getConfig } from '../../../../../../../getConfig';
+
+jest.mock('../../../../../../../getConfig');
 
 describe('fetchRootTypeRecording', () => {
-  it('should resolve a recording', () => {
+  beforeEach(() => {
+    const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
+    mockedGetConfig.mockImplementation(async () => () => {
+      return path.join(__dirname, 'grogqli');
+    });
+  });
+
+  it('should resolve a recording', async () => {
     const opName = 'DoThing';
     const config: FetchRootTypeRecordingParams = {
       opName,
@@ -19,7 +30,28 @@ describe('fetchRootTypeRecording', () => {
         },
       },
     };
-    const actual = fetchRootTypeRecording(config);
+    const actual = await fetchRootTypeRecording(config);
     expect(actual).toMatchSnapshot();
+  });
+
+  describe('if a workflow file doesnt exist for the workflowId', () => {
+    it('should throw', async () => {
+      const opName = 'DoThing';
+      const config: FetchRootTypeRecordingParams = {
+        opName,
+        workflowId: 'workflowDoesNotExist',
+        operationsData: {
+          version: 1,
+          recordings: {
+            [opName]: {
+              opId: 'someOpId',
+              typeId: 'someTypeId',
+            },
+          },
+        },
+      };
+
+      await expect(fetchRootTypeRecording(config)).rejects.toThrow();
+    });
   });
 });
