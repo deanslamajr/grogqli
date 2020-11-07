@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`files getOperationsData should return the operations file associated with the given schemaId 1`] = `
+Object {
+  "recordings": Object {
+    "someOpName": Object {
+      "opId": "someOpId",
+      "typeId": "someTypeId",
+    },
+  },
+  "version": 1,
+}
+`;
+
 exports[`files getTypeRecording should return the correct type recording 1`] = `
 Object {
   "id": "someTypeRecordingId",

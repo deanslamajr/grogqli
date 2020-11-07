@@ -50,7 +50,7 @@ export const fieldResolverFactory = ({
   parentTypeName,
   fieldName,
 }: ResolveValueFactoryParams): GraphQLFieldResolver<{}, Context> => {
-  return (parent, args, context, info) => {
+  return async (parent, args, context, info) => {
     let fieldValueFromRecording;
     const opName = info.operation?.name?.value;
     // TODO handle unnamed query case
@@ -72,7 +72,7 @@ export const fieldResolverFactory = ({
       //  * after acquiring semaphore, check cache for resolved value
       //  * If exists, release semaphore and return value
       //  * Else, do the work below, set cache, release semaphore, and return value
-      const rootTypeRecording = fetchRootTypeRecording({
+      const rootTypeRecording = await fetchRootTypeRecording({
         opName,
         operationsData,
         workflowId: context.runTimeVariables.grogqli!.workflowId,
@@ -90,7 +90,7 @@ export const fieldResolverFactory = ({
       // TODO handle case where recording doesn't have a value for the given field
       if (!Boolean(fieldValueFromRecording)) {
         throw new Error(
-          `TODO handle case where recording doesn't have a value for the given field`
+          `TODO handle case where recording doesn't have a value for the given field. fieldName:${fieldName}`
         );
       }
     }
@@ -118,14 +118,14 @@ export const fieldResolverFactory = ({
       }
     }
 
-    console.log({
-      isRootField,
-      parent,
-      parentTypeName,
-      fieldName,
-      fieldValueFromRecording,
-      returnType: info.returnType,
-    });
+    // console.log({
+    //   isRootField,
+    //   parent,
+    //   parentTypeName,
+    //   fieldName,
+    //   fieldValueFromRecording,
+    //   returnType: info.returnType,
+    // });
     return fieldValueFromRecording;
   };
 };

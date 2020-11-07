@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "recordings": {
+    "someOpName": {
+      "opId": "someOpId",
+      "typeId": "someTypeId"
+    }
+  }
+}

@@ -10,7 +10,7 @@ export const createResolvers = async ({
   introspectionQuery: schema,
   id: schemaId,
 }: SchemaFile): Promise<IResolvers> => {
-  const operationsData: OperationsData = await getOperationsData();
+  const operationsData: OperationsData = await getOperationsData(schemaId);
   return schema.__schema.types.reduce<IResolvers>((resolvers, CurrentType) => {
     // add a resolver for each object type in the schema
     // note: skip graphql internal types (those prefixed with '__')

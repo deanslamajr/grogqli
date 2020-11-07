@@ -16,8 +16,8 @@ export interface ResolveQueryFromRecordingResponse {
 
 export const resolveQueryFromRecording = async ({
   query,
-  opId = 'someOpId',
-  schemaId = 'test', // TODO remove this default
+  opId,
+  schemaId,
   workflowId = 'someWorkflowId',
 }: ResolveQueryFromRecordingParams): Promise<
   ResolveQueryFromRecordingResponse

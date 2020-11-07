@@ -21,6 +21,17 @@ interface GetRootTypeRecordingIdParams {
   workflowId: string;
 }
 
+interface GetTypeRecordingValue {
+  typeId: string;
+  recordingId: string;
+}
+
+export interface FetchRootTypeRecordingParams {
+  opName: string;
+  operationsData: OperationsData;
+  workflowId: string;
+}
+
 const getOpData = ({
   operationsData,
   opName,
@@ -36,24 +47,20 @@ const getRootTypeRecordingId = async ({
   // TODO handle case where a workflow file is not found for the given workflowId
   if (workflowData === null) {
     throw new Error(
-      'TODO handle case where a workflow file is not found for the given workflowId'
+      `TODO handle case where a workflow file is not found for the given workflowId. workflowId:${workflowId}`
     );
   }
   const operationsWorkflowData = workflowData.recordings[opId];
   // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {
     throw new Error(
-      'TODO handle case where the workflow file does not have a recording for the given opId'
+      `TODO handle case where the workflow file does not have a recording for the given opId. opId:${opId}`
     );
   }
 
   return operationsWorkflowData.rootTypeRecordingId;
 };
 
-interface GetTypeRecordingValue {
-  typeId: string;
-  recordingId: string;
-}
 const getTypeRecordingValue = async (
   params: GetTypeRecordingValue
 ): Promise<TypeRecordingValue> => {
@@ -61,11 +68,6 @@ const getTypeRecordingValue = async (
   return typeRecording.value;
 };
 
-export interface FetchRootTypeRecordingParams {
-  opName: string;
-  operationsData: OperationsData;
-  workflowId: string;
-}
 export const fetchRootTypeRecording = async ({
   opName,
   operationsData,

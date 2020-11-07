@@ -6,7 +6,7 @@ import { IntrospectionQuery } from 'graphql';
 import { getConfig } from '../../../getConfig';
 
 export interface WorkflowData {
-  version: 1;
+  version: number;
   id: string;
   name: string;
   recordings: {
@@ -18,21 +18,21 @@ export interface WorkflowData {
 
 export interface SchemaFile {
   id: string;
-  version: 1;
+  version: number;
   introspectionQuery: IntrospectionQuery;
 }
 
 export type TypeRecordingValue = { [fieldName: string]: any };
 
 interface TypeRecording {
-  version: 1;
+  version: number;
   id: string;
   value: TypeRecordingValue;
 }
 
 interface TypeRecordings {
   id: string;
-  version: 1;
+  version: number;
   recordings: { [recordingId: string]: TypeRecording };
 }
 
@@ -59,6 +59,8 @@ interface GetTypeRecordingParams {
 //     /schemas
 //     /queries
 const SCHEMAS_FOLDER_NAME = 'schemas';
+const SCHEMA_FILENAME = 'schema.json';
+const OPERATIONS_FILENAME = 'operations.json';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = '__unsaved';
@@ -181,14 +183,14 @@ export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   // bc we want to bypass the auto caching feature of require
   // fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
   // );
-  const pathToSchema = path.join(schemasFolderPath, schemaId, 'schema.json');
+  const pathToSchema = path.join(schemasFolderPath, schemaId, SCHEMA_FILENAME);
   let schema: SchemaFile;
   try {
     schema = require(pathToSchema);
   } catch (error) {
     // TODO handle case where file doesnt exist for the given schemaId
     throw new Error(
-      `TODO handle case where file doesnt exist for the given schemaId. schemaId:${schemaId}`
+      `TODO handle case where a schema file doesnt exist for the given schemaId. schemaId:${schemaId}`
     );
   }
   return schema;
@@ -203,4 +205,30 @@ export interface OperationsData {
     };
   };
 }
-export const getOperationsData = async (): Promise<OperationsData> => {};
+export const getOperationsData = async (
+  schemaId: string
+): Promise<OperationsData> => {
+  const schemasFolderPath = await getSchemasFolderPath();
+  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
+  // reevaluate whether or not this is necessary
+  // return JSON.parse(
+  // not using require(`${schemaId}.json`) here (unlike in the resolvers)
+  // bc we want to bypass the auto caching feature of require
+  // fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
+  // );
+  const pathToOperationsData = path.join(
+    schemasFolderPath,
+    schemaId,
+    OPERATIONS_FILENAME
+  );
+  let operationsDate: OperationsData;
+  try {
+    operationsDate = require(pathToOperationsData);
+  } catch (error) {
+    // TODO handle case where file doesnt exist for the given schemaId
+    throw new Error(
+      `TODO handle case where a operations file doesnt exist for the given schemaId. schemaId:${schemaId}`
+    );
+  }
+  return operationsDate;
+};
