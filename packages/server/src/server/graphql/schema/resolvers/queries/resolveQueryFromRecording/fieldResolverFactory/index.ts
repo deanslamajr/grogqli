@@ -4,9 +4,8 @@ import {
   IntrospectionQuery,
 } from 'graphql';
 
+import { OperationsData } from '../../../files';
 import { Context } from '../createApolloServer';
-
-import { getSchemaRecordingsPath } from '../../../files';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
 // import fs from 'fs';
@@ -40,11 +39,13 @@ const isTopLevelField = ({
 };
 
 interface ResolveValueFactoryParams {
+  operationsData: OperationsData;
   schema: IntrospectionQuery;
   parentTypeName: string;
   fieldName: string;
 }
 export const fieldResolverFactory = ({
+  operationsData,
   schema,
   parentTypeName,
   fieldName,

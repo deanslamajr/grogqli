@@ -1,6 +1,7 @@
 import editJsonFile from 'edit-json-file';
 import fs from 'fs';
 import path from 'path';
+import { IntrospectionQuery } from 'graphql';
 
 import { getConfig } from '../../../getConfig';
 
@@ -15,12 +16,38 @@ export interface WorkflowData {
   };
 }
 
+export interface SchemaFile {
+  id: string;
+  version: 1;
+  introspectionQuery: IntrospectionQuery;
+}
+
+export type TypeRecordingValue = { [fieldName: string]: any };
+
+interface TypeRecording {
+  version: 1;
+  id: string;
+  value: TypeRecordingValue;
+}
+
+interface TypeRecordings {
+  id: string;
+  version: 1;
+  recordings: { [recordingId: string]: TypeRecording };
+}
+
+interface GetTypeRecordingParams {
+  typeId: string;
+  recordingId: string;
+}
+
 // Directory structure
 //
 // /grogqli
 //   /schemas
 //     schemas.json
 //     /<schemaId>
+//       operations.json
 //       schema.json
 //       types.json
 //   /types
@@ -31,6 +58,7 @@ export interface WorkflowData {
 //     appState.json
 //     /schemas
 //     /queries
+const SCHEMAS_FOLDER_NAME = 'schemas';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = '__unsaved';
@@ -73,21 +101,6 @@ export const getWorkflowById = async (
   return workflow;
 };
 
-export type TypeRecordingValue = { [fieldName: string]: any };
-interface TypeRecording {
-  version: 1;
-  id: string;
-  value: TypeRecordingValue;
-}
-interface TypeRecordings {
-  id: string;
-  version: 1;
-  recordings: { [recordingId: string]: TypeRecording };
-}
-interface GetTypeRecordingParams {
-  typeId: string;
-  recordingId: string;
-}
 export const getTypeRecording = async ({
   typeId,
   recordingId,
@@ -123,17 +136,6 @@ export const getTypeRecording = async ({
   return typeRecording;
 };
 
-export const getSchemaRecordingsPath = async (): Promise<string> => {
-  const recordingsRootDir = await getRecordingsRootDir();
-  const schemaRecordingsPath = path.join(
-    recordingsRootDir,
-    TEMP_FOLDER_NAME,
-    TEMP_SCHEMAS_FOLDER_NAME
-  );
-  createDirIfDoesntExist(schemaRecordingsPath);
-  return schemaRecordingsPath;
-};
-
 export const getQueryRecordingsFile = async (): Promise<
   editJsonFile.JsonEditor
 > => {
@@ -151,3 +153,54 @@ export const getQueryRecordingsFile = async (): Promise<
     path.join(queryRecordingsPath, `${config('recordingsFilename')}.json`)
   );
 };
+
+export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const schemaRecordingsPath = path.join(
+    recordingsRootDir,
+    TEMP_FOLDER_NAME,
+    TEMP_SCHEMAS_FOLDER_NAME
+  );
+  createDirIfDoesntExist(schemaRecordingsPath);
+  return schemaRecordingsPath;
+};
+
+export const getSchemasFolderPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const schemasFolderPath = path.join(recordingsRootDir, SCHEMAS_FOLDER_NAME);
+  createDirIfDoesntExist(schemasFolderPath);
+  return schemasFolderPath;
+};
+
+export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
+  const schemasFolderPath = await getSchemasFolderPath();
+  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
+  // reevaluate whether or not this is necessary
+  // return JSON.parse(
+  // not using require(`${schemaId}.json`) here (unlike in the resolvers)
+  // bc we want to bypass the auto caching feature of require
+  // fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
+  // );
+  const pathToSchema = path.join(schemasFolderPath, schemaId, 'schema.json');
+  let schema: SchemaFile;
+  try {
+    schema = require(pathToSchema);
+  } catch (error) {
+    // TODO handle case where file doesnt exist for the given schemaId
+    throw new Error(
+      `TODO handle case where file doesnt exist for the given schemaId. schemaId:${schemaId}`
+    );
+  }
+  return schema;
+};
+
+export interface OperationsData {
+  version: number;
+  recordings: {
+    [opName: string]: {
+      opId: string;
+      typeId: string;
+    };
+  };
+}
+export const getOperationsData = async (): Promise<OperationsData> => {};

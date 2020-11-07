@@ -1,17 +1,8 @@
 import { ApolloServerBase } from 'apollo-server-core';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
-import fs from 'fs';
-import path from 'path';
 
-import { getSchemaRecordingsPath } from '../../files';
 import { createResolvers } from './createResolvers';
-
-const getSchema = async (schemaId: string): Promise<IntrospectionQuery> => {
-  const schemaRecordingsPath = await getSchemaRecordingsPath();
-  return JSON.parse(
-    fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
-  );
-};
+import { getSchema, SchemaFile } from '../../files';
 
 const createSchemaSDL = async (schema: IntrospectionQuery): Promise<string> => {
   const graphqlSchemaObj = buildClientSchema(schema);
@@ -36,9 +27,12 @@ export interface Context {
 export const createApolloServer = async ({
   schemaId,
 }: CreateApolloServerParams): Promise<ApolloServerBase> => {
-  const schema: IntrospectionQuery = await getSchema(schemaId);
-  const schemaSDL = await createSchemaSDL(schema);
-  const resolvers = createResolvers(schema);
+  const schemaFile: SchemaFile = await getSchema(schemaId);
+
+  const [schemaSDL, resolvers] = await Promise.all([
+    createSchemaSDL(schemaFile.introspectionQuery),
+    createResolvers(schemaFile),
+  ]);
 
   const runTimeVariables = {} as RuntimeVariablesContainer;
 

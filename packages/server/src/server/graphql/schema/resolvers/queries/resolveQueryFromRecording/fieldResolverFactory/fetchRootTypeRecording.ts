@@ -1,19 +1,10 @@
 import {
   getTypeRecording,
   getWorkflowById,
+  OperationsData,
   TypeRecordingValue,
   WorkflowData,
 } from '../../../files';
-
-interface OperationsData {
-  version: number;
-  recordings: {
-    [opName: string]: {
-      opId: string;
-      typeId: string;
-    };
-  };
-}
 
 interface GetOpDataParams {
   operationsData: OperationsData;
@@ -80,11 +71,6 @@ export const fetchRootTypeRecording = async ({
   operationsData,
   workflowId,
 }: FetchRootTypeRecordingParams) => {
-  // TODO optimization: should only need to do this once for all root level fields of the given query execution
-  //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
-  //  * after acquiring semaphore, check cache for resolved value
-  //  * If exists, release semaphore and return value
-  //  * Else, do the work below, set cache, release semaphore, and return value
   const { opId, typeId: rootTypeId } = getOpData({ operationsData, opName });
   const rootTypeRecordingId = await getRootTypeRecordingId({
     opId,

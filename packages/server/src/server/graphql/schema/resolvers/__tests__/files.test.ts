@@ -1,5 +1,5 @@
 import path from 'path';
-import { getWorkflowById, getTypeRecording } from '../files';
+import { getSchema, getWorkflowById, getTypeRecording } from '../files';
 import { getConfig } from '../../../../getConfig';
 
 jest.mock('../../../../getConfig');
@@ -58,6 +58,32 @@ describe('files', () => {
         await expect(
           getTypeRecording({ typeId, recordingId })
         ).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('getSchema', () => {
+    it('should return the schema file associated with the given schemaId', async () => {
+      const schemaId = 'someSchemaId';
+      const actual = await getSchema(schemaId);
+      expect(actual.id).toBe(schemaId);
+    });
+
+    describe('if a schema file cannot be found that matches the given schemaId', () => {
+      it('should throw', async () => {
+        await expect(getSchema('nonexistentSchemaId')).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('getOperationsData', () => {
+    it('should return the operations file associated with the given schemaId', () => {
+      throw new Error('Implement this');
+    });
+
+    describe('if an operations file cannot be found that matches the given schemaId', () => {
+      it('should throw', async () => {
+        throw new Error('Implement this');
       });
     });
   });

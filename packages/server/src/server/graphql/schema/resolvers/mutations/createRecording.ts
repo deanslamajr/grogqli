@@ -2,7 +2,10 @@ import { MutationResolvers, Recording } from '@grogqli/schema';
 import shortid from 'shortid';
 import fs from 'fs';
 
-import { getQueryRecordingsFile, getSchemaRecordingsPath } from '../files';
+import {
+  getQueryRecordingsFile,
+  getTemporarySchemaRecordingsPath,
+} from '../files';
 import { pubSub } from '../pubSub';
 import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
@@ -24,7 +27,7 @@ export const createRecordingResolver: MutationResolvers['createRecording'] = asy
   const recordingId: string = shortid.generate();
 
   if (schemaString) {
-    const schemaRecordingsPath = await getSchemaRecordingsPath();
+    const schemaRecordingsPath = await getTemporarySchemaRecordingsPath();
     fs.writeFileSync(`${schemaRecordingsPath}/test.json`, schemaString);
   }
 
