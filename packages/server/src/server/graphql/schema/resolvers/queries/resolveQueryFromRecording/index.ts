@@ -6,7 +6,6 @@ export interface ResolveQueryFromRecordingParams {
   query: string;
   schemaId: string;
   workflowId: string;
-  opId: string;
 }
 
 export interface ResolveQueryFromRecordingResponse {
@@ -16,9 +15,8 @@ export interface ResolveQueryFromRecordingResponse {
 
 export const resolveQueryFromRecording = async ({
   query,
-  opId,
   schemaId,
-  workflowId = 'someWorkflowId',
+  workflowId,
 }: ResolveQueryFromRecordingParams): Promise<
   ResolveQueryFromRecordingResponse
 > => {
@@ -28,12 +26,12 @@ export const resolveQueryFromRecording = async ({
   const apolloServer = await createApolloServer({
     schemaId,
   });
+
   const response = await apolloServer.executeOperation({
     query,
     variables: {
       grogqliRunTimeVariables: {
         workflowId,
-        opId,
       },
     },
   });

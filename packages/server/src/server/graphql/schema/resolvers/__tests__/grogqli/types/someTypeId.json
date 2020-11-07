@@ -6,16 +6,16 @@
       "version": 1,
       "id": "someTypeRecordingId",
       "value": {
-        "someFieldName": "either a value or a typeInstanceId",
-        "anotherFieldName": "either a value or a typeInstanceId"
+        "getAccountFromSession": "either a value or a typeInstanceId",
+        "getChores": "either a value or a typeInstanceId"
       }
     },
     "anotherTypeRecordingId": {
       "version": 1,
       "id": "anotherTypeRecordingId",
       "value": {
-        "someFieldName": "either a value or a typeInstanceId",
-        "anotherFieldName": "either a value or a typeInstanceId"
+        "getAccountFromSession": "either a value or a typeInstanceId",
+        "getChores": "either a value or a typeInstanceId"
       }
     }
   }

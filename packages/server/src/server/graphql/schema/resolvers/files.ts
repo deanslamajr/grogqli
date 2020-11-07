@@ -121,7 +121,7 @@ export const getTypeRecording = async ({
     console.error(error);
     // TODO handle case where file does not exist for given typeId
     throw new Error(
-      `Handle case where type file does not exist. typeId:${typeId}`
+      `TODO Handle case where type file does not exist. typeId:${typeId}`
     );
   }
 
@@ -131,7 +131,7 @@ export const getTypeRecording = async ({
   if (typeRecording === undefined) {
     // TODO handle case where type file does not have a recording for the given recordingId
     throw new Error(
-      `Handle case where type file does not have a recording for the given id. typeId:${typeId} recordingId:${recordingId}`
+      `TODO Handle case where type file does not have a recording for the given id. typeId:${typeId} recordingId:${recordingId}`
     );
   }
 

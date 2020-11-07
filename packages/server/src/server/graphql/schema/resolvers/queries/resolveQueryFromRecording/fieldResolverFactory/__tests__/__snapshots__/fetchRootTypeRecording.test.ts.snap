@@ -2,7 +2,7 @@
 
 exports[`fetchRootTypeRecording should resolve a recording 1`] = `
 Object {
-  "anotherFieldName": "either a value or a typeInstanceId",
-  "someFieldName": "either a value or a typeInstanceId",
+  "getAccountFromSession": "either a value or a typeInstanceId",
+  "getChores": "either a value or a typeInstanceId",
 }
 `;

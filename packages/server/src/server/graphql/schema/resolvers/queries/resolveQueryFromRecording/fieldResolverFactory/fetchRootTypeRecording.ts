@@ -36,7 +36,16 @@ const getOpData = ({
   operationsData,
   opName,
 }: GetOpDataParams): GetOpDataResponse => {
-  return operationsData.recordings[opName];
+  const operationRecording = operationsData.recordings[opName];
+
+  // TODO handle case where a recording does not exist for the given opName
+  if (operationRecording === undefined) {
+    throw new Error(
+      `TODO handle case where a recording does not exist for the given opName. opName:${opName}`
+    );
+  }
+
+  return operationRecording;
 };
 
 const getRootTypeRecordingId = async ({
@@ -50,6 +59,7 @@ const getRootTypeRecordingId = async ({
       `TODO handle case where a workflow file is not found for the given workflowId. workflowId:${workflowId}`
     );
   }
+
   const operationsWorkflowData = workflowData.recordings[opId];
   // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {

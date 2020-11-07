@@ -8,19 +8,6 @@ import { OperationsData } from '../../../files';
 import { Context } from '../createApolloServer';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
-// import fs from 'fs';
-// let infoData = JSON.stringify(info);
-// fs.writeFileSync('info.json', infoData);
-
-// const isReferenceType = (value: any): boolean => true;
-
-// function isNonNullType(gqlType: GraphQLOutputType): pet is Fish {
-//   return (pet as Fish).swim !== undefined;
-// }
-
-// function isArrayType(gqlType: GraphQLOutputType): pet is Fish {
-//   return (pet as Fish).swim !== undefined;
-// }
 
 interface IsTopLevelFieldParams {
   schema: IntrospectionQuery;
@@ -38,7 +25,7 @@ const isTopLevelField = ({
   );
 };
 
-interface ResolveValueFactoryParams {
+export interface ResolveValueFactoryParams {
   operationsData: OperationsData;
   schema: IntrospectionQuery;
   parentTypeName: string;
@@ -52,17 +39,12 @@ export const fieldResolverFactory = ({
 }: ResolveValueFactoryParams): GraphQLFieldResolver<{}, Context> => {
   return async (parent, args, context, info) => {
     let fieldValueFromRecording;
+
     const opName = info.operation?.name?.value;
     // TODO handle unnamed query case
     if (!opName) {
       throw new Error('TODO handle unnamed query case');
     }
-    // console.log('args', args);
-    // console.log('parent', parent);
-    // // console.log('context', context);
-    // console.log('info.returnType', info.returnType);
-    // console.log('fieldName', fieldName);
-    // console.log('parentTypeName', parentTypeName);
 
     const isRootField = isTopLevelField({ schema, parentTypeName });
     if (isRootField) {
@@ -78,13 +60,7 @@ export const fieldResolverFactory = ({
         workflowId: context.runTimeVariables.grogqli!.workflowId,
       });
 
-      // TODO handle case where recording doesn't exist
-      if (!Boolean(rootTypeRecording)) {
-        throw new Error(`TODO handle case where recording doesn't exist`);
-      }
-
       // TODO (optionally) use args to destructure the recording associated with the given args
-
       fieldValueFromRecording = rootTypeRecording[fieldName];
 
       // TODO handle case where recording doesn't have a value for the given field
@@ -96,7 +72,7 @@ export const fieldResolverFactory = ({
     }
 
     // Nested field
-    if (parent) {
+    else {
       // if parent is a string but parentTypeName is not a string
       // (would it be enough to just check if "parent" is a string)
       // parent is a typeRecordingId and needs to be resolved

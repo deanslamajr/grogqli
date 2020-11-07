@@ -15,7 +15,6 @@ interface CreateApolloServerParams {
 
 interface RuntimeVariablesContainer {
   grogqli?: {
-    opId: string;
     workflowId: string;
   };
 }
@@ -46,6 +45,8 @@ export const createApolloServer = async ({
       {
         requestDidStart(requestContext) {
           // Inject runtime variables for resolvers
+          // TODO find a less hacky way to communicate data that is not known
+          // until at the time of query execution (eg workflowId) to the resolver closure
           runTimeVariables.grogqli = {
             ...requestContext.request?.variables?.grogqliRunTimeVariables,
           };

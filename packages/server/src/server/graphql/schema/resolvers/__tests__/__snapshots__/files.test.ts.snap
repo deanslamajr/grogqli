@@ -16,8 +16,8 @@ exports[`files getTypeRecording should return the correct type recording 1`] = `
 Object {
   "id": "someTypeRecordingId",
   "value": Object {
-    "anotherFieldName": "either a value or a typeInstanceId",
-    "someFieldName": "either a value or a typeInstanceId",
+    "getAccountFromSession": "either a value or a typeInstanceId",
+    "getChores": "either a value or a typeInstanceId",
   },
   "version": 1,
 }
