@@ -3,6 +3,7 @@ import path from 'path';
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import schema from '../../../../__tests__/grogqli/schemas/someSchemaId/schema.json';
 import operationsData from '../../../../__tests__/grogqli/schemas/someSchemaId/operations.json';
+import typeNameToIdMappingData from '../../../../__tests__/grogqli/schemas/someSchemaId/types.json';
 import { getConfig } from '../../../../../../../getConfig';
 import { Context } from '../../createApolloServer';
 import someWorkflowFile from '../../../../__tests__/grogqli/workflows/someWorkflowId.json';
@@ -34,10 +35,11 @@ describe('fieldResolverFactory', () => {
     mockedWorkflowFile.recordings = actualWorkflowFile.recordings;
 
     fieldResolverFactoryArgs = {
-      schema: schema.introspectionQuery,
+      schema: schema.introspectionQuery as any,
       operationsData,
       parentTypeName: schema.introspectionQuery.__schema.queryType.name,
       fieldName: 'getAccountFromSession',
+      typeNameToIdMappingData,
     };
 
     info = {
@@ -209,6 +211,12 @@ describe('fieldResolverFactory', () => {
             resolveField({}, {}, context, info)
           ).rejects.toThrowErrorMatchingSnapshot();
         });
+      });
+    });
+
+    describe('nested type case', () => {
+      it('need to write these tests', () => {
+        throw new Error('write these tests!!!');
       });
     });
   });

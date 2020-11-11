@@ -18,7 +18,7 @@ describe('createResolvers', () => {
   });
 
   it('should return a resolver configuration that includes each type in the schema (ignoring gql internal types)', async () => {
-    const actual = await createResolvers(schema);
+    const actual = await createResolvers(schema as any);
     expect(actual).toMatchSnapshot();
   });
 });
