@@ -1,5 +1,5 @@
 {
-  "id": "someTypeId",
+  "id": "xhg87iT1",
   "version": 1,
   "recordings": {
     "someTypeRecordingId": {
@@ -10,12 +10,12 @@
         "getChores": "someGetChoresResponseRecordingId"
       }
     },
-    "anotherTypeRecordingId": {
+    "q7f66d54": {
       "version": 1,
-      "id": "anotherTypeRecordingId",
+      "id": "q7f66d54",
       "value": {
-        "getAccountFromSession": "anotherAccountRecordingId",
-        "getChores": "anotherGetChoresResponseRecordingId"
+        "getAccountFromSession": "someAccountRecordingId",
+        "getChores": "someGetChoresResponseRecordingId"
       }
     }
   }

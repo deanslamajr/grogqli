@@ -41,6 +41,26 @@ interface GetTypeRecordingParams {
   recordingId: string;
 }
 
+export interface OperationsData {
+  version: number;
+  recordings: {
+    [opName: string]: {
+      opId: string;
+      typeId: string;
+    };
+  };
+}
+
+export interface TypeNameToIdMapping {
+  version: number;
+  types: {
+    [typeName: string]: {
+      name: string;
+      id: string;
+    };
+  };
+}
+
 // Directory structure
 //
 // /grogqli
@@ -61,6 +81,7 @@ interface GetTypeRecordingParams {
 const SCHEMAS_FOLDER_NAME = 'schemas';
 const SCHEMA_FILENAME = 'schema.json';
 const OPERATIONS_FILENAME = 'operations.json';
+const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = '__unsaved';
@@ -177,11 +198,11 @@ export const getSchemasFolderPath = async (): Promise<string> => {
 export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   const schemasFolderPath = await getSchemasFolderPath();
   // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-  // reevaluate whether or not this is necessary
+  // reevaluate whether or not this is necessary:
   // return JSON.parse(
-  // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-  // bc we want to bypass the auto caching feature of require
-  // fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
+  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
+  //   // bc we want to bypass the auto caching feature of require
+  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
   // );
   const pathToSchema = path.join(schemasFolderPath, schemaId, SCHEMA_FILENAME);
   let schema: SchemaFile;
@@ -196,39 +217,58 @@ export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   return schema;
 };
 
-export interface OperationsData {
-  version: number;
-  recordings: {
-    [opName: string]: {
-      opId: string;
-      typeId: string;
-    };
-  };
-}
 export const getOperationsData = async (
   schemaId: string
 ): Promise<OperationsData> => {
   const schemasFolderPath = await getSchemasFolderPath();
   // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-  // reevaluate whether or not this is necessary
+  // reevaluate whether or not this is necessary:
   // return JSON.parse(
-  // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-  // bc we want to bypass the auto caching feature of require
-  // fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
+  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
+  //   // bc we want to bypass the auto caching feature of require
+  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
   // );
   const pathToOperationsData = path.join(
     schemasFolderPath,
     schemaId,
     OPERATIONS_FILENAME
   );
-  let operationsDate: OperationsData;
+  let operationsData: OperationsData;
   try {
-    operationsDate = require(pathToOperationsData);
+    operationsData = require(pathToOperationsData);
   } catch (error) {
     // TODO handle case where file doesnt exist for the given schemaId
     throw new Error(
       `TODO handle case where a operations file doesnt exist for the given schemaId. schemaId:${schemaId}`
     );
   }
-  return operationsDate;
+  return operationsData;
+};
+
+export const openTypeNameToIdMapping = async (
+  schemaId: string
+): Promise<TypeNameToIdMapping> => {
+  const schemasFolderPath = await getSchemasFolderPath();
+  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
+  // reevaluate whether or not this is necessary:
+  // return JSON.parse(
+  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
+  //   // bc we want to bypass the auto caching feature of require
+  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
+  // );
+  const pathToTypeNameToIdMappingFile = path.join(
+    schemasFolderPath,
+    schemaId,
+    TYPES_NAME_TO_ID_MAPPING_FILENAME
+  );
+  let typeNameToIdMappingFile: TypeNameToIdMapping;
+  try {
+    typeNameToIdMappingFile = require(pathToTypeNameToIdMappingFile);
+  } catch (error) {
+    // TODO handle case where file doesnt exist for the given schemaId
+    throw new Error(
+      `TODO handle case where a type name to id mappings file doesnt exist for the given schemaId. schemaId:${schemaId}`
+    );
+  }
+  return typeNameToIdMappingFile;
 };

@@ -1,0 +1,14 @@
+{
+  "id": "123j6tgc",
+  "version": 1,
+  "recordings": {
+    "someGetChoresResponseRecordingId": {
+      "version": 1,
+      "id": "someGetChoresResponseRecordingId",
+      "value": {
+        "chores": ["lklkj10h"],
+        "hasAccountSession": true
+      }
+    }
+  }
+}

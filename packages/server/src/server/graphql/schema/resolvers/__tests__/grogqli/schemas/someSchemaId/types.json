@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "types": {
+    "someTypeName": {
+      "name": "someTypeName",
+      "id": "someTypeId"
+    },
+    "doesntHaveATypeFile": {
+      "name": "doesntHaveATypeFile",
+      "id": "doesntHaveATypeFileId"
+    },
+    "GetChoresResponse": {
+      "name": "GetChoresResponse",
+      "id": "123j6tgc"
+    },
+    "Chore": {
+      "name": "Chore",
+      "id": "bb333456"
+    }
+  }
+}

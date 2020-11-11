@@ -3,6 +3,10 @@
 exports[`files getOperationsData should return the operations file associated with the given schemaId 1`] = `
 Object {
   "recordings": Object {
+    "GetChores": Object {
+      "opId": "llK98u0",
+      "typeId": "xhg87iT1",
+    },
     "someOpName": Object {
       "opId": "someOpId",
       "typeId": "someTypeId",
@@ -16,8 +20,8 @@ exports[`files getTypeRecording should return the correct type recording 1`] = `
 Object {
   "id": "someTypeRecordingId",
   "value": Object {
-    "getAccountFromSession": "either a value or a typeInstanceId",
-    "getChores": "either a value or a typeInstanceId",
+    "getAccountFromSession": "someAccountRecordingId",
+    "getChores": "someGetChoresResponseRecordingId",
   },
   "version": 1,
 }
@@ -28,8 +32,35 @@ Object {
   "id": "someWorkflowId",
   "name": "Some workflow",
   "recordings": Object {
+    "llK98u0": Object {
+      "rootTypeRecordingId": "q7f66d54",
+    },
     "someOpId": Object {
       "rootTypeRecordingId": "someTypeRecordingId",
+    },
+  },
+  "version": 1,
+}
+`;
+
+exports[`files openTypeNameToIdMapping should return the operations file associated with the given schemaId 1`] = `
+Object {
+  "types": Object {
+    "Chore": Object {
+      "id": "bb333456",
+      "name": "Chore",
+    },
+    "GetChoresResponse": Object {
+      "id": "123j6tgc",
+      "name": "GetChoresResponse",
+    },
+    "doesntHaveATypeFile": Object {
+      "id": "doesntHaveATypeFileId",
+      "name": "doesntHaveATypeFile",
+    },
+    "someTypeName": Object {
+      "id": "someTypeId",
+      "name": "someTypeName",
     },
   },
   "version": 1,

@@ -1,13 +1,10 @@
-import {
-  GraphQLFieldResolver,
-  GraphQLObjectType,
-  IntrospectionQuery,
-} from 'graphql';
+import { GraphQLFieldResolver, IntrospectionQuery } from 'graphql';
 
-import { OperationsData } from '../../../files';
+import { OperationsData, TypeNameToIdMapping } from '../../../files';
 import { Context } from '../createApolloServer';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
+import { fetchNestedTypeRecording } from './fetchNestedTypeRecording';
 
 interface IsTopLevelFieldParams {
   schema: IntrospectionQuery;
@@ -27,16 +24,18 @@ const isTopLevelField = ({
 
 export interface ResolveValueFactoryParams {
   operationsData: OperationsData;
+  typeNameToIdMappingData: TypeNameToIdMapping;
   schema: IntrospectionQuery;
   parentTypeName: string;
   fieldName: string;
 }
 export const fieldResolverFactory = ({
   operationsData,
+  typeNameToIdMappingData,
   schema,
   parentTypeName,
   fieldName,
-}: ResolveValueFactoryParams): GraphQLFieldResolver<{}, Context> => {
+}: ResolveValueFactoryParams): GraphQLFieldResolver<any, Context> => {
   return async (parent, args, context, info) => {
     let fieldValueFromRecording;
 
@@ -48,12 +47,6 @@ export const fieldResolverFactory = ({
 
     const isRootField = isTopLevelField({ schema, parentTypeName });
     if (isRootField) {
-      // TODO handle args
-      // TODO optimization: should only need to do this once for all root level fields of the given query execution
-      //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
-      //  * after acquiring semaphore, check cache for resolved value
-      //  * If exists, release semaphore and return value
-      //  * Else, do the work below, set cache, release semaphore, and return value
       const rootTypeRecording = await fetchRootTypeRecording({
         opName,
         operationsData,
@@ -64,44 +57,34 @@ export const fieldResolverFactory = ({
       fieldValueFromRecording = rootTypeRecording[fieldName];
 
       // TODO handle case where recording doesn't have a value for the given field
-      if (!Boolean(fieldValueFromRecording)) {
+      if (fieldValueFromRecording === undefined) {
         throw new Error(
-          `TODO handle case where recording doesn't have a value for the given field. fieldName:${fieldName}`
+          `TODO handle case where recording doesn't have a value for the given field.
+          parentTypeName:${parentTypeName} fieldName:${fieldName}`
         );
       }
     }
 
     // Nested field
     else {
-      // if parent is a string but parentTypeName is not a string
-      // (would it be enough to just check if "parent" is a string)
-      // parent is a typeRecordingId and needs to be resolved
-      if (typeof parent === 'string') {
-        // TODO handle args
-        // TODO optimization: should only need to do this once for all root level fields of the given query execution
-        //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
-        //  * after acquiring semaphore, check cache for resolved value
-        //  * If exists, release semaphore and return value
-        //  * Else, do the work below, set cache, release semaphore, and return value
-        //   fieldValueFromRecording = fetchTypeRecordingById({
-        //     type: info.returnType,
-        //     id: fieldValue,
-        //   });
-      } else {
-        // TODO do LIST types need to be handled differently than non LIST types? (probably not)
-        // if info.returnType is a LIST type
-        fieldValueFromRecording = parent[fieldName];
+      const nestedTypeRecording = await fetchNestedTypeRecording({
+        recordingId: parent,
+        typeName: parentTypeName,
+        typeNameToIdMappingData,
+      });
+
+      // TODO handle case where recording doesn't have a value for the given field
+      fieldValueFromRecording = nestedTypeRecording[fieldName];
+
+      // TODO handle case when a fieldValue does not exist for the given typeRecording
+      if (fieldValueFromRecording === undefined) {
+        throw new Error(
+          `TODO handle case when a fieldValue does not exist for the given typeRecording.
+          parentTypeName:${parentTypeName} fieldName:${fieldName}`
+        );
       }
     }
 
-    // console.log({
-    //   isRootField,
-    //   parent,
-    //   parentTypeName,
-    //   fieldName,
-    //   fieldValueFromRecording,
-    //   returnType: info.returnType,
-    // });
     return fieldValueFromRecording;
   };
 };

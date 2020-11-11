@@ -1,0 +1,17 @@
+{
+  "id": "bb333456",
+  "version": 1,
+  "recordings": {
+    "lklkj10h": {
+      "version": 1,
+      "id": "lklkj10h",
+      "value": {
+        "id": "aChoreId",
+        "summary": "a summary",
+        "description": "just a nice description",
+        "dueDate": "10/5/1985",
+        "version": 1
+      }
+    }
+  }
+}

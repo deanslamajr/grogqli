@@ -2,7 +2,6 @@ import {
   getTypeRecording,
   getWorkflowById,
   OperationsData,
-  TypeRecordingValue,
   WorkflowData,
 } from '../../../files';
 
@@ -19,11 +18,6 @@ interface GetOpDataResponse {
 interface GetRootTypeRecordingIdParams {
   opId: string;
   workflowId: string;
-}
-
-interface GetTypeRecordingValue {
-  typeId: string;
-  recordingId: string;
 }
 
 export interface FetchRootTypeRecordingParams {
@@ -71,13 +65,12 @@ const getRootTypeRecordingId = async ({
   return operationsWorkflowData.rootTypeRecordingId;
 };
 
-const getTypeRecordingValue = async (
-  params: GetTypeRecordingValue
-): Promise<TypeRecordingValue> => {
-  const typeRecording = await getTypeRecording(params);
-  return typeRecording.value;
-};
-
+// TODO handle args
+// TODO optimization: should only need to do this once for all root level fields of the given query execution
+//  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
+//  * after acquiring semaphore, check cache for resolved value
+//  * If exists, release semaphore and return value
+//  * Else, do the work below, set cache, release semaphore, and return value
 export const fetchRootTypeRecording = async ({
   opName,
   operationsData,
@@ -88,8 +81,10 @@ export const fetchRootTypeRecording = async ({
     opId,
     workflowId,
   });
-  return getTypeRecordingValue({
+
+  const typeRecording = await getTypeRecording({
     typeId: rootTypeId,
     recordingId: rootTypeRecordingId,
   });
+  return typeRecording.value;
 };

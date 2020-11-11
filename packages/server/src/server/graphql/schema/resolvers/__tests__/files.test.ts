@@ -4,6 +4,7 @@ import {
   getSchema,
   getWorkflowById,
   getTypeRecording,
+  openTypeNameToIdMapping,
 } from '../files';
 import { getConfig } from '../../../../getConfig';
 
@@ -91,6 +92,21 @@ describe('files', () => {
       it('should throw', async () => {
         await expect(
           getOperationsData('nonexistentSchemaId')
+        ).rejects.toThrow();
+      });
+    });
+  });
+
+  describe('openTypeNameToIdMapping', () => {
+    it('should return the operations file associated with the given schemaId', async () => {
+      const actual = await openTypeNameToIdMapping('someSchemaId');
+      expect(actual).toMatchSnapshot();
+    });
+
+    describe('if an operations file cannot be found that matches the given schemaId', () => {
+      it('should throw', async () => {
+        await expect(
+          openTypeNameToIdMapping('nonexistentSchemaId')
         ).rejects.toThrow();
       });
     });

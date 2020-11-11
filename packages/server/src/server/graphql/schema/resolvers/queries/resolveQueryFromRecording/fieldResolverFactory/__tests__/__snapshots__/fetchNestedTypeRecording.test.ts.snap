@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetchNestedTypeRecording if the type file for the given typeName does not have a reference to the given recordingId should throw 1`] = `"TODO Handle case where type file does not have a recording for the given id. typeId:someTypeId recordingId:nonExistentTypeRecordingId"`;
+
+exports[`fetchNestedTypeRecording if there isnt a reference to the given typeName in the given typeNameToIdMappingData should throw 1`] = `
+"
+      TODO handle the case where the given typeName does not exist in the given types.json.
+      typeName:nonExistentTypeName
+    "
+`;
+
+exports[`fetchNestedTypeRecording if there isnt a type file for the given typeName should throw 1`] = `"TODO Handle case where type file does not exist. typeId:doesntHaveATypeFileId"`;
+
+exports[`fetchNestedTypeRecording should return a type recording value 1`] = `
+Object {
+  "getAccountFromSession": "someAccountRecordingId",
+  "getChores": "someGetChoresResponseRecordingId",
+}
+`;

@@ -4,6 +4,10 @@
     "someOpName": {
       "opId": "someOpId",
       "typeId": "someTypeId"
+    },
+    "GetChores": {
+      "opId": "llK98u0",
+      "typeId": "xhg87iT1"
     }
   }
 }

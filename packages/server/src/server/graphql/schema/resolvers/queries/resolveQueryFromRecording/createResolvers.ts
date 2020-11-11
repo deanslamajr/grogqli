@@ -1,6 +1,10 @@
 import { IResolvers, IObjectTypeResolver } from 'graphql-tools';
 
-import { getOperationsData, OperationsData, SchemaFile } from '../../files';
+import {
+  getOperationsData,
+  openTypeNameToIdMapping,
+  SchemaFile,
+} from '../../files';
 import { fieldResolverFactory } from './fieldResolverFactory';
 
 // TODO add logic to check a new "version" field on the schema and version the createResolver algorithm
@@ -10,7 +14,10 @@ export const createResolvers = async ({
   introspectionQuery: schema,
   id: schemaId,
 }: SchemaFile): Promise<IResolvers> => {
-  const operationsData: OperationsData = await getOperationsData(schemaId);
+  const [operationsData, typeNameToIdMappingData] = await Promise.all([
+    getOperationsData(schemaId),
+    openTypeNameToIdMapping(schemaId),
+  ]);
   return schema.__schema.types.reduce<IResolvers>((resolvers, CurrentType) => {
     // add a resolver for each object type in the schema
     // note: skip graphql internal types (those prefixed with '__')
@@ -22,6 +29,7 @@ export const createResolvers = async ({
       >((resolver, { name: fieldName }) => {
         const resolveField = fieldResolverFactory({
           operationsData,
+          typeNameToIdMappingData,
           schema,
           parentTypeName: currentTypeName,
           fieldName,

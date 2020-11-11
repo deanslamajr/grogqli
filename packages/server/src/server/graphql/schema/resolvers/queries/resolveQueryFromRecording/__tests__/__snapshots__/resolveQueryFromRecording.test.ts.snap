@@ -2,9 +2,22 @@
 
 exports[`resolveQueryFromRecording should execute the given query 1`] = `
 Object {
-  "data": null,
-  "errors": Array [
-    [GraphQLError: TODO handle case where a recording does not exist for the given opName. opName:GetChores],
-  ],
+  "data": Object {
+    "getChores": Object {
+      "__typename": "GetChoresResponse",
+      "chores": Array [
+        Object {
+          "__typename": "Chore",
+          "description": "just a nice description",
+          "dueDate": "10/5/1985",
+          "id": "aChoreId",
+          "summary": "a summary",
+          "version": 1,
+        },
+      ],
+      "hasAccountSession": true,
+    },
+  },
+  "errors": undefined,
 }
 `;
