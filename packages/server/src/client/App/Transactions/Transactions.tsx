@@ -5,7 +5,7 @@ import { GetRecordings } from '@grogqli/schema';
 
 import { CheckedState } from './';
 import Transaction from './Transaction';
-import { SaveRecordingsButton } from './SaveRecordingsButton';
+import { ReviewRecordingsBeforeSaveButton } from './ReviewRecordingsBeforeSaveButton';
 import { SaveDrawer } from './SaveDrawer';
 
 const TransactionsContainer = styled.div`
@@ -110,12 +110,18 @@ const Transactions: React.FC<TransactionsProps> = ({
         </tbody>
       </StyledTable>
       {areAnyTransactionsChecked(checkedState) ? (
-        <SaveRecordingsButton
+        <ReviewRecordingsBeforeSaveButton
           onClick={() => setShowSaveDrawer(!showSaveDrawer)}
           showSaveIcon={!showSaveDrawer}
         />
       ) : null}
-      <SaveDrawer show={showSaveDrawer} />
+      <SaveDrawer
+        handleClose={() => setShowSaveDrawer(false)}
+        show={showSaveDrawer}
+        recordingsToSave={recordings.filter(
+          (recording) => checkedState[recording.id]
+        )}
+      />
     </TransactionsContainer>
   );
 };

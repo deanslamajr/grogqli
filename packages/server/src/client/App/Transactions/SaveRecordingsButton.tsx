@@ -1,38 +1,25 @@
 import React, { FC } from 'react';
-import { VscSave, VscClose } from 'react-icons/vsc';
+import { VscCheck } from 'react-icons/vsc';
 
 import { NavButtonPositions, NavButton } from '../../NavButton';
 import { cssTheme } from '../../constants';
 
 interface SaveRecordingButtonProps {
   onClick: () => void;
-  showSaveIcon: boolean;
 }
 
 export const SaveRecordingsButton: FC<SaveRecordingButtonProps> = ({
   onClick,
-  showSaveIcon,
 }) => {
   return (
     <NavButton
-      position={
-        showSaveIcon
-          ? NavButtonPositions.BottomRight
-          : NavButtonPositions.BottomLeft
-      }
+      position={NavButtonPositions.BottomRight}
       clickHandler={onClick}
       icon={
-        showSaveIcon ? (
-          <VscSave
-            color={cssTheme.colors.green}
-            size={cssTheme.sizes.navbarButtonIconSize}
-          />
-        ) : (
-          <VscClose
-            color={cssTheme.colors.red}
-            size={cssTheme.sizes.navbarButtonIconSize}
-          />
-        )
+        <VscCheck
+          color={cssTheme.colors.green}
+          size={cssTheme.sizes.navbarButtonIconSize}
+        />
       }
     />
   );
