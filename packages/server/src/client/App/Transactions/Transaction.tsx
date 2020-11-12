@@ -7,9 +7,18 @@ interface CheckBoxProps {
 }
 
 export const CheckBox = styled.td<CheckBoxProps>`
-  background-color: ${(props) => (props.isChecked ? 'aquamarine' : 'white')};
+  background-color: ${(props) =>
+    props.isChecked ? props.theme.colors.blue : props.theme.colors.white};
   width: 3rem;
   height: 3rem;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isChecked
+        ? props.theme.colors.blueClearDark
+        : props.theme.colors.blueClear};
+    cursor: pointer;
+  }
 `;
 
 const StyledCell = styled.td`

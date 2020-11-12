@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ApolloError } from '@apollo/client';
 import { GetRecordings } from '@grogqli/schema';
 
 import { CheckedState } from './';
 import Transaction from './Transaction';
+import { SaveRecordingsButton } from './SaveRecordingsButton';
+import { SaveDrawer } from './SaveDrawer';
 
 const TransactionsContainer = styled.div`
   width: 100%;
@@ -18,8 +20,8 @@ const StyledTable = styled.table`
 const StyledHeader = styled.th`
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
-  background-color: #555;
-  color: #fff;
+  background-color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
   text-align: left;
   padding: 0.5em 1em;
 `;
@@ -28,27 +30,31 @@ const CheckAllHeader = styled(StyledHeader)<{
   isChecked: boolean;
 }>`
   padding: 0;
-  background-color: ${(props) => (props.isChecked ? 'aquamarine' : 'white')};
+  background-color: ${(props) =>
+    props.isChecked ? props.theme.colors.blue : props.theme.colors.white};
   width: 3rem;
   height: 3rem;
-`;
-
-const StyledRow = styled.tr`
-  &:nth-child(odd) {
-    background-color: #eee;
-  }
-  &:nth-child(even) {
-    background-color: white;
-  }
   &:hover {
-    background-color: aquamarine;
+    background-color: ${(props) =>
+      props.isChecked
+        ? props.theme.colors.blueClearDark
+        : props.theme.colors.blueClear};
     cursor: pointer;
   }
 `;
 
-// const CheckAll = styled(CheckBox)`
-//   width: inherit;
-// `;
+const StyledRow = styled.tr`
+  &:nth-child(odd) {
+    background-color: ${(props) => props.theme.colors.grayDark};
+  }
+  &:nth-child(even) {
+    background-color: ${(props) => props.theme.colors.grayLight};
+  }
+  &:hover {
+    background-color: ${(props) => props.theme.colors.blueClear};
+    cursor: pointer;
+  }
+`;
 
 interface TransactionsProps {
   allAreChecked: boolean;
@@ -61,6 +67,10 @@ interface TransactionsProps {
   toggleAllChecked: () => void;
 }
 
+const areAnyTransactionsChecked = (checkedState: CheckedState): boolean => {
+  return Object.values(checkedState).some(Boolean);
+};
+
 const Transactions: React.FC<TransactionsProps> = ({
   allAreChecked,
   checkedState,
@@ -72,6 +82,8 @@ const Transactions: React.FC<TransactionsProps> = ({
   useEffect(() => {
     subscribeToRecordings();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [showSaveDrawer, setShowSaveDrawer] = useState(false);
 
   return (
     <TransactionsContainer>
@@ -97,6 +109,13 @@ const Transactions: React.FC<TransactionsProps> = ({
           ))}
         </tbody>
       </StyledTable>
+      {areAnyTransactionsChecked(checkedState) ? (
+        <SaveRecordingsButton
+          onClick={() => setShowSaveDrawer(!showSaveDrawer)}
+          showSaveIcon={!showSaveDrawer}
+        />
+      ) : null}
+      <SaveDrawer show={showSaveDrawer} />
     </TransactionsContainer>
   );
 };
