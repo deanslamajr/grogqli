@@ -5,7 +5,7 @@ import {
   getOperationsData,
   openTypeNameToIdMapping,
   SchemaFile,
-} from '../../files';
+} from '../files';
 import { fieldResolverFactory } from './fieldResolverFactory';
 
 type Resolvers = NonNullable<Config['resolvers']>;

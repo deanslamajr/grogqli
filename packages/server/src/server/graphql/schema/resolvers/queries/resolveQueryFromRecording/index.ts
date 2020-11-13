@@ -1,6 +1,6 @@
 import { GraphQLResponse } from 'apollo-server-core';
 
-import { createApolloServer } from './createApolloServer';
+import { createApolloServer } from '../../../../../createApolloServer';
 
 export interface ResolveQueryFromRecordingParams {
   query: string;

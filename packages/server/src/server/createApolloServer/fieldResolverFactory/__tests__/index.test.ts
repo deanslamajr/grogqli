@@ -1,15 +1,16 @@
 import path from 'path';
 
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
-import schema from '../../../../__tests__/grogqli/schemas/someSchemaId/schema.json';
-import operationsData from '../../../../__tests__/grogqli/schemas/someSchemaId/operations.json';
-import typeNameToIdMappingData from '../../../../__tests__/grogqli/schemas/someSchemaId/types.json';
-import { getConfig } from '../../../../../../../getConfig';
-import { Context } from '../../createApolloServer';
-import someWorkflowFile from '../../../../__tests__/grogqli/workflows/someWorkflowId.json';
+import { Context } from '../..';
+import { getConfig } from '../../../files/getConfig';
 
-jest.mock('../../../../../../../getConfig');
-jest.mock('../../../../__tests__/grogqli/workflows/someWorkflowId.json');
+import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
+import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
+import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
+import someWorkflowFile from '../../../files/__tests__/grogqli/workflows/someWorkflowId.json';
+
+jest.mock('../../../files/getConfig');
+jest.mock('../../../files/__tests__/grogqli/workflows/someWorkflowId.json');
 
 describe('fieldResolverFactory', () => {
   let fieldResolverFactoryArgs: ResolveValueFactoryParams;
@@ -21,7 +22,7 @@ describe('fieldResolverFactory', () => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
       const relativePathToTestGrogqli = path.normalize(
-        '../../../../__tests__/grogqli'
+        '../../../files/__tests__/grogqli'
       );
       return path.join(__dirname, relativePathToTestGrogqli);
     });
@@ -30,7 +31,7 @@ describe('fieldResolverFactory', () => {
       typeof someWorkflowFile
     >;
     const actualWorkflowFile = jest.requireActual(
-      '../../../../__tests__/grogqli/workflows/someWorkflowId.json'
+      '../../../files/__tests__/grogqli/workflows/someWorkflowId.json'
     );
     mockedWorkflowFile.recordings = actualWorkflowFile.recordings;
 

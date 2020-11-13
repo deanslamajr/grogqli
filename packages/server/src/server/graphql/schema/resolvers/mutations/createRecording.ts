@@ -5,7 +5,7 @@ import fs from 'fs';
 import {
   getQueryRecordingsFile,
   getTemporarySchemaRecordingsPath,
-} from '../files';
+} from '../../../../files';
 import { pubSub } from '../pubSub';
 import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 

@@ -1,16 +1,16 @@
 import path from 'path';
 
 import { resolveQueryFromRecording, ResolveQueryFromRecordingParams } from '..';
-import { getConfig } from '../../../../../../getConfig';
+import { getConfig } from '../../../../../../files/getConfig';
 
-jest.mock('../../../../../../getConfig');
+jest.mock('../../../../../../files/getConfig');
 
 describe('resolveQueryFromRecording', () => {
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
       const relativePathToTestGrogqli = path.normalize(
-        '../../../__tests__/grogqli'
+        '../../../../../../files/__tests__/grogqli'
       );
       return path.join(__dirname, relativePathToTestGrogqli);
     });

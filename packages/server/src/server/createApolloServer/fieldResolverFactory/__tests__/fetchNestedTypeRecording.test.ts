@@ -1,13 +1,12 @@
 import path from 'path';
 
 import { fetchNestedTypeRecording } from '../fetchNestedTypeRecording';
-import { getConfig } from '../../../../../../../getConfig';
-import typeNameToIdMappingData from '../../../../__tests__/grogqli/schemas/someSchemaId/types.json';
+import { getConfig } from '../../../files/getConfig';
+import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
 
-jest.mock('../../../../../../../getConfig');
+jest.mock('../../../files/getConfig');
 
 describe('fetchNestedTypeRecording', () => {
-  const schemaId = 'someSchemaId';
   const recordingId = 'someTypeRecordingId';
   const typeName = 'someTypeName';
 
@@ -15,7 +14,7 @@ describe('fetchNestedTypeRecording', () => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
       const relativePathToTestGrogqli = path.normalize(
-        '../../../../__tests__/grogqli'
+        '../../../files/__tests__/grogqli'
       );
       return path.join(__dirname, relativePathToTestGrogqli);
     });

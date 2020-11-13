@@ -1,17 +1,17 @@
 import path from 'path';
 
 import { createResolvers } from '../createResolvers';
-import schema from '../../../__tests__/grogqli/schemas/someSchemaId/schema.json';
-import { getConfig } from '../../../../../../getConfig';
+import schema from '../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
+import { getConfig } from '../../files/getConfig';
 
-jest.mock('../../../../../../getConfig');
+jest.mock('../../files/getConfig');
 
 describe('createResolvers', () => {
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
       const relativePathToTestGrogqli = path.normalize(
-        '../../../__tests__/grogqli'
+        '../../files/__tests__/grogqli'
       );
       return path.join(__dirname, relativePathToTestGrogqli);
     });

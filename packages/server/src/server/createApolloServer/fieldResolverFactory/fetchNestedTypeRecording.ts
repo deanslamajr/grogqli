@@ -1,4 +1,4 @@
-import { getTypeRecording, TypeNameToIdMapping } from '../../../files';
+import { getTypeRecording, TypeNameToIdMapping } from '../../files';
 
 interface FetchNestedTypeRecordingParams {
   recordingId: string;

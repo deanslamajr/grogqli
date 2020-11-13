@@ -5,10 +5,10 @@ import {
   getWorkflowById,
   getTypeRecording,
   openTypeNameToIdMapping,
-} from '../files';
-import { getConfig } from '../../../../getConfig';
+} from '..';
+import { getConfig } from '../getConfig';
 
-jest.mock('../../../../getConfig');
+jest.mock('../getConfig');
 
 describe('files', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { GraphQLFieldResolver, IntrospectionQuery } from 'graphql';
 
-import { OperationsData, TypeNameToIdMapping } from '../../../files';
-import { Context } from '../createApolloServer';
+import { OperationsData, TypeNameToIdMapping } from '../../files';
+import { Context } from '..';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
 import { fetchNestedTypeRecording } from './fetchNestedTypeRecording';
@@ -10,6 +10,15 @@ interface IsTopLevelFieldParams {
   schema: IntrospectionQuery;
   parentTypeName: string;
 }
+
+export interface ResolveValueFactoryParams {
+  operationsData: OperationsData;
+  typeNameToIdMappingData: TypeNameToIdMapping;
+  schema: IntrospectionQuery;
+  parentTypeName: string;
+  fieldName: string;
+}
+
 const isTopLevelField = ({
   schema,
   parentTypeName,
@@ -22,13 +31,6 @@ const isTopLevelField = ({
   );
 };
 
-export interface ResolveValueFactoryParams {
-  operationsData: OperationsData;
-  typeNameToIdMappingData: TypeNameToIdMapping;
-  schema: IntrospectionQuery;
-  parentTypeName: string;
-  fieldName: string;
-}
 export const fieldResolverFactory = ({
   operationsData,
   typeNameToIdMappingData,

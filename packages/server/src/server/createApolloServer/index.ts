@@ -2,12 +2,7 @@ import { ApolloServerBase } from 'apollo-server-core';
 import { buildClientSchema, printSchema, IntrospectionQuery } from 'graphql';
 
 import { createResolvers } from './createResolvers';
-import { getSchema, SchemaFile } from '../../files';
-
-const createSchemaSDL = async (schema: IntrospectionQuery): Promise<string> => {
-  const graphqlSchemaObj = buildClientSchema(schema);
-  return printSchema(graphqlSchemaObj);
-};
+import { getSchema, SchemaFile } from '../files';
 
 interface CreateApolloServerParams {
   schemaId: string;
@@ -18,10 +13,16 @@ interface RuntimeVariablesContainer {
     workflowId: string;
   };
 }
+
 export interface Context {
   schemaId: string;
   runTimeVariables: RuntimeVariablesContainer;
 }
+
+const createSchemaSDL = async (schema: IntrospectionQuery): Promise<string> => {
+  const graphqlSchemaObj = buildClientSchema(schema);
+  return printSchema(graphqlSchemaObj);
+};
 
 export const createApolloServer = async ({
   schemaId,

@@ -3,17 +3,18 @@ import {
   fetchRootTypeRecording,
   FetchRootTypeRecordingParams,
 } from '../fetchRootTypeRecording';
-import operationsData from '../../../../__tests__/grogqli/schemas/someSchemaId/operations.json';
-import { getConfig } from '../../../../../../../getConfig';
 
-jest.mock('../../../../../../../getConfig');
+import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
+import { getConfig } from '../../../files/getConfig';
+
+jest.mock('../../../files/getConfig');
 
 describe('fetchRootTypeRecording', () => {
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
       const relativePathToTestGrogqli = path.normalize(
-        '../../../../__tests__/grogqli'
+        '../../../files/__tests__/grogqli'
       );
       return path.join(__dirname, relativePathToTestGrogqli);
     });

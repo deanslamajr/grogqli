@@ -3,7 +3,7 @@ import {
   getWorkflowById,
   OperationsData,
   WorkflowData,
-} from '../../../files';
+} from '../../files';
 
 interface GetOpDataParams {
   operationsData: OperationsData;

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { IntrospectionQuery } from 'graphql';
 
-import { getConfig } from '../../../getConfig';
+import { getConfig } from './getConfig';
 
 export interface WorkflowData {
   version: number;

@@ -1,5 +1,5 @@
 import { QueryResolvers, Recording } from '@grogqli/schema';
-import { getQueryRecordingsFile } from '../files';
+import { getQueryRecordingsFile } from '../../../../files';
 
 export const resolver: QueryResolvers['recordings'] = async (
   _parent,

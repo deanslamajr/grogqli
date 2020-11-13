@@ -1,6 +1,6 @@
 import { MutationResolvers, Recording } from '@grogqli/schema';
 
-import { getQueryRecordingsFile } from '../files';
+import { getQueryRecordingsFile } from '../../../../files';
 import { pubSub } from '../pubSub';
 import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
