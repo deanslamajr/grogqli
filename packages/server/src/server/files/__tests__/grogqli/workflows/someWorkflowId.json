@@ -2,6 +2,7 @@
   "version": 1,
   "id": "someWorkflowId",
   "name": "Some workflow",
+  "description": "some markdown text that gives context on this workflow",
   "recordings": {
     "someOpId": {
       "rootTypeRecordingId": "someTypeRecordingId"
