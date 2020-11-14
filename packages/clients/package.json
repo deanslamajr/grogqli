@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start:dev": "wait-on http://localhost:4000 && tsdx watch --verbose",
-    "build": "tsdx build",
+    "build:publish": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint --fix",
     "prepare": "tsdx build",

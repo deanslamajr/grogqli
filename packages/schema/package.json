@@ -31,7 +31,7 @@
     "watch:build:types": "npm-watch build:types",
     "start:dev": "concurrently --raw npm:watch:build:types npm:watch:tsdx",
     "watch:tsdx": "tsdx watch --verbose",
-    "build": "tsdx build",
+    "build:publish": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint --fix",
     "prepare": "tsdx build",

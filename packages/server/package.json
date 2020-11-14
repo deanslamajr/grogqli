@@ -11,7 +11,7 @@
     "watch:razzle": "razzle start",
     "start:watchers": "concurrently --raw --default-input-target 1 npm:watch:tsc npm:watch:razzle",
     "start:dev": "npm run start:watchers",
-    "build": "tsc -b && razzle build",
+    "build:publish": "tsc -b && razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
     "lint": "eslint --fix --ext 'js,jsx,ts,tsx' ."
