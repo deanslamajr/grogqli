@@ -6,6 +6,8 @@ This example extends the [with-typescript-graphql (off commit hash a2bea9b4)](ht
 
 - `npm i && npm run dev`
 
+- (in a separate terminal window) `npm run grogqli`
+
 - in a browser window, navigate to `localhost:3000`
 
 ## What was done to add Grogqli to this Next.js project
