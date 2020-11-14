@@ -10,7 +10,7 @@
     "watch:tsc": "tsc -b -w --preserveWatchOutput",
     "watch:razzle": "razzle start",
     "start:watchers": "concurrently --raw --default-input-target 1 npm:watch:tsc npm:watch:razzle",
-    "dev": "npm run start:watchers",
+    "start:dev": "npm run start:watchers",
     "build": "tsc -b && razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",

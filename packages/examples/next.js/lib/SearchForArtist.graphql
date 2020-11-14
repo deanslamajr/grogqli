@@ -1,0 +1,10 @@
+query SearchForArtist {
+  search {
+    artists(query: "nickelback") {
+      nodes {
+        id
+        name
+      }
+    }
+  }
+}

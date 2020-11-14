@@ -4,7 +4,7 @@
   "scripts": {
     "start": "npm run init && npm run dev",
     "init": "lerna clean --y && lerna bootstrap --force-local",
-    "dev": "lerna run dev --parallel",
+    "dev": "lerna run start:dev --parallel",
     "build": "lerna run build --stream",
     "publish:dry": "npm run init && npm run build",
     "publish": "npm run init && npm run build && lerna publish",

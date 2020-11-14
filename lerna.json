@@ -2,7 +2,8 @@
   "packages": [
     "packages/clients",
     "packages/server",
-    "packages/schema"
+    "packages/schema",
+    "packages/examples/*"
   ],
   "version": "0.2.0"
 }
