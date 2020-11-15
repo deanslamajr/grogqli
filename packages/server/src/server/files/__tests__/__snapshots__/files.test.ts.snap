@@ -29,6 +29,7 @@ Object {
 
 exports[`files getWorkflowById should return the given workflow file contents 1`] = `
 Object {
+  "description": "some markdown text that gives context on this workflow",
   "id": "someWorkflowId",
   "name": "Some workflow",
   "recordings": Object {

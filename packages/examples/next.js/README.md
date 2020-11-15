@@ -47,10 +47,17 @@ startServiceWorker();
 mountClient();
 ```
 
-- TODO update `.gitignore` to prevent committing temporary grogqli recordings
+- update `.gitignore` to prevent committing temporary grogqli recordings
+
+```.gitignore
+# grogqli
+grogqli/local
+```
 
 ## To dev against local grogqli with this example
 
 - in grogqli root, `npm run start`
 
 - in this example root, `npm run dev`
+
+- In this configuration, grogqli settings will be sourced from the @grogqli/server subdirectory (ie `grogqli/packages/server/grogqli.json). Consequently, assets generated (eg recordings) will be found in that subdirectory (eg `grogqli/packages/server/grogqli`)

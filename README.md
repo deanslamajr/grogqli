@@ -1,4 +1,7 @@
-# Grogqli
+<p align="center"><img src="./grogqli.png" width="10%"/></p>
+
+<h1 align="center">Grogqli</h2>
+<h2 align="center">graphql response recorder</h2>
 
 ## Packages
 

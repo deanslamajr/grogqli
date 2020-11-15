@@ -74,7 +74,7 @@ export interface TypeNameToIdMapping {
 //     someTypeId.json
 //   /workflows
 //     someWorkFlowId.json
-//   /__unsaved
+//   /local
 //     appState.json
 //     /schemas
 //     /queries
@@ -84,7 +84,7 @@ const OPERATIONS_FILENAME = 'operations.json';
 const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
-const TEMP_FOLDER_NAME = '__unsaved';
+const TEMP_FOLDER_NAME = 'local';
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
 
