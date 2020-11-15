@@ -1,9 +1,0 @@
-{
-  "dyOc4UeXN": {
-    "id": "dyOc4UeXN",
-    "operationName": "SearchForArtist",
-    "query": "query SearchForArtist {\n  search {\n    artists(query: \"nickelback\") {\n      nodes {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
-    "variables": "{}",
-    "response": "{\"data\":{\"search\":{\"artists\":{\"nodes\":[{\"id\":\"QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==\",\"name\":\"Nickelback\",\"__typename\":\"Artist\"},{\"id\":\"QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==\",\"name\":\"A Motown Tribute to Nickelback\",\"__typename\":\"Artist\"}],\"__typename\":\"ArtistConnection\"},\"__typename\":\"SearchQuery\"}}}"
-  }
-}
