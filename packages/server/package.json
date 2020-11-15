@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/server",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "main": "build/server.js",
   "bin": {
@@ -20,7 +20,7 @@
     "@apollo/client": "^3.2.1",
     "@apollo/react-hooks": "^4.0.0",
     "@apollo/react-ssr": "^4.0.0",
-    "@grogqli/schema": "^0.3.0",
+    "@grogqli/schema": "^0.4.0",
     "@rooks/use-key": "^3.6.0",
     "apollo-link-schema": "^1.2.5",
     "apollo-server-core": "^2.18.2",
