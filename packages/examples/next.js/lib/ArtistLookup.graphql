@@ -1,0 +1,25 @@
+query ArtistLookup ($artistId: MBID!) {
+  lookup {
+    artist(mbid: $artistId) {
+      name
+      releaseGroups(type: ALBUM) {
+        nodes {
+          title
+          firstReleaseDate
+          coverArtArchive {
+            hasArtwork: artwork
+            images {
+              image
+              thumbnails {
+                small
+                large
+              }
+              front
+              back
+            }
+          }
+        }
+      }
+    }
+  }
+}

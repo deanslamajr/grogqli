@@ -1,9 +1,17 @@
-query SearchForArtist {
+query SearchForArtist ($query: String!) {
   search {
-    artists(query: "nickelback") {
+    artists(query: $query) {
       nodes {
-        id
+        id: mbid
         name
+        area {
+          name
+        }
+        lifeSpan {
+          begin
+          end
+          ended
+        }
       }
     }
   }

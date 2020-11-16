@@ -5,6 +5,9 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
+import { setContext } from '@apollo/client/link/context';
+
+import {version} from '../package.json';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -12,10 +15,21 @@ const httpLink = createHttpLink({
   uri: "https://graphbrainz.herokuapp.com/",
 });
 
+// https://musicbrainz.org/doc/MusicBrainz_API/Rate_Limiting#Provide_meaningful_User-Agent_strings
+const appContactHeader = setContext((_, { headers }) => {
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      'X-User-Agent': `Grogqli/${version} ( https://github.com/deanslamajr/grogqli/issues )`
+    }
+  }
+});
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: httpLink,
+    link: appContactHeader.concat(httpLink),
     cache: new InMemoryCache(),
   });
 }
