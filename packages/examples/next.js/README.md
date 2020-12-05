@@ -60,4 +60,4 @@ grogqli/local
 
 - in this example root, `npm run dev`
 
-- In this configuration, grogqli settings will be sourced from the @grogqli/server subdirectory (ie `grogqli/packages/server/grogqli.json). Consequently, assets generated (eg recordings) will be found in that subdirectory (eg `grogqli/packages/server/grogqli`)
+- In this configuration, grogqli settings will be sourced from the @grogqli/server subdirectory (ie `grogqli/packages/server/grogqli.json`). Consequently, assets generated (eg recordings) will be found in that subdirectory (eg `grogqli/packages/server/grogqli`)

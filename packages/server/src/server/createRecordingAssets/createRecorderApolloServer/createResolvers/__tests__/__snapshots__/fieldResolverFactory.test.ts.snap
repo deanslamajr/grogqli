@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fieldResolverFactory the function created from the factory resolving the field of a nested type should return data for child resolvers 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "__typename": "Artist",
+      "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+      "name": "Nickelback",
+    },
+    Object {
+      "__typename": "Artist",
+      "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+      "name": "A Motown Tribute to Nickelback",
+    },
+  ],
+}
+`;
+
+exports[`fieldResolverFactory the function created from the factory resolving the field of a nested type should update the recording plan 1`] = `
+Object {
+  "typeRecordings": Object {
+    "ArtistConnection": Object {
+      "recordingId": "mockRecordingId",
+      "value": Object {
+        "nodes": Array [
+          Object {
+            "__typename": "Artist",
+            "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+            "name": "Nickelback",
+          },
+          Object {
+            "__typename": "Artist",
+            "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+            "name": "A Motown Tribute to Nickelback",
+          },
+        ],
+      },
+    },
+    "Query": Object {
+      "recordingId": "someRecordingId",
+      "value": Object {
+        "search": "anotherRecordingId",
+      },
+    },
+    "SearchQuery": Object {
+      "recordingId": "anotherRecordingId",
+      "value": Object {
+        "artists": "mockRecordingId",
+      },
+    },
+  },
+}
+`;
+
+exports[`fieldResolverFactory the function created from the factory resolving the field of a root type should return data for child resolvers 1`] = `
+Object {
+  "artists": Object {
+    "__typename": "ArtistConnection",
+    "nodes": Array [
+      Object {
+        "__typename": "Artist",
+        "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+        "name": "Nickelback",
+      },
+      Object {
+        "__typename": "Artist",
+        "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+        "name": "A Motown Tribute to Nickelback",
+      },
+    ],
+  },
+}
+`;
+
+exports[`fieldResolverFactory the function created from the factory resolving the field of a root type should update the recording plan 1`] = `
+Object {
+  "typeRecordings": Object {
+    "Query": Object {
+      "recordingId": "someRecordingId",
+      "value": Object {
+        "search": "mockRecordingId",
+      },
+    },
+    "SearchQuery": Object {
+      "recordingId": "mockRecordingId",
+      "value": Object {
+        "artists": Object {
+          "__typename": "ArtistConnection",
+          "nodes": Array [
+            Object {
+              "__typename": "Artist",
+              "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+              "name": "Nickelback",
+            },
+            Object {
+              "__typename": "Artist",
+              "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+              "name": "A Motown Tribute to Nickelback",
+            },
+          ],
+        },
+      },
+    },
+  },
+}
+`;
