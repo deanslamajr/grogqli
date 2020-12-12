@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind LIST ofType OBJECT should return data for child resolvers 1`] = `
+Array [
+  Object {
+    "parentTypeRecordingId": "mockRecordingId3",
+    "value": Object {
+      "__typename": "Artist",
+      "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+      "name": "Nickelback",
+    },
+  },
+  Object {
+    "parentTypeRecordingId": "mockRecordingId4",
+    "value": Object {
+      "__typename": "Artist",
+      "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+      "name": "A Motown Tribute to Nickelback",
+    },
+  },
+]
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind LIST ofType OBJECT should update the recording plan correctly 1`] = `
+Object {
+  "typeRecordings": Object {
+    "mockRecordingId0": Object {
+      "typeName": "ArtistConnection",
+      "value": Object {
+        "nodes": Array [
+          "mockRecordingId3",
+          "mockRecordingId4",
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind OBJECT should return data for child resolvers 1`] = `
+Object {
+  "parentTypeRecordingId": "mockRecordingId3",
+  "value": Object {
+    "__typename": "ArtistConnection",
+    "nodes": Array [
+      Object {
+        "__typename": "Artist",
+        "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+        "name": "Nickelback",
+      },
+      Object {
+        "__typename": "Artist",
+        "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+        "name": "A Motown Tribute to Nickelback",
+      },
+    ],
+  },
+}
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind OBJECT should update the recording plan correctly 1`] = `
+Object {
+  "typeRecordings": Object {
+    "mockRecordingId0": Object {
+      "typeName": "SearchQuery",
+      "value": Object {
+        "artists": "mockRecordingId3",
+      },
+    },
+  },
+}
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind SCALAR should return data for child resolvers 1`] = `"QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg=="`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind SCALAR should update the recording plan correctly 1`] = `
+Object {
+  "typeRecordings": Object {
+    "mockRecordingId0": Object {
+      "typeName": "Artist",
+      "value": Object {
+        "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+      },
+    },
+  },
+}
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "root type" field of kind OBJECT should return data for child resolvers 1`] = `
+Object {
+  "parentTypeRecordingId": "mockRecordingId3",
+  "value": Object {
+    "__typename": "SearchQuery",
+    "artists": Object {
+      "__typename": "ArtistConnection",
+      "nodes": Array [
+        Object {
+          "__typename": "Artist",
+          "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+          "name": "Nickelback",
+        },
+        Object {
+          "__typename": "Artist",
+          "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+          "name": "A Motown Tribute to Nickelback",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "root type" field of kind OBJECT should update the recording plan correctly 1`] = `
+Object {
+  "typeRecordings": Object {
+    "mockRecordingId0": Object {
+      "typeName": "Query",
+      "value": Object {
+        "search": "mockRecordingId3",
+      },
+    },
+  },
+}
+`;

@@ -1,15 +1,11 @@
 import { GraphQLFieldResolver, IntrospectionQuery } from 'graphql';
 
+import { isRootType } from '../../isRootType';
 import { OperationsData, TypeNameToIdMapping } from '../../files';
 import { Context } from '..';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
 import { fetchNestedTypeRecording } from './fetchNestedTypeRecording';
-
-interface IsTopLevelFieldParams {
-  schema: IntrospectionQuery;
-  parentTypeName: string;
-}
 
 export interface ResolveValueFactoryParams {
   operationsData: OperationsData;
@@ -18,18 +14,6 @@ export interface ResolveValueFactoryParams {
   parentTypeName: string;
   fieldName: string;
 }
-
-const isTopLevelField = ({
-  schema,
-  parentTypeName,
-}: IsTopLevelFieldParams): boolean => {
-  const { queryType, mutationType, subscriptionType } = schema.__schema;
-  return (
-    parentTypeName === queryType.name ||
-    parentTypeName === mutationType?.name ||
-    parentTypeName === subscriptionType?.name
-  );
-};
 
 export const fieldResolverFactory = ({
   operationsData,
@@ -47,7 +31,7 @@ export const fieldResolverFactory = ({
       throw new Error('TODO handle unnamed query case');
     }
 
-    const isRootField = isTopLevelField({ schema, parentTypeName });
+    const isRootField = isRootType({ schema, typeName: parentTypeName });
     if (isRootField) {
       const rootTypeRecording = await fetchRootTypeRecording({
         opName,

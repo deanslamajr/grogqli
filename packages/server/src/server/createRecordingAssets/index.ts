@@ -1,38 +1,31 @@
-import {
-  createRecorderApolloServer,
-  RecordingsPlan,
-} from './createRecorderApolloServer';
+import { RecordingsPlan } from './createRecorderApolloServer';
 
-interface CreateRecordingAssets {
+import { generateRecordingPlan } from './generateRecordingPlan';
+import { createRecordingAssetsFromPlan } from './createRecordingAssetsFromPlan';
+
+type CreateRecordingAssets = (params: {
   operationResponseRecording: string;
-  query: string;
+  operationSDL: string;
+  schemaId: string;
   variables?: string;
-}
+}) => Promise<void>;
 
-export const createRecordingAssets = async ({
+export const createRecordingAssets: CreateRecordingAssets = async ({
   operationResponseRecording,
-  query,
+  operationSDL,
+  schemaId,
   variables,
-}: CreateRecordingAssets) => {
-  const apolloServer = await createRecorderApolloServer({
-    schemaId,
-  });
-
+}) => {
   const parsedVariables = variables ? JSON.parse(variables) : undefined;
+  const parsedOpRecording = JSON.parse(operationResponseRecording);
 
-  // This will be mutated by apolloServer
-  const recordingsPlan: RecordingsPlan = {
-    typeRecordings: {},
-  };
-
-  await apolloServer.executeOperation({
-    query,
-    variables: {
-      ...parsedVariables,
-      grogqliRunTimeVariables: {
-        operationResponseRecording,
-        recordingsPlan,
-      },
-    },
+  const recordingsPlan: RecordingsPlan = await generateRecordingPlan({
+    parsedOpRecording,
+    operationSDL,
+    schemaId,
+    variables: parsedVariables,
   });
+
+  // TODO implement createRecordingAssetsFromPlan
+  await createRecordingAssetsFromPlan(recordingsPlan);
 };

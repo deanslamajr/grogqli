@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateRecordingPlan should return a recording plan 1`] = `
+Object {
+  "typeRecordings": Object {
+    "mockRecordingId0": Object {
+      "typeName": "Query",
+      "value": Object {
+        "search": "mockRecordingId3",
+      },
+    },
+    "mockRecordingId3": Object {
+      "typeName": "SearchQuery",
+      "value": Object {
+        "artists": "mockRecordingId4",
+      },
+    },
+    "mockRecordingId4": Object {
+      "typeName": "ArtistConnection",
+      "value": Object {
+        "nodes": Array [
+          "mockRecordingId5",
+          "mockRecordingId6",
+        ],
+      },
+    },
+    "mockRecordingId5": Object {
+      "typeName": "Artist",
+      "value": Object {
+        "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
+        "name": "Nickelback",
+      },
+    },
+    "mockRecordingId6": Object {
+      "typeName": "Artist",
+      "value": Object {
+        "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
+        "name": "A Motown Tribute to Nickelback",
+      },
+    },
+  },
+}
+`;
