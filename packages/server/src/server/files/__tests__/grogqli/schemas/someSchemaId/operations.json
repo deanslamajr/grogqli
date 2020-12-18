@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "recordings": {
+  "operations": {
     "someOpName": {
-      "opId": "someOpId",
-      "typeId": "someTypeId"
+      "name": "someOpName",
+      "id": "someOpId"
     },
     "GetChores": {
-      "opId": "llK98u0",
-      "typeId": "xhg87iT1"
+      "name": "GetChores",
+      "id": "llK98u0"
     }
   }
 }

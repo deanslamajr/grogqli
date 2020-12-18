@@ -5,6 +5,7 @@ import {
 } from '../fetchRootTypeRecording';
 
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
+import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
 import { getConfig } from '../../../files/getConfig';
 
 jest.mock('../../../files/getConfig');
@@ -22,10 +23,13 @@ describe('fetchRootTypeRecording', () => {
 
   it('should resolve a recording', async () => {
     const opName = 'someOpName';
+    const rootTypeName = 'Query';
     const config: FetchRootTypeRecordingParams = {
       opName,
       workflowId: 'someWorkflowId',
       operationsData,
+      rootTypeName,
+      typeNameToIdMappingData,
     };
     const actual = await fetchRootTypeRecording(config);
     expect(actual).toMatchSnapshot();
@@ -39,16 +43,18 @@ describe('fetchRootTypeRecording', () => {
         workflowId: 'workflowDoesNotExist',
         operationsData: {
           version: 1,
-          recordings: {
+          operations: {
             [opName]: {
-              opId: 'someOpId',
-              typeId: 'someTypeId',
+              id: 'someOpId',
+              name: opName,
             },
           },
         },
       };
 
-      await expect(fetchRootTypeRecording(config)).rejects.toThrow();
+      await expect(
+        fetchRootTypeRecording(config)
+      ).rejects.toThrowErrorMatchingSnapshot();
     });
   });
 });

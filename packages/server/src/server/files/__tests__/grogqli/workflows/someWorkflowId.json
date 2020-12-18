@@ -3,12 +3,12 @@
   "id": "someWorkflowId",
   "name": "Some workflow",
   "description": "some markdown text that gives context on this workflow",
-  "recordings": {
+  "operationRecordings": {
     "someOpId": {
-      "rootTypeRecordingId": "someTypeRecordingId"
+      "opRecordingId": "someOpRecordingId"
     },
     "llK98u0": {
-      "rootTypeRecordingId": "q7f66d54"
+      "opRecordingId": "q7f66d54"
     }
   }
 }

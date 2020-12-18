@@ -25,17 +25,19 @@ export const fieldResolverFactory = ({
   return async (parent, args, context, info) => {
     let fieldValueFromRecording;
 
-    const opName = info.operation?.name?.value;
-    // TODO handle unnamed query case
-    if (!opName) {
-      throw new Error('TODO handle unnamed query case');
-    }
-
     const isRootField = isRootType({ schema, typeName: parentTypeName });
     if (isRootField) {
+      const opName = info.operation?.name?.value;
+      // TODO handle unnamed query case
+      if (!opName) {
+        throw new Error('TODO handle unnamed query case');
+      }
+
       const rootTypeRecording = await fetchRootTypeRecording({
         opName,
         operationsData,
+        rootTypeName: parentTypeName,
+        typeNameToIdMappingData,
         workflowId: context.runTimeVariables.grogqli!.workflowId,
       });
 

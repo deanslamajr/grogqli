@@ -1,0 +1,14 @@
+{
+  "id": "someOpId",
+  "version": 1,
+  "recordings": {
+    "someOpRecordingId": {
+      "id": "someOpRecordingId",
+      "rootTypeRecordings": {
+        "xhg87iT1": {
+          "recordingId": "someTypeRecordingId"
+        }
+      }
+    }
+  }
+}

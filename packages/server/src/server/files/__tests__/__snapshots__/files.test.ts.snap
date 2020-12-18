@@ -2,14 +2,14 @@
 
 exports[`files getOperationsData should return the operations file associated with the given schemaId 1`] = `
 Object {
-  "recordings": Object {
+  "operations": Object {
     "GetChores": Object {
-      "opId": "llK98u0",
-      "typeId": "xhg87iT1",
+      "id": "llK98u0",
+      "name": "GetChores",
     },
     "someOpName": Object {
-      "opId": "someOpId",
-      "typeId": "someTypeId",
+      "id": "someOpId",
+      "name": "someOpName",
     },
   },
   "version": 1,
@@ -32,12 +32,12 @@ Object {
   "description": "some markdown text that gives context on this workflow",
   "id": "someWorkflowId",
   "name": "Some workflow",
-  "recordings": Object {
+  "operationRecordings": Object {
     "llK98u0": Object {
-      "rootTypeRecordingId": "q7f66d54",
+      "opRecordingId": "q7f66d54",
     },
     "someOpId": Object {
-      "rootTypeRecordingId": "someTypeRecordingId",
+      "opRecordingId": "someOpRecordingId",
     },
   },
   "version": 1,
@@ -54,6 +54,10 @@ Object {
     "GetChoresResponse": Object {
       "id": "123j6tgc",
       "name": "GetChoresResponse",
+    },
+    "Query": Object {
+      "id": "xhg87iT1",
+      "name": "Query",
     },
     "doesntHaveATypeFile": Object {
       "id": "doesntHaveATypeFileId",

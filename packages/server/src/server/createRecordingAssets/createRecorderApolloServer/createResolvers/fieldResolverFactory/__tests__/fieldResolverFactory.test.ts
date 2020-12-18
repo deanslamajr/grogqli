@@ -103,14 +103,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parsedOpRecording.data === null', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 
@@ -119,14 +119,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parsedOpRecording.data === undefined', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 
@@ -191,14 +191,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parent.value[fieldName] === null', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 
@@ -207,14 +207,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parent.value[fieldName] === undefined', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 
@@ -284,14 +284,14 @@ describe('fieldResolverFactory', () => {
         });
 
         describe('parent.value[fieldName] === null', () => {
-          it('should update the recording plan correctly', async () => {
+          xit('should update the recording plan correctly', async () => {
             throw new Error('implement!');
             await fieldResolver(undefined, {}, context, info);
 
             expect(recordingsPlan).toMatchSnapshot();
           });
 
-          it('should return data for child resolvers', async () => {
+          xit('should return data for child resolvers', async () => {
             throw new Error('implement!');
             const response = await fieldResolver(undefined, {}, context, info);
 
@@ -300,14 +300,14 @@ describe('fieldResolverFactory', () => {
         });
 
         describe('parent.value[fieldName] === undefined', () => {
-          it('should update the recording plan correctly', async () => {
+          xit('should update the recording plan correctly', async () => {
             throw new Error('implement!');
             await fieldResolver(undefined, {}, context, info);
 
             expect(recordingsPlan).toMatchSnapshot();
           });
 
-          it('should return data for child resolvers', async () => {
+          xit('should return data for child resolvers', async () => {
             throw new Error('implement!');
             const response = await fieldResolver(undefined, {}, context, info);
 
@@ -374,14 +374,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parent.value[fieldName] === null', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 
@@ -390,14 +390,14 @@ describe('fieldResolverFactory', () => {
       });
 
       describe('parent.value[fieldName] === undefined', () => {
-        it('should update the recording plan correctly', async () => {
+        xit('should update the recording plan correctly', async () => {
           throw new Error('implement!');
           await fieldResolver(undefined, {}, context, info);
 
           expect(recordingsPlan).toMatchSnapshot();
         });
 
-        it('should return data for child resolvers', async () => {
+        xit('should return data for child resolvers', async () => {
           throw new Error('implement!');
           const response = await fieldResolver(undefined, {}, context, info);
 

@@ -1,31 +1,14 @@
-import { getTypeRecording, TypeNameToIdMapping } from '../../files';
+import {
+  getTypeRecording,
+  getTypeIdFromTypeName,
+  TypeNameToIdMapping,
+} from '../../files';
 
 interface FetchNestedTypeRecordingParams {
   recordingId: string;
   typeName: string;
   typeNameToIdMappingData: TypeNameToIdMapping;
 }
-
-interface GetTypeIdFromTypeNameParams {
-  typeName: string;
-  typeNameToIdMappingData: TypeNameToIdMapping;
-}
-
-const getTypeIdFromTypeName = async ({
-  typeName,
-  typeNameToIdMappingData,
-}: GetTypeIdFromTypeNameParams): Promise<string> => {
-  // return the mapping of the given typeName
-  const type = typeNameToIdMappingData.types[typeName];
-  // TODO handle the case where the given typeName does not exist in the given schemaId's types.json
-  if (type === undefined) {
-    throw new Error(`
-      TODO handle the case where the given typeName does not exist in the given types.json.
-      typeName:${typeName}
-    `);
-  }
-  return type.id;
-};
 
 // TODO handle args
 // TODO optimization: should only need to do this once for all root level fields of the given query execution

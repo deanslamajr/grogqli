@@ -1,18 +1,16 @@
 import {
   getTypeRecording,
   getWorkflowById,
+  getRootTypeRecordingIdFromOpRecording,
+  getTypeIdFromTypeName,
   OperationsData,
+  TypeNameToIdMapping,
   WorkflowData,
 } from '../../files';
 
 interface GetOpDataParams {
   operationsData: OperationsData;
   opName: string;
-}
-
-interface GetOpDataResponse {
-  opId: string;
-  typeId: string;
 }
 
 interface GetRootTypeRecordingIdParams {
@@ -23,26 +21,28 @@ interface GetRootTypeRecordingIdParams {
 export interface FetchRootTypeRecordingParams {
   opName: string;
   operationsData: OperationsData;
+  rootTypeName: string;
+  typeNameToIdMappingData: TypeNameToIdMapping;
   workflowId: string;
 }
 
-const getOpData = ({
+const getOpIdFromOpName = ({
   operationsData,
   opName,
-}: GetOpDataParams): GetOpDataResponse => {
-  const operationRecording = operationsData.recordings[opName];
+}: GetOpDataParams): string => {
+  const opData = operationsData.operations[opName];
 
-  // TODO handle case where a recording does not exist for the given opName
-  if (operationRecording === undefined) {
+  // TODO handle case where a opId does not exist for the given opName
+  if (opData === undefined) {
     throw new Error(
-      `TODO handle case where a recording does not exist for the given opName. opName:${opName}`
+      `TODO handle case where an opId does not exist for the given opName. opName:${opName}`
     );
   }
 
-  return operationRecording;
+  return opData.id;
 };
 
-const getRootTypeRecordingId = async ({
+const getOpRecordingIdFromWorkflow = async ({
   opId,
   workflowId,
 }: GetRootTypeRecordingIdParams): Promise<string> => {
@@ -54,7 +54,7 @@ const getRootTypeRecordingId = async ({
     );
   }
 
-  const operationsWorkflowData = workflowData.recordings[opId];
+  const operationsWorkflowData = workflowData.operationRecordings[opId];
   // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {
     throw new Error(
@@ -62,7 +62,7 @@ const getRootTypeRecordingId = async ({
     );
   }
 
-  return operationsWorkflowData.rootTypeRecordingId;
+  return operationsWorkflowData.opRecordingId;
 };
 
 // TODO handle args
@@ -74,13 +74,40 @@ const getRootTypeRecordingId = async ({
 export const fetchRootTypeRecording = async ({
   opName,
   operationsData,
+  rootTypeName,
+  typeNameToIdMappingData,
   workflowId,
 }: FetchRootTypeRecordingParams) => {
-  const { opId, typeId: rootTypeId } = getOpData({ operationsData, opName });
-  const rootTypeRecordingId = await getRootTypeRecordingId({
+  const opId = getOpIdFromOpName({
+    operationsData,
+    opName,
+  });
+
+  const opRecordingId = await getOpRecordingIdFromWorkflow({
     opId,
     workflowId,
   });
+
+  const rootTypeId = await getTypeIdFromTypeName({
+    typeName: rootTypeName,
+    typeNameToIdMappingData,
+  });
+
+  const rootTypeRecordingId = await getRootTypeRecordingIdFromOpRecording({
+    rootTypeId,
+    opId,
+    opRecordingId,
+  });
+
+  if (rootTypeRecordingId === null) {
+    // TODO handle case where typeRecordingId does not exist for the given rootTypeId, opId, opRecordingId
+    throw new Error(
+      `TODO handle case where typeRecordingId does not exist for the given rootTypeId, opId, opRecordingId.
+        rootTypeId:${rootTypeId}
+        opId:${opId}
+        opRecordingId:${opRecordingId}`
+    );
+  }
 
   const typeRecording = await getTypeRecording({
     typeId: rootTypeId,

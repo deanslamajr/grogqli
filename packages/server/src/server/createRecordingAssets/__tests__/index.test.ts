@@ -1,6 +1,6 @@
 import { createRecordingAssets } from '../';
 
-describe('createRecordingAssets', () => {
+xdescribe('createRecordingAssets', () => {
   describe('op response recording with a single query', () => {
     it('should create the correct set of assets', () => {
       throw new Error('implement this test!');

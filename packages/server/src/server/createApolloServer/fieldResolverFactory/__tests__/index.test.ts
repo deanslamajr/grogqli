@@ -3,20 +3,22 @@ import path from 'path';
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import { Context } from '../..';
 import { getConfig } from '../../../files/getConfig';
+import { OperationFile } from '../../../files';
 
 import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
 import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
-import someWorkflowFile from '../../../files/__tests__/grogqli/workflows/someWorkflowId.json';
+// import someWorkflowFile from '../../../files/__tests__/grogqli/workflows/someWorkflowId.json';
+import someOperationFile from '../../../files/__tests__/grogqli/operations/someOpId.json';
 
 jest.mock('../../../files/getConfig');
-jest.mock('../../../files/__tests__/grogqli/workflows/someWorkflowId.json');
+jest.mock('../../../files/__tests__/grogqli/operations/someOpId.json');
 
 describe('fieldResolverFactory', () => {
   let fieldResolverFactoryArgs: ResolveValueFactoryParams;
   let info: any;
   let context: Context;
-  let mockedWorkflowFile: jest.Mocked<typeof someWorkflowFile>;
+  let mockedOperationFile: jest.Mocked<OperationFile>;
 
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
@@ -27,13 +29,11 @@ describe('fieldResolverFactory', () => {
       return path.join(__dirname, relativePathToTestGrogqli);
     });
 
-    mockedWorkflowFile = someWorkflowFile as jest.Mocked<
-      typeof someWorkflowFile
-    >;
-    const actualWorkflowFile = jest.requireActual(
-      '../../../files/__tests__/grogqli/workflows/someWorkflowId.json'
+    mockedOperationFile = someOperationFile as jest.Mocked<OperationFile>;
+    const actualOperationFile = jest.requireActual(
+      '../../../files/__tests__/grogqli/operations/someOpId.json'
     );
-    mockedWorkflowFile.recordings = actualWorkflowFile.recordings;
+    mockedOperationFile.recordings = actualOperationFile.recordings;
 
     fieldResolverFactoryArgs = {
       schema: schema.introspectionQuery as any,
@@ -130,17 +130,17 @@ describe('fieldResolverFactory', () => {
         });
       });
 
-      describe('if the workflow file does not have an operation recording for the given operation', () => {
+      describe('if the workflow file does not have an entry for the given operation id', () => {
         it('should throw', async () => {
           const argsWithNonExistentOpId = {
             ...fieldResolverFactoryArgs,
             operationsData: {
               ...operationsData,
-              recordings: {
-                ...operationsData.recordings,
+              operations: {
+                ...operationsData.operations,
                 someOpName: {
-                  ...operationsData.recordings.someOpName,
-                  opId: 'nonExistentOpId',
+                  ...operationsData.operations.someOpName,
+                  id: 'nonExistentOpId',
                 },
               },
             },
@@ -159,16 +159,7 @@ describe('fieldResolverFactory', () => {
           const nonExistentRootTypeName = 'NonExistentRootType';
           const argsWithNonExistentRootType = {
             ...fieldResolverFactoryArgs,
-            operationsData: {
-              ...operationsData,
-              recordings: {
-                ...operationsData.recordings,
-                someOpName: {
-                  ...operationsData.recordings.someOpName,
-                  typeId: nonExistentRootTypeName,
-                },
-              },
-            },
+            parentTypeName: nonExistentRootTypeName,
           };
           const resolveField = fieldResolverFactory(
             argsWithNonExistentRootType
@@ -182,11 +173,19 @@ describe('fieldResolverFactory', () => {
 
       describe('if the root type file does not have a recording instance for the given recordingId', () => {
         it('should throw', async () => {
-          mockedWorkflowFile.recordings = {
-            ...mockedWorkflowFile.recordings,
-            someOpId: {
-              ...mockedWorkflowFile.recordings.someOpId,
-              rootTypeRecordingId: 'nonExistentRecordingId',
+          mockedOperationFile.recordings = {
+            ...mockedOperationFile.recordings,
+            someOpRecordingId: {
+              ...mockedOperationFile.recordings.someOpRecordingId,
+              rootTypeRecordings: {
+                ...mockedOperationFile.recordings.someOpRecordingId
+                  .rootTypeRecordings,
+                xhg87iT1: {
+                  ...mockedOperationFile.recordings.someOpRecordingId
+                    .rootTypeRecordings.xhg87iT1,
+                  recordingId: 'nonExistentRecordingId',
+                },
+              },
             },
           };
 
@@ -216,7 +215,7 @@ describe('fieldResolverFactory', () => {
     });
 
     describe('nested type case', () => {
-      it('need to write these tests', () => {
+      xit('need to write these tests', () => {
         throw new Error('write these tests!!!');
       });
     });

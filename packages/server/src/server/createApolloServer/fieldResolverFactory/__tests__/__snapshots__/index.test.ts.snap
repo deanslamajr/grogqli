@@ -2,19 +2,24 @@
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation an unnamed operation should throw 1`] = `"TODO handle unnamed query case"`;
 
-exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if a type file cannot be found for the given root type should throw 1`] = `"TODO Handle case where type file does not exist. typeId:NonExistentRootType"`;
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if a type file cannot be found for the given root type should throw 1`] = `
+"
+      TODO handle the case where the given typeName does not exist in the given types.json.
+      typeName:NonExistentRootType
+    "
+`;
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if a workflow file cannot be found for the given workflowId should throw 1`] = `"TODO handle case where a workflow file is not found for the given workflowId. workflowId:nonexistentWorkflowId"`;
 
-exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the operations file does not have an recording for the given operation should throw 1`] = `"TODO handle case where a recording does not exist for the given opName. opName:unrecordedOpName"`;
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the operations file does not have an recording for the given operation should throw 1`] = `"TODO handle case where an opId does not exist for the given opName. opName:unrecordedOpName"`;
 
-exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the root type file does not have a recording instance for the given recordingId should throw 1`] = `"TODO Handle case where type file does not have a recording for the given id. typeId:someTypeId recordingId:nonExistentRecordingId"`;
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the root type file does not have a recording instance for the given recordingId should throw 1`] = `"TODO Handle case where type file does not have a recording for the given id. typeId:xhg87iT1 recordingId:nonExistentRecordingId"`;
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the root type recording does not have an entry for the given fieldName should throw 1`] = `
 "TODO handle case where recording doesn't have a value for the given field.
           parentTypeName:Query fieldName:nonExistentFieldName"
 `;
 
-exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the workflow file does not have an operation recording for the given operation should throw 1`] = `"TODO handle case where the workflow file does not have a recording for the given opId. opId:nonExistentOpId"`;
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the workflow file does not have an entry for the given operation id should throw 1`] = `"TODO handle case where the workflow file does not have a recording for the given opId. opId:nonExistentOpId"`;
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case should return the value associated with the given fieldName 1`] = `"someAccountRecordingId"`;

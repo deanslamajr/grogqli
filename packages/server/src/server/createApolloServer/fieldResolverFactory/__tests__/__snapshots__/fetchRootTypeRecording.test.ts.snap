@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`fetchRootTypeRecording if a workflow file doesnt exist for the workflowId should throw 1`] = `"TODO handle case where a workflow file is not found for the given workflowId. workflowId:workflowDoesNotExist"`;
+
 exports[`fetchRootTypeRecording should resolve a recording 1`] = `
 Object {
   "getAccountFromSession": "someAccountRecordingId",

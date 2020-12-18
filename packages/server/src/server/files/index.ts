@@ -9,9 +9,9 @@ export interface WorkflowData {
   version: number;
   id: string;
   name: string;
-  recordings: {
+  operationRecordings: {
     [opId: string]: {
-      rootTypeRecordingId: string;
+      opRecordingId: string;
     };
   };
 }
@@ -30,7 +30,7 @@ interface TypeRecording {
   value: TypeRecordingValue;
 }
 
-interface TypeRecordings {
+export interface TypeRecordingsFile {
   id: string;
   version: number;
   recordings: { [recordingId: string]: TypeRecording };
@@ -43,10 +43,10 @@ interface GetTypeRecordingParams {
 
 export interface OperationsData {
   version: number;
-  recordings: {
+  operations: {
     [opName: string]: {
-      opId: string;
-      typeId: string;
+      name: string;
+      id: string;
     };
   };
 }
@@ -70,6 +70,8 @@ export interface TypeNameToIdMapping {
 //       operations.json
 //       schema.json
 //       types.json
+//   /operations
+//     someOperationId.json
 //   /types
 //     someTypeId.json
 //   /workflows
@@ -82,6 +84,7 @@ const SCHEMAS_FOLDER_NAME = 'schemas';
 const SCHEMA_FILENAME = 'schema.json';
 const OPERATIONS_FILENAME = 'operations.json';
 const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
+const OPERATIONS_FOLDER_NAME = 'operations';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = 'local';
@@ -99,6 +102,109 @@ const getRecordingsRootDir = async (): Promise<string> => {
   const recordingsRootDir = config('recordingsSaveDirectory');
   createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
+};
+
+export interface OperationFile {
+  id: string;
+  version: number;
+  recordings: {
+    [opRecordingId: string]: {
+      id: string;
+      rootTypeRecordings: {
+        [rootTypeId: string]: {
+          recordingId: string;
+        };
+      };
+    };
+  };
+}
+
+const getOperationFile = async (
+  operationId: string
+): Promise<OperationFile | null> => {
+  if (!operationId) {
+    return null;
+  }
+  let operationFile: OperationFile;
+  const recordingsRootDir = await getRecordingsRootDir();
+  const pathToOperationFile = path.join(
+    recordingsRootDir,
+    OPERATIONS_FOLDER_NAME,
+    `${operationId}.json`
+  );
+
+  try {
+    operationFile = require(pathToOperationFile);
+  } catch (error) {
+    return null;
+  }
+
+  return operationFile;
+};
+
+interface GetTypeIdFromTypeNameParams {
+  typeName: string;
+  typeNameToIdMappingData: TypeNameToIdMapping;
+}
+
+export const getTypeIdFromTypeName = async ({
+  typeName,
+  typeNameToIdMappingData,
+}: GetTypeIdFromTypeNameParams): Promise<string> => {
+  // return the mapping of the given typeName
+  const type = typeNameToIdMappingData.types[typeName];
+  // TODO handle the case where the given typeName does not exist in the given schemaId's types.json
+  if (type === undefined) {
+    throw new Error(`
+      TODO handle the case where the given typeName does not exist in the given types.json.
+      typeName:${typeName}
+    `);
+  }
+  return type.id;
+};
+
+type GetRootTypeRecordingIdFromOpRecording = (params: {
+  rootTypeId: string;
+  opId: string;
+  opRecordingId: string;
+}) => Promise<string | null>;
+
+export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOpRecording = async ({
+  rootTypeId,
+  opId,
+  opRecordingId,
+}) => {
+  // get opId.json
+  const opFile: OperationFile | null = await getOperationFile(opId);
+
+  if (opFile === null) {
+    // TODO handle case where operation file does not exist for given operation id
+    throw new Error(
+      `TODO handle case where operation file does not exist for given operation id. operationId:${opId}`
+    );
+  }
+  // return the recordingId associated with the given typeId
+  const opRecording = opFile.recordings[opRecordingId];
+
+  if (opRecording === undefined) {
+    // TODO handle case where operation file does not have a recording for the given operation recording id
+    throw new Error(
+      `TODO handle case where operation file does not have a recording for the given operation recording id. opRecordingId:${opRecordingId}`
+    );
+  }
+
+  const rootTypeRecordingEntry = opRecording.rootTypeRecordings[rootTypeId];
+
+  if (rootTypeRecordingEntry === undefined) {
+    // TODO handle case where the given operation recording does not have an entry for the given root type id
+    throw new Error(
+      `TODO handle case where the given operation recording does not have an entry for the given root type id.
+        opRecordingId:${opRecordingId}
+        rootTypeId:${rootTypeId}`
+    );
+  }
+
+  return rootTypeRecordingEntry.recordingId || null;
 };
 
 export const getWorkflowById = async (
@@ -135,7 +241,7 @@ export const getTypeRecording = async ({
     `${typeId}.json`
   );
 
-  let typeRecordings: TypeRecordings;
+  let typeRecordings: TypeRecordingsFile;
   try {
     typeRecordings = require(pathToTypeRecordings);
   } catch (error) {
