@@ -55,6 +55,12 @@ export const fieldResolverFactory = ({
   fieldName,
 }: ResolveValueFactoryParams): GraphQLFieldResolver<any, Context> => {
   return async (parent, args, context, info) => {
+    const opName = info.operation?.name?.value;
+    // TODO handle unnamed query case
+    if (!opName) {
+      throw new Error('TODO handle unnamed query case');
+    }
+
     const {
       recordingsPlan,
       rootTypeRecordingsIds,
@@ -81,6 +87,7 @@ export const fieldResolverFactory = ({
       });
 
       fieldResolverValue = updateRecordingsPlan({
+        opName,
         parentTypeName,
         recordingsPlan,
         fieldName,
@@ -95,6 +102,7 @@ export const fieldResolverFactory = ({
       const parentTypeRecordingId = parent.parentTypeRecordingId;
 
       fieldResolverValue = updateRecordingsPlan({
+        opName,
         parentTypeName,
         recordingsPlan,
         fieldName,

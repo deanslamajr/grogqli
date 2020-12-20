@@ -17,7 +17,7 @@ export interface RootTypeRecordingsIds {
 
 export interface RuntimeVariables {
   parsedOpRecording: any;
-  recordingsPlan: RecordingsPlan;
+  recordingsPlan: OperationRecordingPlan;
   rootTypeRecordingsIds: RootTypeRecordingsIds;
 }
 
@@ -30,7 +30,10 @@ export interface Context {
   runTimeVariables: RuntimeVariablesContainer;
 }
 
-export interface RecordingsPlan {
+export interface OperationRecordingPlan {
+  schemaId: string;
+  name?: string;
+  rootTypeRecordingIds: string[];
   typeRecordings: {
     [typeRecordingId: string]: {
       typeName: string;

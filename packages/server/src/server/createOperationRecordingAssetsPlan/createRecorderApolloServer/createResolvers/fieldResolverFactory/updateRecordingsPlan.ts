@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 
-import { RecordingsPlan } from '../..';
+import { OperationRecordingPlan } from '../..';
 import { ReturnTypeInfo } from '.';
 
 interface EncodedFieldResolverValue {
@@ -9,15 +9,17 @@ interface EncodedFieldResolverValue {
 }
 
 export type UpdateRecordingsPlan = <T extends any>(params: {
+  opName: string;
   parentTypeName: string;
   parentTypeRecordingId: string;
-  recordingsPlan: RecordingsPlan;
+  recordingsPlan: OperationRecordingPlan;
   fieldName: string;
   fieldTypeInfo: ReturnTypeInfo;
   fieldValue: T;
 }) => T | EncodedFieldResolverValue | EncodedFieldResolverValue[];
 
 export const updateRecordingsPlan: UpdateRecordingsPlan = ({
+  opName,
   parentTypeName,
   parentTypeRecordingId,
   recordingsPlan,
@@ -25,6 +27,9 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   fieldTypeInfo,
   fieldValue,
 }) => {
+  if (recordingsPlan.name === undefined) {
+    recordingsPlan.name = opName;
+  }
   // if an entry does not yet exist for the given parentTypeRecordingId,
   // create a new one
   if (recordingsPlan.typeRecordings[parentTypeRecordingId] === undefined) {

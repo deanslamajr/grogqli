@@ -1,7 +1,7 @@
 import shortid from 'shortid';
 import {
   createRecorderApolloServer,
-  RecordingsPlan,
+  OperationRecordingPlan,
   RuntimeVariables,
   RootTypeRecordingsIds,
 } from './createRecorderApolloServer';
@@ -21,7 +21,7 @@ type GenerateRecordingPlan = (params: {
   operationSDL: string;
   schemaId: string;
   variables: any;
-}) => Promise<RecordingsPlan>;
+}) => Promise<OperationRecordingPlan>;
 
 export const generateRecordingPlan: GenerateRecordingPlan = async ({
   parsedOpRecording,
@@ -30,17 +30,13 @@ export const generateRecordingPlan: GenerateRecordingPlan = async ({
   variables,
 }) => {
   // This will be mutated by apolloServer
-  const recordingsPlan: RecordingsPlan = {
+  const recordingsPlan: OperationRecordingPlan = {
+    rootTypeRecordingIds: [],
+    schemaId,
     typeRecordings: {},
   };
 
-  // TODO add plan data for
-  // * operation
-  // * workflow
-  // * args
-  // * etc.
-
-  const rootTypeRecordingsIds = generateRootTypeRecordingsIds();
+  const unusedRootTypeRecordingsIds = generateRootTypeRecordingsIds();
 
   const apolloServer = await createRecorderApolloServer({
     schemaId,
@@ -53,7 +49,7 @@ export const generateRecordingPlan: GenerateRecordingPlan = async ({
       grogqliRunTimeVariables: {
         parsedOpRecording,
         recordingsPlan,
-        rootTypeRecordingsIds,
+        rootTypeRecordingsIds: unusedRootTypeRecordingsIds,
       } as RuntimeVariables,
     },
   });

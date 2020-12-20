@@ -66,7 +66,7 @@ const getOpRecordingIdFromWorkflow = async ({
 };
 
 // TODO handle args
-// TODO optimization: should only need to do this once for all root level fields of the given query execution
+// TODO optimization: should only need to do this once for a given root type on a given operation
 //  * wait for semaphore access (only allows a single access at any given time) https://www.npmjs.com/package/await-semaphore
 //  * after acquiring semaphore, check cache for resolved value
 //  * If exists, release semaphore and return value

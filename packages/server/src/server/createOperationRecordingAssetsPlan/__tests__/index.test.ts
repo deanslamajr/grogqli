@@ -1,4 +1,4 @@
-import { createRecordingAssets } from '../';
+import { createOperationRecordingAssetsPlan } from '..';
 
 xdescribe('createRecordingAssets', () => {
   describe('op response recording with a single query', () => {

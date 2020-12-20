@@ -2,7 +2,7 @@ import { IntrospectionOutputTypeRef } from 'graphql';
 import shortid from 'shortid';
 
 import { fieldResolverFactory } from '..';
-import { Context, RecordingsPlan } from '../../../index';
+import { Context, OperationRecordingPlan } from '../../../index';
 import { generateRootTypeRecordingsIds } from '../../../../generateRecordingPlan';
 
 import schemaFile from '../../../../__tests__/grogqli/schemas/anotherSchemaId/schema.json';
@@ -21,7 +21,7 @@ jest.mock('shortid', () => {
 describe('fieldResolverFactory', () => {
   describe('creates a fieldResolver function', () => {
     let fieldResolver: ReturnType<typeof fieldResolverFactory>;
-    let recordingsPlan: RecordingsPlan;
+    let recordingsPlan: OperationRecordingPlan;
     let context: Context;
 
     const schema = schemaFile.introspectionQuery;
