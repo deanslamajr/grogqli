@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-  getOperationsData,
   getSchema,
   getWorkflowById,
   getTypeRecording,
@@ -78,21 +77,6 @@ describe('files', () => {
     describe('if a schema file cannot be found that matches the given schemaId', () => {
       it('should throw', async () => {
         await expect(getSchema('nonexistentSchemaId')).rejects.toThrow();
-      });
-    });
-  });
-
-  describe('getOperationsData', () => {
-    it('should return the operations file associated with the given schemaId', async () => {
-      const actual = await getOperationsData('someSchemaId');
-      expect(actual).toMatchSnapshot();
-    });
-
-    describe('if an operations file cannot be found that matches the given schemaId', () => {
-      it('should throw', async () => {
-        await expect(
-          getOperationsData('nonexistentSchemaId')
-        ).rejects.toThrow();
       });
     });
   });

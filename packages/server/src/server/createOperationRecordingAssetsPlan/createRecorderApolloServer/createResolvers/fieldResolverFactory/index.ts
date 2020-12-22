@@ -94,6 +94,7 @@ export const fieldResolverFactory = ({
         fieldTypeInfo: returnTypeInfo,
         fieldValue,
         parentTypeRecordingId: rootTypeRecordingId,
+        isRootType: true,
       });
     } else {
       // TODO handle case

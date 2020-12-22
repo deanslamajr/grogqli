@@ -1,11 +1,8 @@
 import { IObjectTypeResolver } from 'graphql-tools';
 import { Config } from 'apollo-server-core';
 
-import {
-  getOperationsData,
-  openTypeNameToIdMapping,
-  SchemaFile,
-} from '../files';
+import { openTypeNameToIdMapping, SchemaFile } from '../files';
+import { loadOperationsMappingFile } from '../files/operation';
 import { fieldResolverFactory } from './fieldResolverFactory';
 
 type Resolvers = NonNullable<Config['resolvers']>;
@@ -18,7 +15,7 @@ export const createResolvers = async ({
   id: schemaId,
 }: SchemaFile): Promise<Resolvers> => {
   const [operationsData, typeNameToIdMappingData] = await Promise.all([
-    getOperationsData(schemaId),
+    loadOperationsMappingFile(schemaId),
     openTypeNameToIdMapping(schemaId),
   ]);
   return schema.__schema.types.reduce<Resolvers>((resolvers, CurrentType) => {

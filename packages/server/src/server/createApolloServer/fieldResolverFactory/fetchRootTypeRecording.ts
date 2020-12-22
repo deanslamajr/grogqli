@@ -3,13 +3,13 @@ import {
   getWorkflowById,
   getRootTypeRecordingIdFromOpRecording,
   getTypeIdFromTypeName,
-  OperationsData,
   TypeNameToIdMapping,
   WorkflowData,
 } from '../../files';
+import { OperationsMappingFile } from '../../files/operation';
 
 interface GetOpDataParams {
-  operationsData: OperationsData;
+  operationsData: OperationsMappingFile;
   opName: string;
 }
 
@@ -20,7 +20,7 @@ interface GetRootTypeRecordingIdParams {
 
 export interface FetchRootTypeRecordingParams {
   opName: string;
-  operationsData: OperationsData;
+  operationsData: OperationsMappingFile;
   rootTypeName: string;
   typeNameToIdMappingData: TypeNameToIdMapping;
   workflowId: string;

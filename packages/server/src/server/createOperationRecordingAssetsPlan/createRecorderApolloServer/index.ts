@@ -33,7 +33,7 @@ export interface Context {
 export interface OperationRecordingPlan {
   schemaId: string;
   name?: string;
-  rootTypeRecordingIds: string[];
+  rootTypeRecordingIds: Set<string>;
   typeRecordings: {
     [typeRecordingId: string]: {
       typeName: string;

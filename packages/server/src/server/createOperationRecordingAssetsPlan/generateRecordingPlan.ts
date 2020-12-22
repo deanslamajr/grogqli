@@ -31,7 +31,7 @@ export const generateRecordingPlan: GenerateRecordingPlan = async ({
 }) => {
   // This will be mutated by apolloServer
   const recordingsPlan: OperationRecordingPlan = {
-    rootTypeRecordingIds: [],
+    rootTypeRecordingIds: new Set(),
     schemaId,
     typeRecordings: {},
   };

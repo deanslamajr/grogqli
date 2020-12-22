@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`operation getOperationsData should return the operations file associated with the given schemaId 1`] = `
+Object {
+  "operations": Object {
+    "GetChores": Object {
+      "id": "llK98u0",
+      "name": "GetChores",
+    },
+    "someOpName": Object {
+      "id": "someOpId",
+      "name": "someOpName",
+    },
+  },
+  "version": 1,
+}
+`;

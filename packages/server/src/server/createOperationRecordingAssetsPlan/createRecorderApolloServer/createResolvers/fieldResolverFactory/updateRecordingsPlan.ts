@@ -16,6 +16,7 @@ export type UpdateRecordingsPlan = <T extends any>(params: {
   fieldName: string;
   fieldTypeInfo: ReturnTypeInfo;
   fieldValue: T;
+  isRootType?: boolean;
 }) => T | EncodedFieldResolverValue | EncodedFieldResolverValue[];
 
 export const updateRecordingsPlan: UpdateRecordingsPlan = ({
@@ -26,7 +27,12 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   fieldName,
   fieldTypeInfo,
   fieldValue,
+  isRootType,
 }) => {
+  if (isRootType) {
+    recordingsPlan.rootTypeRecordingIds.add(parentTypeRecordingId);
+  }
+
   if (recordingsPlan.name === undefined) {
     recordingsPlan.name = opName;
   }

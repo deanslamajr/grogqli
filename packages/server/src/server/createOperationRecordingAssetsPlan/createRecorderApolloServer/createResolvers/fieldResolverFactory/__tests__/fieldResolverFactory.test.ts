@@ -25,7 +25,13 @@ describe('fieldResolverFactory', () => {
     let context: Context;
 
     const schema = schemaFile.introspectionQuery;
-    const info = {};
+    const info = {
+      operation: {
+        name: {
+          value: 'TestQueryName',
+        },
+      },
+    };
     const parsedOpRecording = {
       data: {
         search: {
@@ -76,6 +82,7 @@ describe('fieldResolverFactory', () => {
 
         recordingsPlan = {
           typeRecordings: {},
+          rootTypeRecordingIds: new Set(),
         };
 
         context = {

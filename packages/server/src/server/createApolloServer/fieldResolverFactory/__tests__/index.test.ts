@@ -3,7 +3,7 @@ import path from 'path';
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import { Context } from '../..';
 import { getConfig } from '../../../files/getConfig';
-import { OperationFile } from '../../../files';
+import { OperationFile } from '../../../files/operation';
 
 import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';

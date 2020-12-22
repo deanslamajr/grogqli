@@ -23,6 +23,7 @@ Array [
 
 exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind LIST ofType OBJECT should update the recording plan correctly 1`] = `
 Object {
+  "name": "TestQueryName",
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "ArtistConnection",
@@ -60,6 +61,7 @@ Object {
 
 exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind OBJECT should update the recording plan correctly 1`] = `
 Object {
+  "name": "TestQueryName",
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "SearchQuery",
@@ -75,6 +77,7 @@ exports[`fieldResolverFactory creates a fieldResolver function that can resolve 
 
 exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "nested type" field of kind SCALAR should update the recording plan correctly 1`] = `
 Object {
+  "name": "TestQueryName",
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Artist",
@@ -112,6 +115,10 @@ Object {
 
 exports[`fieldResolverFactory creates a fieldResolver function that can resolve a "root type" field of kind OBJECT should update the recording plan correctly 1`] = `
 Object {
+  "name": "TestQueryName",
+  "rootTypeRecordingIds": Set {
+    "mockRecordingId0",
+  },
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Query",

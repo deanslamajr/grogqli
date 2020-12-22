@@ -5,6 +5,8 @@ import { IntrospectionQuery } from 'graphql';
 
 import { getConfig } from './getConfig';
 
+import { getOperationFile, OperationFile } from './operation';
+
 export interface WorkflowData {
   version: number;
   id: string;
@@ -41,16 +43,6 @@ interface GetTypeRecordingParams {
   recordingId: string;
 }
 
-export interface OperationsData {
-  version: number;
-  operations: {
-    [opName: string]: {
-      name: string;
-      id: string;
-    };
-  };
-}
-
 export interface TypeNameToIdMapping {
   version: number;
   types: {
@@ -82,9 +74,9 @@ export interface TypeNameToIdMapping {
 //     /queries
 const SCHEMAS_FOLDER_NAME = 'schemas';
 const SCHEMA_FILENAME = 'schema.json';
-const OPERATIONS_FILENAME = 'operations.json';
+export const OPERATIONS_FILENAME = 'operations.json';
 const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
-const OPERATIONS_FOLDER_NAME = 'operations';
+export const OPERATIONS_FOLDER_NAME = 'operations';
 const WORKFLOWS_FOLDER_NAME = 'workflows';
 const TYPES_FOLDER_NAME = 'types';
 const TEMP_FOLDER_NAME = 'local';
@@ -97,50 +89,17 @@ const createDirIfDoesntExist = (dirPath: string) => {
   }
 };
 
-const getRecordingsRootDir = async (): Promise<string> => {
+export const getRecordingsRootDir = async (): Promise<string> => {
   const config = await getConfig();
   const recordingsRootDir = config('recordingsSaveDirectory');
   createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
 };
 
-export interface OperationFile {
-  id: string;
-  version: number;
-  recordings: {
-    [opRecordingId: string]: {
-      id: string;
-      rootTypeRecordings: {
-        [rootTypeId: string]: {
-          recordingId: string;
-        };
-      };
-    };
-  };
-}
-
-const getOperationFile = async (
-  operationId: string
-): Promise<OperationFile | null> => {
-  if (!operationId) {
-    return null;
-  }
-  let operationFile: OperationFile;
-  const recordingsRootDir = await getRecordingsRootDir();
-  const pathToOperationFile = path.join(
-    recordingsRootDir,
-    OPERATIONS_FOLDER_NAME,
-    `${operationId}.json`
-  );
-
-  try {
-    operationFile = require(pathToOperationFile);
-  } catch (error) {
-    return null;
-  }
-
-  return operationFile;
-};
+// Types
+// ***
+// **
+// *
 
 interface GetTypeIdFromTypeNameParams {
   typeName: string;
@@ -207,29 +166,6 @@ export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOp
   return rootTypeRecordingEntry.recordingId || null;
 };
 
-export const getWorkflowById = async (
-  workflowId: string
-): Promise<WorkflowData | null> => {
-  if (!workflowId) {
-    return null;
-  }
-  let workflow: WorkflowData;
-  const recordingsRootDir = await getRecordingsRootDir();
-  const pathToWorkflow = path.join(
-    recordingsRootDir,
-    WORKFLOWS_FOLDER_NAME,
-    `${workflowId}.json`
-  );
-
-  try {
-    workflow = require(pathToWorkflow);
-  } catch (error) {
-    return null;
-  }
-
-  return workflow;
-};
-
 export const getTypeRecording = async ({
   typeId,
   recordingId,
@@ -265,23 +201,10 @@ export const getTypeRecording = async ({
   return typeRecording;
 };
 
-export const getQueryRecordingsFile = async (): Promise<
-  editJsonFile.JsonEditor
-> => {
-  const config = await getConfig();
-  const recordingsRootDir = await getRecordingsRootDir();
-  const queryRecordingsPath = path.join(
-    recordingsRootDir,
-    TEMP_FOLDER_NAME,
-    TEMP_QUERIES_FOLDER_NAME
-  );
-
-  createDirIfDoesntExist(queryRecordingsPath);
-
-  return editJsonFile(
-    path.join(queryRecordingsPath, `${config('recordingsFilename')}.json`)
-  );
-};
+// Schema
+// ***
+// **
+// *
 
 export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
   const recordingsRootDir = await getRecordingsRootDir();
@@ -323,32 +246,50 @@ export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   return schema;
 };
 
-export const getOperationsData = async (
-  schemaId: string
-): Promise<OperationsData> => {
-  const schemasFolderPath = await getSchemasFolderPath();
-  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-  // reevaluate whether or not this is necessary:
-  // return JSON.parse(
-  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-  //   // bc we want to bypass the auto caching feature of require
-  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
-  // );
-  const pathToOperationsData = path.join(
-    schemasFolderPath,
-    schemaId,
-    OPERATIONS_FILENAME
-  );
-  let operationsData: OperationsData;
-  try {
-    operationsData = require(pathToOperationsData);
-  } catch (error) {
-    // TODO handle case where file doesnt exist for the given schemaId
-    throw new Error(
-      `TODO handle case where a operations file doesnt exist for the given schemaId. schemaId:${schemaId}`
-    );
+// Workflow
+// ***
+// **
+// *
+
+export const getWorkflowById = async (
+  workflowId: string
+): Promise<WorkflowData | null> => {
+  if (!workflowId) {
+    return null;
   }
-  return operationsData;
+  let workflow: WorkflowData;
+  const recordingsRootDir = await getRecordingsRootDir();
+  const pathToWorkflow = path.join(
+    recordingsRootDir,
+    WORKFLOWS_FOLDER_NAME,
+    `${workflowId}.json`
+  );
+
+  try {
+    workflow = require(pathToWorkflow);
+  } catch (error) {
+    return null;
+  }
+
+  return workflow;
+};
+
+export const getQueryRecordingsFile = async (): Promise<
+  editJsonFile.JsonEditor
+> => {
+  const config = await getConfig();
+  const recordingsRootDir = await getRecordingsRootDir();
+  const queryRecordingsPath = path.join(
+    recordingsRootDir,
+    TEMP_FOLDER_NAME,
+    TEMP_QUERIES_FOLDER_NAME
+  );
+
+  createDirIfDoesntExist(queryRecordingsPath);
+
+  return editJsonFile(
+    path.join(queryRecordingsPath, `${config('recordingsFilename')}.json`)
+  );
 };
 
 export const openTypeNameToIdMapping = async (

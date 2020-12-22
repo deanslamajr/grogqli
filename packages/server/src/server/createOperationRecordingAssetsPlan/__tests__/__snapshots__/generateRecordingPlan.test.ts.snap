@@ -2,6 +2,11 @@
 
 exports[`generateRecordingPlan should return a recording plan 1`] = `
 Object {
+  "name": "SearchForArtist",
+  "rootTypeRecordingIds": Set {
+    "mockRecordingId0",
+  },
+  "schemaId": "anotherSchemaId",
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Query",
