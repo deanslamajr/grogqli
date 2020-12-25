@@ -1,11 +1,10 @@
 import {
   getTypeRecording,
-  getWorkflowById,
   getRootTypeRecordingIdFromOpRecording,
   getTypeIdFromTypeName,
   TypeNameToIdMapping,
-  WorkflowData,
 } from '../../files';
+import { getWorkflowById, WorkflowFile } from '../../files/workflow';
 import { OperationsMappingFile } from '../../files/operation';
 
 interface GetOpDataParams {
@@ -46,7 +45,7 @@ const getOpRecordingIdFromWorkflow = async ({
   opId,
   workflowId,
 }: GetRootTypeRecordingIdParams): Promise<string> => {
-  const workflowData: WorkflowData | null = await getWorkflowById(workflowId);
+  const workflowData: WorkflowFile | null = await getWorkflowById(workflowId);
   // TODO handle case where a workflow file is not found for the given workflowId
   if (workflowData === null) {
     throw new Error(

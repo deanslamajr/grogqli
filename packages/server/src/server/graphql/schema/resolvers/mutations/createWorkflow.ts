@@ -30,10 +30,8 @@ export const createWorkflow = async (
   );
 
   await createWorkflowAssetsFromPlan({
-    workflow: {
-      name: workflow.name,
-      description: workflow.description,
-    },
+    name: workflow.name,
+    description: workflow.description,
     operations: operationRecordingPlans,
   });
 

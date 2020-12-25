@@ -1,5 +1,6 @@
 import path from 'path';
 import shortid from 'shortid';
+import { RootTypeRecordingsIds } from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 
 import {
   OPERATIONS_FILENAME,
@@ -8,18 +9,23 @@ import {
   getSchemasFolderPath,
 } from './';
 
+export interface RootTypeRecordingEntry {
+  rootTypeId: string;
+  recordingId: string;
+}
+
+export interface OperationRecording {
+  id: string;
+  rootTypeRecordings: {
+    [rootTypeId: string]: RootTypeRecordingEntry;
+  };
+}
+
 export interface OperationFile {
   id: string;
   version: number;
   recordings: {
-    [opRecordingId: string]: {
-      id: string;
-      rootTypeRecordings: {
-        [rootTypeId: string]: {
-          recordingId: string;
-        };
-      };
-    };
+    [opRecordingId: string]: OperationRecording;
   };
 }
 
