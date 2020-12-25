@@ -1,7 +1,8 @@
 import { IObjectTypeResolver } from 'graphql-tools';
 import { Config } from 'apollo-server-core';
 
-import { openTypeNameToIdMapping, SchemaFile } from '../files';
+import { SchemaFile } from '../files';
+import { openTypeNameToIdMapping } from '../files/type';
 import { loadOperationsMappingFile } from '../files/operation';
 import { fieldResolverFactory } from './fieldResolverFactory';
 

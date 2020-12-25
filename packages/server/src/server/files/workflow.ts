@@ -5,11 +5,14 @@ type DistributiveOmit<T, K extends keyof any> = T extends any
   ? Omit<T, K>
   : never;
 
-interface WorkflowFileVersion0 {
+// TODO remove this after a version2 exists
+// this is here to help provide an example of how to do this
+// (before there was more than a single version)
+export interface WorkflowFileVersion0 {
   version: 0;
 }
 
-interface WorkflowFileVersion1 {
+export interface WorkflowFileVersion1 {
   version: 1;
   id: string;
   name: string;

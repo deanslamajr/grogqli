@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`files getTypeRecording should return the correct type recording 1`] = `
+exports[`type getTypeRecording should return the correct type recording 1`] = `
 Object {
   "id": "someTypeRecordingId",
   "value": Object {
@@ -11,7 +11,7 @@ Object {
 }
 `;
 
-exports[`files openTypeNameToIdMapping should return the operations file associated with the given schemaId 1`] = `
+exports[`type openTypeNameToIdMapping should return the operations file associated with the given schemaId 1`] = `
 Object {
   "types": Object {
     "Chore": Object {

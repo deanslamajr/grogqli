@@ -1,11 +1,12 @@
 import shortid from 'shortid';
 import { OperationRecordingPlan } from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
-import { getTypeIdFromTypeName, openTypeNameToIdMapping } from '../files';
+import { openTypeNameToIdMapping } from '../files';
 import {
   createNewOpFile,
   getOpFileFromOpName,
   OperationRecording,
 } from '../files/operation';
+import { getTypeIdFromTypeName } from '../files/type';
 import { WorkflowFileBeforeCreation } from '../files/workflow';
 
 export interface WorkflowRecordingPlan {

@@ -1,11 +1,18 @@
 import {
-  getTypeRecording,
-  getRootTypeRecordingIdFromOpRecording,
   getTypeIdFromTypeName,
+  getTypeRecording,
   TypeNameToIdMapping,
-} from '../../files';
-import { getWorkflowById, WorkflowFile } from '../../files/workflow';
-import { OperationsMappingFile } from '../../files/operation';
+} from '../../files/type';
+import {
+  getWorkflowById,
+  WorkflowFile,
+  WorkflowFileVersion1,
+} from '../../files/workflow';
+import {
+  getOperationFile,
+  OperationFile,
+  OperationsMappingFile,
+} from '../../files/operation';
 
 interface GetOpDataParams {
   operationsData: OperationsMappingFile;
@@ -14,14 +21,6 @@ interface GetOpDataParams {
 
 interface GetRootTypeRecordingIdParams {
   opId: string;
-  workflowId: string;
-}
-
-export interface FetchRootTypeRecordingParams {
-  opName: string;
-  operationsData: OperationsMappingFile;
-  rootTypeName: string;
-  typeNameToIdMappingData: TypeNameToIdMapping;
   workflowId: string;
 }
 
@@ -53,7 +52,8 @@ const getOpRecordingIdFromWorkflow = async ({
     );
   }
 
-  const operationsWorkflowData = workflowData.operationRecordings[opId];
+  const operationsWorkflowData = (workflowData as WorkflowFileVersion1)
+    .operationRecordings[opId];
   // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {
     throw new Error(
@@ -63,6 +63,58 @@ const getOpRecordingIdFromWorkflow = async ({
 
   return operationsWorkflowData.opRecordingId;
 };
+
+type GetRootTypeRecordingIdFromOpRecording = (params: {
+  rootTypeId: string;
+  opId: string;
+  opRecordingId: string;
+}) => Promise<string | null>;
+
+export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOpRecording = async ({
+  rootTypeId,
+  opId,
+  opRecordingId,
+}) => {
+  // get opId.json
+  const opFile: OperationFile | null = await getOperationFile(opId);
+
+  if (opFile === null) {
+    // TODO handle case where operation file does not exist for given operation id
+    throw new Error(
+      `TODO handle case where operation file does not exist for given operation id. operationId:${opId}`
+    );
+  }
+  // return the recordingId associated with the given typeId
+  const opRecording = opFile.recordings[opRecordingId];
+
+  if (opRecording === undefined) {
+    // TODO handle case where operation file does not have a recording for the given operation recording id
+    throw new Error(
+      `TODO handle case where operation file does not have a recording for the given operation recording id. opRecordingId:${opRecordingId}`
+    );
+  }
+
+  const rootTypeRecordingEntry = opRecording.rootTypeRecordings[rootTypeId];
+
+  if (rootTypeRecordingEntry === undefined) {
+    // TODO handle case where the given operation recording does not have an entry for the given root type id
+    throw new Error(
+      `TODO handle case where the given operation recording does not have an entry for the given root type id.
+        opRecordingId:${opRecordingId}
+        rootTypeId:${rootTypeId}`
+    );
+  }
+
+  return rootTypeRecordingEntry.recordingId || null;
+};
+
+export interface FetchRootTypeRecordingParams {
+  opName: string;
+  operationsData: OperationsMappingFile;
+  rootTypeName: string;
+  typeNameToIdMappingData: TypeNameToIdMapping;
+  workflowId: string;
+}
 
 // TODO handle args
 // TODO optimization: should only need to do this once for a given root type on a given operation

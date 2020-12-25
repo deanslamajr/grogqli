@@ -1,8 +1,8 @@
 import {
-  getTypeRecording,
-  getTypeIdFromTypeName,
   TypeNameToIdMapping,
-} from '../../files';
+  getTypeIdFromTypeName,
+  getTypeRecording,
+} from '../../files/type';
 
 interface FetchNestedTypeRecordingParams {
   recordingId: string;

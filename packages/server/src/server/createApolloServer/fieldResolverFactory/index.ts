@@ -1,7 +1,7 @@
 import { GraphQLFieldResolver, IntrospectionQuery } from 'graphql';
 
 import { isRootType } from '../../isRootType';
-import { TypeNameToIdMapping } from '../../files';
+import { TypeNameToIdMapping } from '../../files/type';
 import { OperationsMappingFile } from '../../files/operation';
 import { Context } from '..';
 
