@@ -41,6 +41,7 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   if (recordingsPlan.typeRecordings[parentTypeRecordingId] === undefined) {
     recordingsPlan.typeRecordings[parentTypeRecordingId] = {
       typeName: parentTypeName,
+      typeRecordingId: parentTypeRecordingId,
       value: {},
     };
   }

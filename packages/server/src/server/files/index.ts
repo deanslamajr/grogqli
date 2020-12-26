@@ -34,9 +34,11 @@ const SCHEMAS_FOLDER_NAME = 'schemas';
 const SCHEMA_FILENAME = 'schema.json';
 export const OPERATIONS_FILENAME = 'operations.json';
 export const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
+export const TYPES_NAME_TO_ID_MAPPING_VERSION = 1;
 export const OPERATIONS_FOLDER_NAME = 'operations';
 export const WORKFLOWS_FOLDER_NAME = 'workflows';
 export const TYPES_FOLDER_NAME = 'types';
+export const TYPES_FILE_VERSION = 1;
 const TEMP_FOLDER_NAME = 'local';
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
@@ -47,11 +49,62 @@ const createDirIfDoesntExist = (dirPath: string) => {
   }
 };
 
+// e.g. /grogqli
 export const getRecordingsRootDir = async (): Promise<string> => {
   const config = await getConfig();
   const recordingsRootDir = config('recordingsSaveDirectory');
   createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
+};
+
+// e.g. /grogqli/local/schemas
+export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const schemaRecordingsPath = path.join(
+    recordingsRootDir,
+    TEMP_FOLDER_NAME,
+    TEMP_SCHEMAS_FOLDER_NAME
+  );
+  createDirIfDoesntExist(schemaRecordingsPath);
+  return schemaRecordingsPath;
+};
+
+// e.g. /grogqli/schemas
+export const getSchemasFolderPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const schemasFolderPath = path.join(recordingsRootDir, SCHEMAS_FOLDER_NAME);
+  createDirIfDoesntExist(schemasFolderPath);
+  return schemasFolderPath;
+};
+
+// e.g. /grogqli/schemas/<schemaId>/types.json
+export const getTypeNameMappingFilePath = async (schemaId: string) => {
+  const schemasFolderPath = await getSchemasFolderPath();
+
+  const typeNameMappingFilePath = path.join(
+    schemasFolderPath,
+    schemaId,
+    TYPES_NAME_TO_ID_MAPPING_FILENAME
+  );
+
+  createDirIfDoesntExist(typeNameMappingFilePath);
+
+  return typeNameMappingFilePath;
+};
+
+// e.g. /grogqli/types/<typeId>.json
+export const getTypeFilePath = async (typeId: string) => {
+  const recordingsRootDir = await getRecordingsRootDir();
+
+  const typeFilePath = path.join(
+    recordingsRootDir,
+    TYPES_FOLDER_NAME,
+    `${typeId}.json`
+  );
+
+  createDirIfDoesntExist(typeFilePath);
+
+  return typeFilePath;
 };
 
 export const getQueryRecordingsFile = async (): Promise<
@@ -76,24 +129,6 @@ export const getQueryRecordingsFile = async (): Promise<
 // ***
 // **
 // *
-
-export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
-  const recordingsRootDir = await getRecordingsRootDir();
-  const schemaRecordingsPath = path.join(
-    recordingsRootDir,
-    TEMP_FOLDER_NAME,
-    TEMP_SCHEMAS_FOLDER_NAME
-  );
-  createDirIfDoesntExist(schemaRecordingsPath);
-  return schemaRecordingsPath;
-};
-
-export const getSchemasFolderPath = async (): Promise<string> => {
-  const recordingsRootDir = await getRecordingsRootDir();
-  const schemasFolderPath = path.join(recordingsRootDir, SCHEMAS_FOLDER_NAME);
-  createDirIfDoesntExist(schemasFolderPath);
-  return schemasFolderPath;
-};
 
 export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   const schemasFolderPath = await getSchemasFolderPath();

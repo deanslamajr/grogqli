@@ -35,6 +35,10 @@ type CreateNewOpFile = (args: {
 }) => OperationFile;
 
 export const createNewOpFile: CreateNewOpFile = async (args) => {
+  // TODO implement this file
+  // see how createNewTypeRecordingsFile does this
+  // (e.g. creates a unique id as part of creating a new mapping)
+
   // - generate a new unique opId
   const opId = shortid.generate();
   // - add entry to grogqli/schemas/<opPlan.schemaId>/operations.json

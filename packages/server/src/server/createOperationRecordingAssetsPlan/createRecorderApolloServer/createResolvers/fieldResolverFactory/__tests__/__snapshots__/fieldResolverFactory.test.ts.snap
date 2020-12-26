@@ -27,6 +27,7 @@ Object {
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "ArtistConnection",
+      "typeRecordingId": "mockRecordingId0",
       "value": Object {
         "nodes": Array [
           "mockRecordingId3",
@@ -65,6 +66,7 @@ Object {
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "SearchQuery",
+      "typeRecordingId": "mockRecordingId0",
       "value": Object {
         "artists": "mockRecordingId3",
       },
@@ -81,6 +83,7 @@ Object {
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Artist",
+      "typeRecordingId": "mockRecordingId0",
       "value": Object {
         "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
       },
@@ -122,6 +125,7 @@ Object {
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Query",
+      "typeRecordingId": "mockRecordingId0",
       "value": Object {
         "search": "mockRecordingId3",
       },

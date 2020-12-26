@@ -30,15 +30,18 @@ export interface Context {
   runTimeVariables: RuntimeVariablesContainer;
 }
 
+export interface TypeRecordingPlan {
+  typeName: string;
+  typeRecordingId: string;
+  value: any;
+}
+
 export interface OperationRecordingPlan {
   schemaId: string;
   name?: string;
   rootTypeRecordingIds: Set<string>;
   typeRecordings: {
-    [typeRecordingId: string]: {
-      typeName: string;
-      value: any;
-    };
+    [typeRecordingId: string]: TypeRecordingPlan;
   };
 }
 

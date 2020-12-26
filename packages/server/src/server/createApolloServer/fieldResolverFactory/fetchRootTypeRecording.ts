@@ -143,6 +143,13 @@ export const fetchRootTypeRecording = async ({
     typeName: rootTypeName,
     typeNameToIdMappingData,
   });
+  // TODO handle the case where the given typeName does not exist in the given schemaId's types.json
+  if (rootTypeId === null) {
+    throw new Error(`
+      TODO handle the case where the given typeName does not exist in the given types.json.
+      rootTypeName:${rootTypeName}
+    `);
+  }
 
   const rootTypeRecordingId = await getRootTypeRecordingIdFromOpRecording({
     rootTypeId,

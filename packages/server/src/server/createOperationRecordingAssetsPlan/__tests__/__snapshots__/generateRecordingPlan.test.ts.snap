@@ -10,18 +10,21 @@ Object {
   "typeRecordings": Object {
     "mockRecordingId0": Object {
       "typeName": "Query",
+      "typeRecordingId": "mockRecordingId0",
       "value": Object {
         "search": "mockRecordingId3",
       },
     },
     "mockRecordingId3": Object {
       "typeName": "SearchQuery",
+      "typeRecordingId": "mockRecordingId3",
       "value": Object {
         "artists": "mockRecordingId4",
       },
     },
     "mockRecordingId4": Object {
       "typeName": "ArtistConnection",
+      "typeRecordingId": "mockRecordingId4",
       "value": Object {
         "nodes": Array [
           "mockRecordingId5",
@@ -31,6 +34,7 @@ Object {
     },
     "mockRecordingId5": Object {
       "typeName": "Artist",
+      "typeRecordingId": "mockRecordingId5",
       "value": Object {
         "id": "QXJ0aXN0OmJjNzEwYmNmLTg4MTUtNDJjZi1iYWQyLTNmMWQxMjI0NmFlYg==",
         "name": "Nickelback",
@@ -38,6 +42,7 @@ Object {
     },
     "mockRecordingId6": Object {
       "typeName": "Artist",
+      "typeRecordingId": "mockRecordingId6",
       "value": Object {
         "id": "QXJ0aXN0OjFkNmI5M2JhLTg1MWUtNDQ3Yy1iOTg3LThkMzA4ZDZhYzg5ZA==",
         "name": "A Motown Tribute to Nickelback",

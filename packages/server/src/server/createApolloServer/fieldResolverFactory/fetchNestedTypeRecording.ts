@@ -25,6 +25,14 @@ export const fetchNestedTypeRecording = async ({
     typeName,
     typeNameToIdMappingData,
   });
+  // TODO handle the case where the given typeName does not exist in the given schemaId's types.json
+  if (typeId === null) {
+    throw new Error(`
+      TODO handle the case where the given typeName does not exist in the given types.json.
+      typeName:${typeName}
+    `);
+  }
+
   const typeRecording = await getTypeRecording({
     typeId,
     recordingId,
