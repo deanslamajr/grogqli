@@ -15,32 +15,35 @@ export interface SchemaFile {
 //
 // /grogqli
 //   /schemas
+const SCHEMAS_FOLDER_NAME = 'schemas';
 //     schemas.json
 //     /<schemaId>
 //       operations.json
+export const OPERATIONS_FILENAME = 'operations.json';
 //       schema.json
+const SCHEMA_FILENAME = 'schema.json';
 //       types.json
+const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
+export const TYPES_NAME_TO_ID_MAPPING_VERSION = 1;
 //   /operations
+export const OPERATIONS_FOLDER_NAME = 'operations';
 //     someOperationId.json
 //   /types
-//     someTypeId.json
+const TYPES_FOLDER_NAME = 'types';
+//     <typeId>.json
+export const TYPES_FILE_VERSION = 1;
 //   /workflows
-//     someWorkFlowId.json
+export const WORKFLOWS_FOLDER_NAME = 'workflows';
+//     index.json
+const WORKFLOWS_NAME_TO_ID_MAPPING_FILENAME = 'index.json';
+export const WORKFLOWS_NAME_TO_ID_MAPPING_VERSION = 1;
+//     <workflowId>.json
 //   /local
+const TEMP_FOLDER_NAME = 'local';
 //     appState.json
 //     /schemas
-//     /queries
-const SCHEMAS_FOLDER_NAME = 'schemas';
-const SCHEMA_FILENAME = 'schema.json';
-export const OPERATIONS_FILENAME = 'operations.json';
-export const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
-export const TYPES_NAME_TO_ID_MAPPING_VERSION = 1;
-export const OPERATIONS_FOLDER_NAME = 'operations';
-export const WORKFLOWS_FOLDER_NAME = 'workflows';
-export const TYPES_FOLDER_NAME = 'types';
-export const TYPES_FILE_VERSION = 1;
-const TEMP_FOLDER_NAME = 'local';
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
+//     /queries
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
 
 const createDirIfDoesntExist = (dirPath: string) => {
@@ -90,6 +93,44 @@ export const getTypeNameMappingFilePath = async (schemaId: string) => {
   createDirIfDoesntExist(typeNameMappingFilePath);
 
   return typeNameMappingFilePath;
+};
+
+// e.g. /grogqli/workflows
+export const getWorkflowsFolderPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const workflowsFolderPath = path.join(
+    recordingsRootDir,
+    WORKFLOWS_FOLDER_NAME
+  );
+  createDirIfDoesntExist(workflowsFolderPath);
+  return workflowsFolderPath;
+};
+
+// e.g. /grogqli/workflows/index.json
+export const getWorkflowNameMappingFilePath = async (): Promise<string> => {
+  const workflowsFolderPath = await getWorkflowsFolderPath();
+
+  const workflowNameMappingFilePath = path.join(
+    workflowsFolderPath,
+    WORKFLOWS_NAME_TO_ID_MAPPING_FILENAME
+  );
+
+  createDirIfDoesntExist(workflowNameMappingFilePath);
+
+  return workflowNameMappingFilePath;
+};
+
+// e.g. /grogqli/workflows/<workflowId>.json
+export const getWorkflowRecordingFilePath = async (
+  workflowId: string
+): Promise<string> => {
+  const workflowsFolderPath = await getWorkflowsFolderPath();
+
+  const workflowFilePath = path.join(workflowsFolderPath, `${workflowId}.json`);
+
+  createDirIfDoesntExist(workflowFilePath);
+
+  return workflowFilePath;
 };
 
 // e.g. /grogqli/types/<typeId>.json

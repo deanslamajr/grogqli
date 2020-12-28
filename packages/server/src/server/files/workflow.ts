@@ -1,21 +1,83 @@
-import path from 'path';
-import { getRecordingsRootDir, WORKFLOWS_FOLDER_NAME } from './';
+import shortid from 'shortid';
+import editJsonFile from 'edit-json-file';
 
-type DistributiveOmit<T, K extends keyof any> = T extends any
-  ? Omit<T, K>
-  : never;
+import { DistributiveOmit } from '../types';
+import {
+  getWorkflowRecordingFilePath,
+  getWorkflowNameMappingFilePath,
+  WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
+} from './';
 
-// TODO remove this after a version2 exists
-// this is here to help provide an example of how to do this
-// (before there was more than a single version)
-export interface WorkflowFileVersion0 {
-  version: 0;
+// pattern to support versioning this file structure
+export type WorkflowNameMappingFileContents = WorkflowNameMappingFileContentsVersion1;
+interface WorkflowNameMappingFileContentsVersion1 {
+  version: 1;
+  workflows: {
+    [workflowName: string]: {
+      name: string;
+      id: string;
+    };
+  };
 }
 
-export interface WorkflowFileVersion1 {
-  version: 1;
+type AddNewEntryToWorkflowMappingFile = (
+  workflowName: string
+) => Promise<string>;
+export const addNewEntryToWorkflowMappingFile: AddNewEntryToWorkflowMappingFile = async (
+  workflowName
+) => {
+  const pathToWorkflowNameToIdMappingFile = await getWorkflowNameMappingFilePath();
+  const workflowNameMappingFile = await editJsonFile(
+    pathToWorkflowNameToIdMappingFile
+  );
+
+  let newWorkflowId;
+  // handle the case where mappings file does not exist
+  if (workflowNameMappingFile.get() === {}) {
+    const initializedWorkflowNamesMappingFileData: WorkflowNameMappingFileContentsVersion1 = {
+      version: WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
+      workflows: {},
+    };
+    workflowNameMappingFile.set('', initializedWorkflowNamesMappingFileData);
+    newWorkflowId = shortid.generate();
+  } else {
+    let newIdIsNotUnique = true;
+
+    // generate a new workflowId that is unique against the existing set of workflowId's
+    do {
+      newWorkflowId = shortid.generate();
+      const workflowMappings = Object.values<
+        WorkflowNameMappingFileContentsVersion1['workflows'][keyof WorkflowNameMappingFileContentsVersion1['workflows']]
+      >(workflowNameMappingFile.get('workflows'));
+      newIdIsNotUnique = workflowMappings.some(
+        // eslint-disable-next-line no-loop-func
+        ({ id }) => id === newWorkflowId
+      );
+    } while (newIdIsNotUnique);
+  }
+
+  workflowNameMappingFile.set(`workflows.${workflowName}`, {
+    name: workflowName,
+    id: newWorkflowId,
+  });
+  workflowNameMappingFile.save();
+
+  return newWorkflowId;
+};
+
+// pattern to support versioning this file structure
+// TODO remove version0 after a version2 exists
+// this is here to help provide an example of how to do this
+// (before there was more than a single version)
+interface WorkflowRecordingsFileVersion0 {
+  version: 0;
+}
+export type WorkflowRecordingsFile =
+  | WorkflowRecordingsFileVersion0
+  | WorkflowRecordingsFileVersion1;
+export interface WorkflowRecordingsFileVersion1 {
   id: string;
-  name: string;
+  version: 1;
   description: string;
   operationRecordings: {
     [opId: string]: {
@@ -25,24 +87,20 @@ export interface WorkflowFileVersion1 {
   };
 }
 
-export type WorkflowFile = WorkflowFileVersion0 | WorkflowFileVersion1;
-
-export type WorkflowFileBeforeCreation = DistributiveOmit<WorkflowFile, 'id'>;
+export type WorkflowFileBeforeCreation = DistributiveOmit<
+  WorkflowRecordingsFile,
+  'id'
+>;
 
 export const getWorkflowById = async (
   workflowId: string
-): Promise<WorkflowFile | null> => {
+): Promise<WorkflowRecordingsFile | null> => {
   if (!workflowId) {
     return null;
   }
-  let workflow: WorkflowFile;
-  const recordingsRootDir = await getRecordingsRootDir();
-  const pathToWorkflow = path.join(
-    recordingsRootDir,
-    WORKFLOWS_FOLDER_NAME,
-    `${workflowId}.json`
-  );
 
+  const pathToWorkflow = await getWorkflowRecordingFilePath(workflowId);
+  let workflow: WorkflowRecordingsFile;
   try {
     workflow = require(pathToWorkflow);
   } catch (error) {

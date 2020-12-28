@@ -29,28 +29,28 @@ export const generateRecordingPlan: GenerateRecordingPlan = async ({
   schemaId,
   variables,
 }) => {
+  const apolloServer = await createRecorderApolloServer({
+    schemaId,
+  });
+
   // This will be mutated by apolloServer
   const recordingsPlan: OperationRecordingPlan = {
     rootTypeRecordingIds: new Set(),
     schemaId,
     typeRecordings: {},
   };
-
   const unusedRootTypeRecordingsIds = generateRootTypeRecordingsIds();
-
-  const apolloServer = await createRecorderApolloServer({
-    schemaId,
-  });
+  const grogqliRunTimeVariables: RuntimeVariables = {
+    parsedOpRecording,
+    recordingsPlan,
+    rootTypeRecordingsIds: unusedRootTypeRecordingsIds,
+  };
 
   await apolloServer.executeOperation({
     query: operationSDL,
     variables: {
       ...variables,
-      grogqliRunTimeVariables: {
-        parsedOpRecording,
-        recordingsPlan,
-        rootTypeRecordingsIds: unusedRootTypeRecordingsIds,
-      } as RuntimeVariables,
+      grogqliRunTimeVariables,
     },
   });
 

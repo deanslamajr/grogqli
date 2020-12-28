@@ -5,8 +5,8 @@ import {
 } from '../../files/type';
 import {
   getWorkflowById,
-  WorkflowFile,
-  WorkflowFileVersion1,
+  WorkflowRecordingsFile,
+  WorkflowRecordingsFileVersion1,
 } from '../../files/workflow';
 import {
   getOperationFile,
@@ -44,7 +44,9 @@ const getOpRecordingIdFromWorkflow = async ({
   opId,
   workflowId,
 }: GetRootTypeRecordingIdParams): Promise<string> => {
-  const workflowData: WorkflowFile | null = await getWorkflowById(workflowId);
+  const workflowData: WorkflowRecordingsFile | null = await getWorkflowById(
+    workflowId
+  );
   // TODO handle case where a workflow file is not found for the given workflowId
   if (workflowData === null) {
     throw new Error(
@@ -52,7 +54,7 @@ const getOpRecordingIdFromWorkflow = async ({
     );
   }
 
-  const operationsWorkflowData = (workflowData as WorkflowFileVersion1)
+  const operationsWorkflowData = (workflowData as WorkflowRecordingsFileVersion1)
     .operationRecordings[opId];
   // TODO handle case where the workflow file does not have a recording for the given opId
   if (!operationsWorkflowData) {

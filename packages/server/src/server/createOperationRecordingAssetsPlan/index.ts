@@ -13,6 +13,10 @@ export const createOperationRecordingAssetsPlan: CreateRecordingAssets = async (
 }) => {
   const file = await getQueryRecordingsFile();
   const recording: Recording = file.get(recordingId);
+  if (!recording) {
+    throw new Error(`Recording with id:${recordingId} does not exist!`);
+  }
+
   const {
     response,
     query: operationSDL,
@@ -21,9 +25,6 @@ export const createOperationRecordingAssetsPlan: CreateRecordingAssets = async (
     variables: rawVariables,
   } = recording;
 
-  if (!recording) {
-    throw new Error(`Recording with id:${recordingId} does not exist!`);
-  }
   if (response === null || response === undefined) {
     throw new Error(
       `Recording with id:${recordingId} has a null/undefined response value.`

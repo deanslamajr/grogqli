@@ -1,13 +1,14 @@
 {
   "version": 1,
   "id": "someWorkflowId",
-  "name": "Some workflow",
   "description": "some markdown text that gives context on this workflow",
   "operationRecordings": {
     "someOpId": {
+      "opId": "someOpId",
       "opRecordingId": "someOpRecordingId"
     },
     "llK98u0": {
+      "opId": "llK98u0",
       "opRecordingId": "q7f66d54"
     }
   }

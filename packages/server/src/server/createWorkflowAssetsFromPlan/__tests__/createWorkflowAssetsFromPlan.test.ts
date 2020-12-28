@@ -10,7 +10,7 @@ describe('createWorkflowAssetsFromPlan', () => {
       await createWorkflowAssetsFromPlan({
         name,
         description,
-        operations: [
+        opRecordingsPlans: [
           {
             schemaId,
             rootTypeRecordingIds,

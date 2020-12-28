@@ -23,7 +23,7 @@ export const createWorkflow = async (
     input: { workflow, operations },
   } = args;
 
-  const operationRecordingPlans = await Promise.all(
+  const opRecordingsPlans = await Promise.all(
     operations.map(({ recordingId }) =>
       createOperationRecordingAssetsPlan({ recordingId })
     )
@@ -32,7 +32,7 @@ export const createWorkflow = async (
   await createWorkflowAssetsFromPlan({
     name: workflow.name,
     description: workflow.description,
-    operations: operationRecordingPlans,
+    opRecordingsPlans,
   });
 
   return {
