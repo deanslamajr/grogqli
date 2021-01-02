@@ -28,9 +28,7 @@ export const createWorkflowAssetsFromPlan = async (
       await createTypeAssetsFromPlan(opPlan);
 
       // create/update grogqli/operations/<opId>.json
-      const { opId, opRecordingId } = await createOrUpdateOpFile({
-        opPlan,
-      });
+      const { opId, opRecordingId } = await createOrUpdateOpFile(opPlan);
 
       // add an entry to grogqli/workflows/<workflowId>.json#operationRecordings
       newWorkflowFile.operationRecordings[opId] = {

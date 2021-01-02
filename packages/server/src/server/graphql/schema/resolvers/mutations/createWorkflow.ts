@@ -8,7 +8,7 @@ interface Args {
       description: string;
     };
     operations: Array<{
-      recordingId: string;
+      tempRecordingId: string;
     }>;
   };
 }
@@ -24,8 +24,8 @@ export const createWorkflow = async (
   } = args;
 
   const opRecordingsPlans = await Promise.all(
-    operations.map(({ recordingId }) =>
-      createOperationRecordingAssetsPlan({ recordingId })
+    operations.map(({ tempRecordingId }) =>
+      createOperationRecordingAssetsPlan({ tempRecordingId })
     )
   );
 
@@ -35,6 +35,12 @@ export const createWorkflow = async (
     opRecordingsPlans,
   });
 
+  // TODO provide a mechanism for functions (or nested functions) in this resolver
+  // to communicate rich information back to the client
+  // (e.g. need to do something before continuing with recording).
+  // An idea about how to do this would be that functions can throw Errors of unique types
+  // that can be parsed at this level and then an error code and context data
+  // can be returned from this resolver.
   return {
     result: {},
   };

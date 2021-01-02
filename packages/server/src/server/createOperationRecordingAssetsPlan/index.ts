@@ -4,17 +4,19 @@ import { getQueryRecordingsFile } from '../files';
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
-type CreateRecordingAssets = (params: {
-  recordingId: string;
+type CreateOperationRecordingAssetsPlan = (params: {
+  tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
 
-export const createOperationRecordingAssetsPlan: CreateRecordingAssets = async ({
-  recordingId,
+export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsPlan = async ({
+  tempRecordingId,
 }) => {
   const file = await getQueryRecordingsFile();
-  const recording: Recording = file.get(recordingId);
+  const recording: Recording = file.get(tempRecordingId);
   if (!recording) {
-    throw new Error(`Recording with id:${recordingId} does not exist!`);
+    throw new Error(
+      `Temporary recording with id:${tempRecordingId} does not exist!`
+    );
   }
 
   const {
@@ -27,7 +29,7 @@ export const createOperationRecordingAssetsPlan: CreateRecordingAssets = async (
 
   if (response === null || response === undefined) {
     throw new Error(
-      `Recording with id:${recordingId} has a null/undefined response value.`
+      `Recording with id:${tempRecordingId} has a null/undefined response value.`
     );
   }
 

@@ -16,11 +16,6 @@ export const createNewWorkflowAssets: CreateNewWorkflowFile = async ({
   newWorkflowFileWithoutId,
   workflowName,
 }) => {
-  // * generates a new unique workflowId
-  // * adds an entry to grogqli/workflows/index.json (mapping of workflow names->ids)
-  // * creates a new workflow file, e.g. grogqli/workflows/newWorkflowId.json
-  //   * should workflow.name only be referenced in grogqli/workflows/index.json ???
-
   const workflowId: string = await addNewEntryToWorkflowMappingFile(
     workflowName
   );

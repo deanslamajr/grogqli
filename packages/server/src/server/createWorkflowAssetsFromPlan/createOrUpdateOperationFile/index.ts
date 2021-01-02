@@ -7,16 +7,14 @@ import {
 } from '../../files/operation';
 import { createOpRecording } from './createOperationRecording';
 
-type CreateOrUpdateOpFile = (params: {
-  opPlan: OperationRecordingPlan;
-}) => Promise<{
+type CreateOrUpdateOpFile = (
+  opPlan: OperationRecordingPlan
+) => Promise<{
   opId: string;
   opRecordingId;
 }>;
 
-export const createOrUpdateOpFile: CreateOrUpdateOpFile = async ({
-  opPlan,
-}) => {
+export const createOrUpdateOpFile: CreateOrUpdateOpFile = async (opPlan) => {
   const opRecordingWithoutId: OperationRecordingWithoutId = await createOpRecording(
     {
       opPlan,

@@ -74,9 +74,6 @@ export const fieldResolverFactory = ({
       // TODO handle case
       //  where context.runTimeVariables.grogqli!.parsedOpRecording.data
       //  === null || undefined
-      // TODO handle case
-      //  where context.runTimeVariables.grogqli!.parsedOpRecording.data[fieldName]
-      //  === null || undefined
       const fieldValue = context.runTimeVariables.grogqli!.parsedOpRecording
         .data[fieldName];
 
@@ -97,8 +94,6 @@ export const fieldResolverFactory = ({
         isRootType: true,
       });
     } else {
-      // TODO handle case
-      //  where parent.value[fieldName] === null || undefined
       const fieldValue = parent.value[fieldName];
       const parentTypeRecordingId = parent.parentTypeRecordingId;
 

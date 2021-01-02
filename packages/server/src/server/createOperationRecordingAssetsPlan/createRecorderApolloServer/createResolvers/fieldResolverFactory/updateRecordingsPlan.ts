@@ -61,8 +61,8 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
     parentTypeRecordingFieldValue = fieldValue;
     fieldResolverValue = fieldValue;
   }
-  // 2. the field return type is a non-scalars or list of non-scalars
-  // 2a. if list of scalars, return [
+  // 2. the field return type is a non-scalar or list of non-scalars
+  // 2a. if list of non-scalars, return [
   //    {value: fieldValue[0], parentTypeRecordingId: recordingId1},
   //    {value: fieldValue[1], parentTypeRecordingId: recordingId2},
   //    etc
@@ -78,6 +78,7 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
     fieldResolverValue = [];
 
     fieldValue.forEach((returnListItem) => {
+      // TODO verify this recordingId is not already in use
       const recordingId = shortid.generate();
       parentTypeRecordingFieldValue.push(recordingId);
 
@@ -90,6 +91,7 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   }
   // 2b. if a single non-scalar (e.g. non-list), return {value: fieldValue, parentTypeRecordingId}
   else {
+    // TODO verify this recordingId is not already in use
     const recordingId = shortid.generate();
     parentTypeRecordingFieldValue = recordingId;
 
