@@ -1,12 +1,11 @@
-import path from 'path';
 import shortid from 'shortid';
-import { RootTypeRecordingsIds } from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+import editJsonFile from 'edit-json-file';
 
 import {
-  OPERATIONS_FILENAME,
-  OPERATIONS_FOLDER_NAME,
-  getRecordingsRootDir,
-  getSchemasFolderPath,
+  OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
+  OPERATIONS_RECORDING_VERSION,
+  getOpNameMappingFilePath,
+  getOperationRecordingsFilePath,
 } from './';
 
 export interface RootTypeRecordingEntry {
@@ -21,9 +20,13 @@ export interface OperationRecording {
   };
 }
 
-export interface OperationFile {
+export type OperationRecordingWithoutId = Omit<OperationRecording, 'id'>;
+
+// pattern to support versioning this file structure
+export type OperationRecordingsFile = OperationRecordingsFileVersion1;
+export interface OperationRecordingsFileVersion1 {
   id: string;
-  version: number;
+  version: 1;
   recordings: {
     [opRecordingId: string]: OperationRecording;
   };
@@ -31,27 +34,106 @@ export interface OperationFile {
 
 type CreateNewOpFile = (args: {
   opName: string;
+  opRecordingWithoutId: OperationRecordingWithoutId;
   schemaId: string;
-}) => OperationFile;
+}) => Promise<{
+  opId: string;
+  opRecordingId: string;
+}>;
 
-export const createNewOpFile: CreateNewOpFile = async (args) => {
-  // TODO implement this file
-  // see how createNewTypeRecordingsFile does this
-  // (e.g. creates a unique id as part of creating a new mapping)
+export const createNewOperationRecordingsFile: CreateNewOpFile = async ({
+  opName,
+  opRecordingWithoutId,
+  schemaId,
+}) => {
+  const opId = await addNewOperationToOpMappingFile({
+    schemaId,
+    opName,
+  });
 
-  // - generate a new unique opId
-  const opId = shortid.generate();
-  // - add entry to grogqli/schemas/<opPlan.schemaId>/operations.json
-  const opMapFile = await loadOperationsMappingFile(args.schemaId);
+  const pathToOperationRecordingsFile = await getOperationRecordingsFilePath(
+    opId
+  );
+  const opRecordingsFile = editJsonFile(pathToOperationRecordingsFile);
 
-  // - create grogqli/operations/<opId>.json
-  //   - recordings - empty object
+  // if this file has already been initialized, throw error
+  // this is to prevent unexpected behavior
+  if (opRecordingsFile.read() !== {}) {
+    throw new Error(`File for opId:${opId} already exists!`);
+  }
+
+  const opRecordingId = shortid.generate();
+
+  const operationRecording: OperationRecording = {
+    ...opRecordingWithoutId,
+    id: opRecordingId,
+  };
+
+  const operationRecordingsFileContents: OperationRecordingsFileVersion1 = {
+    id: opId,
+    version: OPERATIONS_RECORDING_VERSION,
+    recordings: {
+      [opRecordingId]: operationRecording,
+    },
+  };
+
+  opRecordingsFile.set('', operationRecordingsFileContents);
+  opRecordingsFile.save();
+
+  return {
+    opId,
+    opRecordingId,
+  };
+};
+
+type AddNewOperationToOpMappingFile = (params: {
+  schemaId: string;
+  opName: string;
+}) => Promise<string>;
+
+export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = async ({
+  schemaId,
+  opName,
+}) => {
+  const pathToOpNameToIdMappingFile = await getOpNameMappingFilePath(schemaId);
+  const opsMappingFile = await editJsonFile(pathToOpNameToIdMappingFile);
+
+  let newOpId;
+  // handle the case where mappings file does not exist
+  if (opsMappingFile.read() === {}) {
+    const initializedOpMappingFileData: OperationNameToIdMappingVersion1 = {
+      version: OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
+      operations: {},
+    };
+    opsMappingFile.set('', initializedOpMappingFileData);
+    newOpId = shortid.generate();
+  } else {
+    let newIdIsNotUnique = true;
+
+    // generate a new typeId that is unique against the existing set of typeId's
+    do {
+      newOpId = shortid.generate();
+      const opMappings = Object.values<
+        OperationNameToIdMappingVersion1['operations'][keyof OperationNameToIdMappingVersion1['operations']]
+      >(opsMappingFile.get('operations'));
+      // eslint-disable-next-line no-loop-func
+      newIdIsNotUnique = opMappings.some(({ id }) => id === newOpId);
+    } while (newIdIsNotUnique);
+  }
+
+  opsMappingFile.set(`operations.${opName}`, {
+    name: opName,
+    id: newOpId,
+  });
+  opsMappingFile.save();
+
+  return newOpId;
 };
 
 type GetOpFileFromOpName = (params: {
   opName: string;
   schemaId: string;
-}) => Promise<OperationFile | null>;
+}) => Promise<OperationRecordingsFileVersion1 | null>;
 
 export const getOpFileFromOpName: GetOpFileFromOpName = async ({
   opName,
@@ -75,17 +157,12 @@ export const getOpFileFromOpName: GetOpFileFromOpName = async ({
 
 export const getOperationFile = async (
   operationId: string
-): Promise<OperationFile | null> => {
+): Promise<OperationRecordingsFileVersion1 | null> => {
   if (!operationId) {
     return null;
   }
-  let operationFile: OperationFile;
-  const recordingsRootDir = await getRecordingsRootDir();
-  const pathToOperationFile = path.join(
-    recordingsRootDir,
-    OPERATIONS_FOLDER_NAME,
-    `${operationId}.json`
-  );
+  let operationFile: OperationRecordingsFileVersion1;
+  const pathToOperationFile = await getOperationRecordingsFilePath(operationId);
 
   try {
     operationFile = require(pathToOperationFile);
@@ -96,7 +173,10 @@ export const getOperationFile = async (
   return operationFile;
 };
 
-export interface OperationsMappingFile {
+// allows versioning of this file structure
+export type OperationNameToIdMapping = OperationNameToIdMappingVersion1;
+
+export interface OperationNameToIdMappingVersion1 {
   version: number;
   operations: {
     [opName: string]: {
@@ -108,8 +188,7 @@ export interface OperationsMappingFile {
 
 export const loadOperationsMappingFile = async (
   schemaId: string
-): Promise<OperationsMappingFile> => {
-  const schemasFolderPath = await getSchemasFolderPath();
+): Promise<OperationNameToIdMappingVersion1> => {
   // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
   // reevaluate whether or not this is necessary:
   // return JSON.parse(
@@ -117,12 +196,8 @@ export const loadOperationsMappingFile = async (
   //   // bc we want to bypass the auto caching feature of require
   //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
   // );
-  const pathToOperationsData = path.join(
-    schemasFolderPath,
-    schemaId,
-    OPERATIONS_FILENAME
-  );
-  let operationsData: OperationsMappingFile;
+  const pathToOperationsData = await getOpNameMappingFilePath(schemaId);
+  let operationsData: OperationNameToIdMappingVersion1;
   try {
     operationsData = require(pathToOperationsData);
   } catch (error) {

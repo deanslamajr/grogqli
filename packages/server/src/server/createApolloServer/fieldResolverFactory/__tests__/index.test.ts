@@ -3,7 +3,7 @@ import path from 'path';
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import { Context } from '../..';
 import { getConfig } from '../../../files/getConfig';
-import { OperationFile } from '../../../files/operation';
+import { OperationRecordingsFileVersion1 } from '../../../files/operation';
 
 import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
@@ -18,7 +18,7 @@ describe('fieldResolverFactory', () => {
   let fieldResolverFactoryArgs: ResolveValueFactoryParams;
   let info: any;
   let context: Context;
-  let mockedOperationFile: jest.Mocked<OperationFile>;
+  let mockedOperationFile: jest.Mocked<OperationRecordingsFileVersion1>;
 
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
@@ -29,7 +29,9 @@ describe('fieldResolverFactory', () => {
       return path.join(__dirname, relativePathToTestGrogqli);
     });
 
-    mockedOperationFile = someOperationFile as jest.Mocked<OperationFile>;
+    mockedOperationFile = someOperationFile as jest.Mocked<
+      OperationRecordingsFileVersion1
+    >;
     const actualOperationFile = jest.requireActual(
       '../../../files/__tests__/grogqli/operations/someOpId.json'
     );

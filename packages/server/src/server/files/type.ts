@@ -104,7 +104,7 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
   let newTypeId;
   // handle the case where mappings file does not exist
   if (typesMappingFile.read() === {}) {
-    const initializedTypeMappingFileData = {
+    const initializedTypeMappingFileData: TypeNameToIdMappingVersion1 = {
       version: TYPES_NAME_TO_ID_MAPPING_VERSION,
       types: {},
     };

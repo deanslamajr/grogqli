@@ -19,7 +19,8 @@ const SCHEMAS_FOLDER_NAME = 'schemas';
 //     schemas.json
 //     /<schemaId>
 //       operations.json
-export const OPERATIONS_FILENAME = 'operations.json';
+export const OPERATIONS_NAME_TO_ID_MAPPING_FILENAME = 'operations.json';
+export const OPERATIONS_NAME_TO_ID_MAPPING_VERSION = 1;
 //       schema.json
 const SCHEMA_FILENAME = 'schema.json';
 //       types.json
@@ -27,6 +28,7 @@ const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
 export const TYPES_NAME_TO_ID_MAPPING_VERSION = 1;
 //   /operations
 export const OPERATIONS_FOLDER_NAME = 'operations';
+export const OPERATIONS_RECORDING_VERSION = 1;
 //     someOperationId.json
 //   /types
 const TYPES_FOLDER_NAME = 'types';
@@ -80,6 +82,21 @@ export const getSchemasFolderPath = async (): Promise<string> => {
   return schemasFolderPath;
 };
 
+// e.g. /grogqli/schemas/<schemaId>/operations.json
+export const getOpNameMappingFilePath = async (schemaId: string) => {
+  const schemasFolderPath = await getSchemasFolderPath();
+
+  const oPNameMappingFilePath = path.join(
+    schemasFolderPath,
+    schemaId,
+    OPERATIONS_NAME_TO_ID_MAPPING_FILENAME
+  );
+
+  createDirIfDoesntExist(oPNameMappingFilePath);
+
+  return oPNameMappingFilePath;
+};
+
 // e.g. /grogqli/schemas/<schemaId>/types.json
 export const getTypeNameMappingFilePath = async (schemaId: string) => {
   const schemasFolderPath = await getSchemasFolderPath();
@@ -131,6 +148,22 @@ export const getWorkflowRecordingFilePath = async (
   createDirIfDoesntExist(workflowFilePath);
 
   return workflowFilePath;
+};
+
+// e.g. /grogqli/operations/<opId>.json
+export const getOperationRecordingsFilePath = async (
+  opId: string
+): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const pathToOperationRecordingFile = path.join(
+    recordingsRootDir,
+    OPERATIONS_FOLDER_NAME,
+    `${opId}.json`
+  );
+
+  createDirIfDoesntExist(pathToOperationRecordingFile);
+
+  return pathToOperationRecordingFile;
 };
 
 // e.g. /grogqli/types/<typeId>.json

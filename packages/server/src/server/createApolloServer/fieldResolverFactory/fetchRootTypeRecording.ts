@@ -10,12 +10,12 @@ import {
 } from '../../files/workflow';
 import {
   getOperationFile,
-  OperationFile,
-  OperationsMappingFile,
+  OperationRecordingsFileVersion1,
+  OperationNameToIdMappingVersion1,
 } from '../../files/operation';
 
 interface GetOpDataParams {
-  operationsData: OperationsMappingFile;
+  operationsData: OperationNameToIdMappingVersion1;
   opName: string;
 }
 
@@ -78,7 +78,9 @@ export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOp
   opRecordingId,
 }) => {
   // get opId.json
-  const opFile: OperationFile | null = await getOperationFile(opId);
+  const opFile: OperationRecordingsFileVersion1 | null = await getOperationFile(
+    opId
+  );
 
   if (opFile === null) {
     // TODO handle case where operation file does not exist for given operation id
@@ -112,7 +114,7 @@ export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOp
 
 export interface FetchRootTypeRecordingParams {
   opName: string;
-  operationsData: OperationsMappingFile;
+  operationsData: OperationNameToIdMappingVersion1;
   rootTypeName: string;
   typeNameToIdMappingData: TypeNameToIdMapping;
   workflowId: string;

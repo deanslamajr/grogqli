@@ -1,41 +1,67 @@
 import { OperationRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import {
-  createNewOpFile,
+  createNewOperationRecordingsFile,
   getOpFileFromOpName,
-  OperationFile,
+  OperationRecordingsFileVersion1,
   OperationRecording,
 } from '../../files/operation';
-import { createOpRecording } from './createOperationRecording';
+import {
+  createOpRecording,
+  OperationRecordingWithoutId,
+} from './createOperationRecording';
 
 type CreateOrUpdateOpFile = (params: {
   opPlan: OperationRecordingPlan;
 }) => Promise<{
-  opFile: OperationFile;
-  opRecording: OperationRecording;
+  opId: string;
+  opRecordingId;
+  // opFile: OperationRecordingsFileVersion1;
+  // opRecording: OperationRecording;
 }>;
 
 export const createOrUpdateOpFile: CreateOrUpdateOpFile = async ({
   opPlan,
 }) => {
-  const opRecording: OperationRecording = await createOpRecording({
-    opPlan,
-  });
-
-  let opFile = await getOpFileFromOpName({
-    schemaId: opPlan.schemaId,
-    opName: opPlan.name!,
-  });
-
-  if (opFile === null) {
-    opFile = createNewOpFile({
+  const opRecordingWithoutId: OperationRecordingWithoutId = await createOpRecording(
+    {
+      opPlan,
+    }
+  );
+  let opId = getOperationIdFromName(opPlan.name);
+  let opRecordingId;
+  if (opId === null) {
+    ({ opId, opRecordingId } = await createNewOperationRecordingsFile({
       schemaId: opPlan.schemaId,
       opName: opPlan.name!,
+      opRecordingWithoutId,
+    }));
+  } else {
+    opRecordingId = await addNewRecordingToOperationRecordingsFile({
+      opPlan,
+      opId,
+      opRecordingWithoutId,
     });
   }
-  opFile.recordings[opRecording.id] = opRecording;
-  // TODO save opFile
   return {
-    opFile,
-    opRecording,
+    opId,
+    opRecordingId,
   };
+
+  // let opFile = await getOpFileFromOpName({
+  //   schemaId: opPlan.schemaId,
+  //   opName: opPlan.name!,
+  // });
+
+  // if (opFile === null) {
+  //   opFile = createNewOpFile({
+  //     schemaId: opPlan.schemaId,
+  //     opName: opPlan.name!,
+  //   });
+  // }
+  // opFile.recordings[opRecording.id] = opRecording;
+  // // TODO save opFile
+  // return {
+  //   opFile,
+  //   opRecording,
+  // };
 };
