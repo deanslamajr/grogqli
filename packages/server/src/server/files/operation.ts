@@ -130,29 +130,26 @@ export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = as
   return newOpId;
 };
 
-type GetOpFileFromOpName = (params: {
+type GetOperationIdFromName = (params: {
   opName: string;
   schemaId: string;
-}) => Promise<OperationRecordingsFileVersion1 | null>;
+}) => Promise<string | null>;
 
-export const getOpFileFromOpName: GetOpFileFromOpName = async ({
+export const getOperationIdFromName: GetOperationIdFromName = async ({
   opName,
   schemaId,
 }) => {
   const opsMappingFile = await loadOperationsMappingFile(schemaId);
-  const opEntry = opsMappingFile.operations[opName];
+  if (opsMappingFile === null) {
+    return null;
+  }
 
+  const opEntry = opsMappingFile.operations[opName];
   if (opEntry === undefined) {
     return null;
   }
 
-  const operationFile = await getOperationFile(opEntry.id);
-
-  if (operationFile === undefined) {
-    return null;
-  }
-
-  return operationFile;
+  return opEntry.id;
 };
 
 export const getOperationFile = async (
@@ -188,7 +185,7 @@ export interface OperationNameToIdMappingVersion1 {
 
 export const loadOperationsMappingFile = async (
   schemaId: string
-): Promise<OperationNameToIdMappingVersion1> => {
+): Promise<OperationNameToIdMappingVersion1 | null> => {
   // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
   // reevaluate whether or not this is necessary:
   // return JSON.parse(
@@ -201,10 +198,7 @@ export const loadOperationsMappingFile = async (
   try {
     operationsData = require(pathToOperationsData);
   } catch (error) {
-    // TODO handle case where file doesnt exist for the given schemaId
-    throw new Error(
-      `TODO handle case where a operations file doesnt exist for the given schemaId. schemaId:${schemaId}`
-    );
+    return null;
   }
   return operationsData;
 };

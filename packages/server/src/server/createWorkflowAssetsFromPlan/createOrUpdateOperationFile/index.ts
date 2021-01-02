@@ -1,14 +1,10 @@
 import { OperationRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import {
   createNewOperationRecordingsFile,
-  getOpFileFromOpName,
-  OperationRecordingsFileVersion1,
-  OperationRecording,
-} from '../../files/operation';
-import {
-  createOpRecording,
+  getOperationIdFromName,
   OperationRecordingWithoutId,
-} from './createOperationRecording';
+} from '../../files/operation';
+import { createOpRecording } from './createOperationRecording';
 
 type CreateOrUpdateOpFile = (params: {
   opPlan: OperationRecordingPlan;
@@ -27,7 +23,12 @@ export const createOrUpdateOpFile: CreateOrUpdateOpFile = async ({
       opPlan,
     }
   );
-  let opId = getOperationIdFromName(opPlan.name);
+
+  let opId = await getOperationIdFromName({
+    opName: opPlan.name!,
+    schemaId: opPlan.schemaId,
+  });
+
   let opRecordingId;
   if (opId === null) {
     ({ opId, opRecordingId } = await createNewOperationRecordingsFile({
