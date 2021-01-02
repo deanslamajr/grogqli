@@ -1,5 +1,3 @@
-import shortid from 'shortid';
-
 import { getTypeIdFromTypeNameAndSchemaId } from '../../files/type';
 import { OperationRecordingWithoutId } from '../../files/operation';
 import { OperationRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';

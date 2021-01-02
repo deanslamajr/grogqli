@@ -22,15 +22,73 @@ export interface OperationRecording {
 
 export type OperationRecordingWithoutId = Omit<OperationRecording, 'id'>;
 
+interface OperationRecordings {
+  [opRecordingId: string]: OperationRecording;
+}
+
 // pattern to support versioning this file structure
 export type OperationRecordingsFile = OperationRecordingsFileVersion1;
 export interface OperationRecordingsFileVersion1 {
   id: string;
   version: 1;
-  recordings: {
-    [opRecordingId: string]: OperationRecording;
-  };
+  recordings: OperationRecordings;
 }
+
+type AddNewRecordingToOperationRecordingsFile = (params: {
+  opId: string;
+  opRecordingWithoutId: OperationRecordingWithoutId;
+}) => Promise<string>;
+
+export const addNewRecordingToOperationRecordingsFile: AddNewRecordingToOperationRecordingsFile = async ({
+  opId,
+  opRecordingWithoutId,
+}) => {
+  const pathToOperationRecordingsFile = await getOperationRecordingsFilePath(
+    opId
+  );
+  const opRecordingsFile = editJsonFile(pathToOperationRecordingsFile);
+
+  // if this file has not yet been initialized, throw error
+  // this is to prevent unexpected behavior
+  if (opRecordingsFile.read() === {}) {
+    throw new Error(
+      `An operation recordings file associated with opId:${opId} does not yet exist!`
+    );
+  }
+
+  let newIdIsNotUnique = true;
+  let newOpRecordingId: string;
+
+  const opRecordings: OperationRecordings = opRecordingsFile.get('recordings');
+
+  const opRecordingsAsArray = Object.values<
+    OperationRecordingsFileVersion1['recordings'][keyof OperationRecordingsFileVersion1['recordings']]
+  >(opRecordings);
+
+  // generate a new recordingId that is unique against the existing set of recordingId's
+  do {
+    newOpRecordingId = shortid.generate();
+    newIdIsNotUnique = opRecordingsAsArray.some(
+      // eslint-disable-next-line no-loop-func
+      ({ id }) => id === newOpRecordingId
+    );
+  } while (newIdIsNotUnique);
+
+  const operationRecording: OperationRecording = {
+    ...opRecordingWithoutId,
+    id: newOpRecordingId,
+  };
+
+  const opRecordingsWithNewRecording: OperationRecordings = {
+    ...opRecordings,
+    [newOpRecordingId]: operationRecording,
+  };
+
+  opRecordingsFile.set('recordings', opRecordingsWithNewRecording);
+  opRecordingsFile.save();
+
+  return newOpRecordingId;
+};
 
 type CreateNewOpFile = (args: {
   opName: string;
