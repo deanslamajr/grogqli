@@ -2,6 +2,7 @@ import path from 'path';
 
 import { fetchNestedTypeRecording } from '../fetchNestedTypeRecording';
 import { getConfig } from '../../../files/getConfig';
+import { TypeNameToIdMappingVersion1 } from '../../../files/type';
 import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
 
 jest.mock('../../../files/getConfig');
@@ -24,7 +25,7 @@ describe('fetchNestedTypeRecording', () => {
     const actual = await fetchNestedTypeRecording({
       recordingId,
       typeName,
-      typeNameToIdMappingData,
+      typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
     });
     expect(actual).toMatchSnapshot();
   });
@@ -35,7 +36,7 @@ describe('fetchNestedTypeRecording', () => {
         fetchNestedTypeRecording({
           recordingId,
           typeName: 'nonExistentTypeName',
-          typeNameToIdMappingData,
+          typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
         })
       ).rejects.toThrowErrorMatchingSnapshot();
     });
@@ -47,7 +48,7 @@ describe('fetchNestedTypeRecording', () => {
         fetchNestedTypeRecording({
           recordingId,
           typeName: 'doesntHaveATypeFile',
-          typeNameToIdMappingData,
+          typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
         })
       ).rejects.toThrowErrorMatchingSnapshot();
     });
@@ -59,7 +60,7 @@ describe('fetchNestedTypeRecording', () => {
         fetchNestedTypeRecording({
           recordingId: 'nonExistentTypeRecordingId',
           typeName,
-          typeNameToIdMappingData,
+          typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
         })
       ).rejects.toThrowErrorMatchingSnapshot();
     });

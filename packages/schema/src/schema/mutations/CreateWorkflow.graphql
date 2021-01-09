@@ -1,0 +1,28 @@
+input CreateWorkflowInput {
+  operations: [OperationRecordingsInput!]!
+  schemasMapping: [SchemasMappingsInput!]!
+  workflow: NewWorkflowInput!
+}
+
+input OperationRecordingsInput {
+  tempRecordingId: String!
+}
+
+input SchemasMappingsInput {
+  id: String!
+  url: String!
+}
+
+input NewWorkflowInput {
+  name: String!
+  description: String!
+}
+
+enum CreateWorkflowResultCode {
+  SUCCESS
+  FAILURE
+}
+
+type CreateWorkflowResponse {
+  resultCode: CreateWorkflowResultCode!
+}

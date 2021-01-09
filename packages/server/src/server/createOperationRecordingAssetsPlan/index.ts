@@ -5,10 +5,17 @@ import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
 type CreateOperationRecordingAssetsPlan = (params: {
+  schemasMapping: SchemasMapping;
   tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
 
+export type SchemasMapping = Array<{
+  id: string;
+  url: string;
+}>;
+
 export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsPlan = async ({
+  schemasMapping,
   tempRecordingId,
 }) => {
   const file = await getQueryRecordingsFile();
@@ -22,10 +29,16 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   const {
     response,
     query: operationSDL,
-    // TODO refactor webapp to set the schemaId in the recording
-    schemaId,
+    schemaUrl,
     variables: rawVariables,
   } = recording;
+
+  const schema = schemasMapping.find(({ url }) => schemaUrl === url);
+  if (schema === undefined) {
+    throw new Error(
+      `Could not find a schemaId mapping for the given schemaUrl:${schemaUrl}`
+    );
+  }
 
   if (response === null || response === undefined) {
     throw new Error(
@@ -39,7 +52,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   return generateRecordingPlan({
     parsedOpRecording,
     operationSDL,
-    schemaId,
+    schemaId: schema.id,
     variables,
   });
 };

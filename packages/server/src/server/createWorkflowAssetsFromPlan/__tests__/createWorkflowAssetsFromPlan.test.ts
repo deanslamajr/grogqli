@@ -3,7 +3,7 @@ import { createWorkflowAssetsFromPlan } from '../';
 describe('createWorkflowAssetsFromPlan', () => {
   const name = 'workflowName';
   const description = 'a workflow description';
-  const rootTypeRecordingIds = new Set();
+  const schemaId = 'someSchemaId';
 
   describe('operations', () => {
     it('should create a new type recording in the type file associated with each item in plan.typeRecordings', async () => {
@@ -13,7 +13,8 @@ describe('createWorkflowAssetsFromPlan', () => {
         opRecordingsPlans: [
           {
             schemaId,
-            rootTypeRecordingIds,
+            typeRecordings: {},
+            rootTypeRecordingIds: new Set<string>(),
           },
         ],
       });

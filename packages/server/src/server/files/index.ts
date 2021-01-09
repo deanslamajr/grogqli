@@ -16,7 +16,7 @@ export interface SchemaFile {
 // /grogqli
 //   /schemas
 const SCHEMAS_FOLDER_NAME = 'schemas';
-//     schemas.json
+//     index.json
 //     /<schemaId>
 //       operations.json
 export const OPERATIONS_NAME_TO_ID_MAPPING_FILENAME = 'operations.json';

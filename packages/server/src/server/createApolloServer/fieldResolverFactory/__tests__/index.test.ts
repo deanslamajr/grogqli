@@ -4,11 +4,11 @@ import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import { Context } from '../..';
 import { getConfig } from '../../../files/getConfig';
 import { OperationRecordingsFileVersion1 } from '../../../files/operation';
+import { TypeNameToIdMappingVersion1 } from '../../../files/type';
 
 import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
 import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
-// import someWorkflowFile from '../../../files/__tests__/grogqli/workflows/someWorkflowId.json';
 import someOperationFile from '../../../files/__tests__/grogqli/operations/someOpId.json';
 
 jest.mock('../../../files/getConfig');
@@ -29,7 +29,7 @@ describe('fieldResolverFactory', () => {
       return path.join(__dirname, relativePathToTestGrogqli);
     });
 
-    mockedOperationFile = someOperationFile as jest.Mocked<
+    mockedOperationFile = (someOperationFile as OperationRecordingsFileVersion1) as jest.Mocked<
       OperationRecordingsFileVersion1
     >;
     const actualOperationFile = jest.requireActual(
@@ -42,7 +42,7 @@ describe('fieldResolverFactory', () => {
       operationsData,
       parentTypeName: schema.introspectionQuery.__schema.queryType.name,
       fieldName: 'getAccountFromSession',
-      typeNameToIdMappingData,
+      typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
     };
 
     info = {

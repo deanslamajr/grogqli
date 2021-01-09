@@ -1,4 +1,8 @@
-import { IntrospectionOutputTypeRef } from 'graphql';
+import {
+  IntrospectionOutputTypeRef,
+  IntrospectionQuery,
+  GraphQLResolveInfo,
+} from 'graphql';
 import shortid from 'shortid';
 
 import { fieldResolverFactory } from '..';
@@ -24,14 +28,14 @@ describe('fieldResolverFactory', () => {
     let recordingsPlan: OperationRecordingPlan;
     let context: Context;
 
-    const schema = schemaFile.introspectionQuery;
+    const schema = (schemaFile.introspectionQuery as unknown) as IntrospectionQuery;
     const info = {
       operation: {
         name: {
           value: 'TestQueryName',
         },
       },
-    };
+    } as GraphQLResolveInfo;
     const parsedOpRecording = {
       data: {
         search: {
@@ -81,6 +85,7 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
+          schemaId: schemaFile.id,
           typeRecordings: {},
           rootTypeRecordingIds: new Set(),
         };
@@ -170,7 +175,9 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
+          schemaId: schemaFile.id,
           typeRecordings: {},
+          rootTypeRecordingIds: new Set(),
         };
 
         context = {
@@ -263,7 +270,9 @@ describe('fieldResolverFactory', () => {
           });
 
           recordingsPlan = {
+            schemaId: schemaFile.id,
             typeRecordings: {},
+            rootTypeRecordingIds: new Set(),
           };
 
           context = {
@@ -353,7 +362,9 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
+          schemaId: schemaFile.id,
           typeRecordings: {},
+          rootTypeRecordingIds: new Set(),
         };
 
         context = {

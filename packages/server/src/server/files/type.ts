@@ -11,7 +11,7 @@ import {
 
 // pattern to support versioning this file structure
 export type TypeRecordingsFile = TypeRecordingsFileVersion1;
-interface TypeRecordingsFileVersion1 {
+export interface TypeRecordingsFileVersion1 {
   id: string;
   version: 1;
   recordings: { [recordingId: string]: TypeRecording };
@@ -136,7 +136,7 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
 // allows versioning of this file structure
 export type TypeNameToIdMapping = TypeNameToIdMappingVersion1;
 
-interface TypeNameToIdMappingVersion1 {
+export interface TypeNameToIdMappingVersion1 {
   version: 1;
   types: {
     [typeName: string]: {

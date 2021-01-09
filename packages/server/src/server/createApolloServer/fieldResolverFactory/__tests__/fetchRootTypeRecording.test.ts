@@ -3,14 +3,17 @@ import {
   fetchRootTypeRecording,
   FetchRootTypeRecordingParams,
 } from '../fetchRootTypeRecording';
+import { getConfig } from '../../../files/getConfig';
+import { TypeNameToIdMappingVersion1 } from '../../../files/type';
 
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
 import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
-import { getConfig } from '../../../files/getConfig';
 
 jest.mock('../../../files/getConfig');
 
 describe('fetchRootTypeRecording', () => {
+  const rootTypeName = 'Query';
+
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
@@ -23,13 +26,12 @@ describe('fetchRootTypeRecording', () => {
 
   it('should resolve a recording', async () => {
     const opName = 'someOpName';
-    const rootTypeName = 'Query';
     const config: FetchRootTypeRecordingParams = {
       opName,
       workflowId: 'someWorkflowId',
       operationsData,
       rootTypeName,
-      typeNameToIdMappingData,
+      typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
     };
     const actual = await fetchRootTypeRecording(config);
     expect(actual).toMatchSnapshot();
@@ -40,6 +42,7 @@ describe('fetchRootTypeRecording', () => {
       const opName = 'DoThing';
       const config: FetchRootTypeRecordingParams = {
         opName,
+        rootTypeName,
         workflowId: 'workflowDoesNotExist',
         operationsData: {
           version: 1,
@@ -50,6 +53,7 @@ describe('fetchRootTypeRecording', () => {
             },
           },
         },
+        typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
       };
 
       await expect(

@@ -1,31 +1,22 @@
+import { MutationResolvers, CreateWorkflowResultCode } from '@grogqli/schema';
+
 import { createOperationRecordingAssetsPlan } from '../../../../createOperationRecordingAssetsPlan';
+import { OperationRecordingPlan } from '../../../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import { createWorkflowAssetsFromPlan } from '../../../../createWorkflowAssetsFromPlan';
 
-interface Args {
-  input: {
-    workflow: {
-      name: string;
-      description: string;
-    };
-    operations: Array<{
-      tempRecordingId: string;
-    }>;
-  };
-}
-
-export const createWorkflow = async (
+export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async (
   _parent: {},
-  args: Args,
+  args,
   _context: {},
   _info: {}
 ) => {
   const {
-    input: { workflow, operations },
+    input: { workflow, schemasMapping, operations },
   } = args;
 
-  const opRecordingsPlans = await Promise.all(
+  const opRecordingsPlans = await Promise.all<OperationRecordingPlan>(
     operations.map(({ tempRecordingId }) =>
-      createOperationRecordingAssetsPlan({ tempRecordingId })
+      createOperationRecordingAssetsPlan({ schemasMapping, tempRecordingId })
     )
   );
 
@@ -42,6 +33,6 @@ export const createWorkflow = async (
   // that can be parsed at this level and then an error code and context data
   // can be returned from this resolver.
   return {
-    result: {},
+    resultCode: CreateWorkflowResultCode.Success,
   };
 };

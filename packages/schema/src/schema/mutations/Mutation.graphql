@@ -1,4 +1,5 @@
 type Mutation {
   createRecording(input: CreateRecordingInput!): CreateRecordingResponse!
+  createWorkflow(input: CreateWorkflowInput!): CreateWorkflowResponse!
   recordResponse(input: RecordResponseInput!): RecordResponseResponse!
 }
