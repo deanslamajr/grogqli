@@ -59,15 +59,15 @@ const Artist = () => {
     releaseGroups
   }}} = data;
 
-  return (<p className={styles['outer-container']}>
+  return (<div className={styles['outer-container']}>
     <h1>{name || ''}</h1>
     {(releaseGroups?.nodes !== null && releaseGroups?.nodes !== undefined)
       ? releaseGroups.nodes
         .filter(release => (release !== undefined && release !== null))
-        .map(release => <Release release={release} />)
+        .map(release => <Release key={release?.title || 'no-title'} release={release!} />)
       : <div className={styles['release']}>No known releases</div>
     }
-  </p>);
+  </div>);
 }
 
 export async function getServerSideProps() {

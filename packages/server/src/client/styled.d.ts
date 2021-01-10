@@ -17,6 +17,7 @@ declare module 'styled-components' {
       red: string;
     };
     sizes: {
+      formFieldWidth: string;
       navbarButtonIconSize: string;
     };
     zIndex: {

@@ -1,0 +1,5 @@
+mutation CreateWorkflow($input: CreateWorkflowInput!) {
+  createWorkflow(input: $input) {
+    resultCode
+  }
+}

@@ -14,6 +14,7 @@ export const cssTheme: DefaultTheme = {
     red: 'rgba(236, 115, 87, 1)',
   },
   sizes: {
+    formFieldWidth: '20rem',
     navbarButtonIconSize: '2rem',
   },
   zIndex: {

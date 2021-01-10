@@ -214,6 +214,7 @@ export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
   // );
   const pathToSchema = path.join(schemasFolderPath, schemaId, SCHEMA_FILENAME);
+
   let schema: SchemaFile;
   try {
     schema = require(pathToSchema);
