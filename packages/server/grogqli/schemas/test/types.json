@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "types": {
+    "Query": {
+      "name": "Query",
+      "id": "yLSKSsPlIgS"
+    },
+    "SearchQuery": {
+      "name": "SearchQuery",
+      "id": "f49vriv89PF"
+    },
+    "ArtistConnection": {
+      "name": "ArtistConnection",
+      "id": "kKI1V14aWb5"
+    },
+    "Artist": {
+      "name": "Artist",
+      "id": "JYv6jEVu-LE"
+    },
+    "Area": {
+      "name": "Area",
+      "id": "MwzkyBQCWAT"
+    },
+    "LifeSpan": {
+      "name": "LifeSpan",
+      "id": "T72HbSfXy4z"
+    }
+  }
+}

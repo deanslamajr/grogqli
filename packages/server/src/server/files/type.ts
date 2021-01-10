@@ -1,10 +1,13 @@
 import editJsonFile from 'edit-json-file';
 import shortid from 'shortid';
+import fs from 'fs';
 
 import { TypeRecordingPlan } from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import {
+  doesFileExist,
   getTypeFilePath,
   getTypeNameMappingFilePath,
+  mapObjectToJsonFile,
   TYPES_FILE_VERSION,
   TYPES_NAME_TO_ID_MAPPING_VERSION,
 } from './';
@@ -38,7 +41,7 @@ export const addNewRecordingToTypeFile: AddNewRecordingToTypeFile = async ({
 
   // if this type's file has NOT already been initialized, throw error
   // this is to prevent unexpected behavior
-  if (typeFile.read() === {}) {
+  if (!doesFileExist(typeFile)) {
     throw new Error(`File for typeId:${typeId} does not exist!`);
   }
 
@@ -68,7 +71,7 @@ export const createNewTypeRecordingsFile: CreateNewTypeRecordingsFile = async ({
 
   // if this file has already been initialized, throw error
   // this is to prevent unexpected behavior
-  if (typeFile.read() !== {}) {
+  if (doesFileExist(typeFile)) {
     throw new Error(`File for typeId:${typeId} already exists!`);
   }
 
@@ -83,7 +86,7 @@ export const createNewTypeRecordingsFile: CreateNewTypeRecordingsFile = async ({
     },
   };
 
-  typeFile.set('', typeFileContents);
+  mapObjectToJsonFile(typeFileContents, typeFile);
   typeFile.save();
 };
 
@@ -103,12 +106,12 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
 
   let newTypeId;
   // handle the case where mappings file does not exist
-  if (typesMappingFile.read() === {}) {
+  if (!doesFileExist(typesMappingFile)) {
     const initializedTypeMappingFileData: TypeNameToIdMappingVersion1 = {
       version: TYPES_NAME_TO_ID_MAPPING_VERSION,
       types: {},
     };
-    typesMappingFile.set('', initializedTypeMappingFileData);
+    mapObjectToJsonFile(initializedTypeMappingFileData, typesMappingFile);
     newTypeId = shortid.generate();
   } else {
     let newIdIsNotUnique = true;
@@ -148,27 +151,19 @@ export interface TypeNameToIdMappingVersion1 {
 
 export const openTypeNameToIdMapping = async (
   schemaId: string
-): Promise<TypeNameToIdMapping> => {
+): Promise<TypeNameToIdMapping | null> => {
   const pathToTypeNameToIdMappingFile = await getTypeNameMappingFilePath(
     schemaId
   );
-  let typeNameToIdMappingFile: TypeNameToIdMapping;
-  try {
-    // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-    // reevaluate whether or not this is necessary:
-    // return JSON.parse(
-    //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-    //   // bc we want to bypass the auto caching feature of require
-    //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
-    // );
-    typeNameToIdMappingFile = require(pathToTypeNameToIdMappingFile);
-  } catch (error) {
-    // TODO handle case where file doesnt exist for the given schemaId
-    throw new Error(
-      `TODO handle case where a type name to id mappings file doesnt exist for the given schemaId. schemaId:${schemaId}`
-    );
+
+  const fileExists = fs.existsSync(pathToTypeNameToIdMappingFile);
+  if (fileExists === false) {
+    return null;
   }
-  return typeNameToIdMappingFile;
+
+  return JSON.parse(
+    await fs.promises.readFile(pathToTypeNameToIdMappingFile, 'utf8')
+  );
 };
 
 type GetTypeIdFromTypeName = (params: {
@@ -197,6 +192,9 @@ export const getTypeIdFromTypeNameAndSchemaId: GetTypeIdFromTypeNameAndSchemaId 
   schemaId,
 }) => {
   const typeNameToIdMappingData = await openTypeNameToIdMapping(schemaId);
+  if (typeNameToIdMappingData === null) {
+    return null;
+  }
   const type = typeNameToIdMappingData.types[typeName];
   if (type === undefined) {
     return null;
@@ -217,7 +215,9 @@ export const getTypeRecording: GetTypeRecording = async ({
 
   let typeRecordings: TypeRecordingsFile;
   try {
-    typeRecordings = require(pathToTypeFile);
+    typeRecordings = JSON.parse(
+      await fs.promises.readFile(pathToTypeFile, 'utf8')
+    );
   } catch (error) {
     console.error(error);
     // TODO handle case where file does not exist for given typeId

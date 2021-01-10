@@ -2,6 +2,8 @@ import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
 
 import {
+  doesFileExist,
+  mapObjectToJsonFile,
   OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
   OPERATIONS_RECORDING_VERSION,
   getOpNameMappingFilePath,
@@ -50,7 +52,7 @@ export const addNewRecordingToOperationRecordingsFile: AddNewRecordingToOperatio
 
   // if this file has not yet been initialized, throw error
   // this is to prevent unexpected behavior
-  if (opRecordingsFile.read() === {}) {
+  if (!doesFileExist(opRecordingsFile)) {
     throw new Error(
       `An operation recordings file associated with opId:${opId} does not yet exist!`
     );
@@ -116,7 +118,7 @@ export const createNewOperationRecordingsFile: CreateNewOpFile = async ({
 
   // if this file has already been initialized, throw error
   // this is to prevent unexpected behavior
-  if (opRecordingsFile.read() !== {}) {
+  if (doesFileExist(opRecordingsFile)) {
     throw new Error(`File for opId:${opId} already exists!`);
   }
 
@@ -135,7 +137,7 @@ export const createNewOperationRecordingsFile: CreateNewOpFile = async ({
     },
   };
 
-  opRecordingsFile.set('', operationRecordingsFileContents);
+  mapObjectToJsonFile(operationRecordingsFileContents, opRecordingsFile);
   opRecordingsFile.save();
 
   return {
@@ -158,12 +160,12 @@ export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = as
 
   let newOpId;
   // handle the case where mappings file does not exist
-  if (opsMappingFile.read() === {}) {
+  if (!doesFileExist(opsMappingFile)) {
     const initializedOpMappingFileData: OperationNameToIdMappingVersion1 = {
       version: OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
       operations: {},
     };
-    opsMappingFile.set('', initializedOpMappingFileData);
+    mapObjectToJsonFile(initializedOpMappingFileData, opsMappingFile);
     newOpId = shortid.generate();
   } else {
     let newIdIsNotUnique = true;

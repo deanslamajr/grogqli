@@ -21,9 +21,16 @@ export const createResolvers = async ({
   ]);
 
   if (operationsData === null) {
-    // TODO handle case where file doesnt exist for the given schemaId
+    // TODO handle case where operations file doesnt exist for the given schemaId
     throw new Error(
       `TODO handle case where a operations file doesnt exist for the given schemaId. schemaId:${schemaId}`
+    );
+  }
+
+  if (typeNameToIdMappingData === null) {
+    // TODO handle case where type name mapping file doesnt exist for the given schemaId
+    throw new Error(
+      `TODO handle case where a type name mapping file doesnt exist for the given schemaId. schemaId:${schemaId}`
     );
   }
 

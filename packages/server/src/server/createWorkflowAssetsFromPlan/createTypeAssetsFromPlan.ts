@@ -45,9 +45,14 @@ export const createTypeAssetsFromPlan: CreateTypeAssetsFromPlan = async (
 ) => {
   const typeRecordingsPlans = Object.values(operationPlan.typeRecordings);
 
-  await Promise.all(
-    typeRecordingsPlans.map((typeRecordingPlan) =>
-      createTypeAsset({ schemaId: operationPlan.schemaId, typeRecordingPlan })
-    )
+  // Creating new type assets can cause race conditions
+  // where multiple files can be created in parallel for the same type
+  // consequently, do these jobs in sequence
+  return typeRecordingsPlans.reduce(
+    (asyncTasks, typeRecordingPlan) =>
+      asyncTasks.then(() =>
+        createTypeAsset({ schemaId: operationPlan.schemaId, typeRecordingPlan })
+      ),
+    Promise.resolve()
   );
 };

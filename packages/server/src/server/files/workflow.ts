@@ -3,8 +3,10 @@ import editJsonFile from 'edit-json-file';
 
 import { DistributiveOmit } from '../types';
 import {
+  doesFileExist,
   getWorkflowRecordingFilePath,
   getWorkflowNameMappingFilePath,
+  mapObjectToJsonFile,
   WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
 } from './';
 
@@ -33,12 +35,15 @@ export const addNewEntryToWorkflowMappingFile: AddNewEntryToWorkflowMappingFile 
 
   let newWorkflowId;
   // handle the case where mappings file does not exist
-  if (workflowNameMappingFile.get() === {}) {
+  if (!doesFileExist(workflowNameMappingFile)) {
     const initializedWorkflowNamesMappingFileData: WorkflowNameMappingFileContentsVersion1 = {
       version: WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
       workflows: {},
     };
-    workflowNameMappingFile.set('', initializedWorkflowNamesMappingFileData);
+    mapObjectToJsonFile(
+      initializedWorkflowNamesMappingFileData,
+      workflowNameMappingFile
+    );
     newWorkflowId = shortid.generate();
   } else {
     let newIdIsNotUnique = true;

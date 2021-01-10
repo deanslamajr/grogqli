@@ -5,7 +5,11 @@ import {
   WorkflowRecordingsFileVersion1,
   addNewEntryToWorkflowMappingFile,
 } from '../files/workflow';
-import { getWorkflowRecordingFilePath } from '../files';
+import {
+  doesFileExist,
+  getWorkflowRecordingFilePath,
+  mapObjectToJsonFile,
+} from '../files';
 
 type CreateNewWorkflowFile = (params: {
   newWorkflowFileWithoutId: WorkflowFileBeforeCreation;
@@ -25,7 +29,7 @@ export const createNewWorkflowAssets: CreateNewWorkflowFile = async ({
 
   // if this file has already been initialized, throw error
   // this is to prevent unexpected behavior
-  if (workflowFile.read() !== {}) {
+  if (doesFileExist(workflowFile)) {
     throw new Error(`File for workflow:${workflowId} already exists!`);
   }
 
@@ -34,6 +38,7 @@ export const createNewWorkflowAssets: CreateNewWorkflowFile = async ({
     id: workflowId,
   };
 
-  workflowFile.set('', workflowFileContents);
+  mapObjectToJsonFile(workflowFileContents, workflowFile);
+
   workflowFile.save();
 };

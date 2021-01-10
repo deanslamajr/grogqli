@@ -5,11 +5,22 @@ import { IntrospectionQuery } from 'graphql';
 
 import { getConfig } from './getConfig';
 
-export interface SchemaFile {
-  id: string;
-  version: number;
-  introspectionQuery: IntrospectionQuery;
-}
+const createDirIfDoesntExist = (dirPath: string) => {
+  return fs.promises.mkdir(dirPath, { recursive: true });
+};
+
+export const doesFileExist = (file: editJsonFile.JsonEditor): boolean => {
+  return Object.keys(file.read()).length > 0;
+};
+
+export const mapObjectToJsonFile = <T extends object>(
+  object: T,
+  file: editJsonFile.JsonEditor
+): void => {
+  Object.entries(object).forEach(([key, value]) => {
+    file.set(key, value);
+  });
+};
 
 // Directory structure
 //
@@ -48,17 +59,11 @@ const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 //     /queries
 const TEMP_QUERIES_FOLDER_NAME = 'queries';
 
-const createDirIfDoesntExist = (dirPath: string) => {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-};
-
 // e.g. /grogqli
 export const getRecordingsRootDir = async (): Promise<string> => {
   const config = await getConfig();
   const recordingsRootDir = config('recordingsSaveDirectory');
-  createDirIfDoesntExist(recordingsRootDir);
+  await createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
 };
 
@@ -70,7 +75,7 @@ export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
     TEMP_FOLDER_NAME,
     TEMP_SCHEMAS_FOLDER_NAME
   );
-  createDirIfDoesntExist(schemaRecordingsPath);
+  await createDirIfDoesntExist(schemaRecordingsPath);
   return schemaRecordingsPath;
 };
 
@@ -78,7 +83,7 @@ export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
 export const getSchemasFolderPath = async (): Promise<string> => {
   const recordingsRootDir = await getRecordingsRootDir();
   const schemasFolderPath = path.join(recordingsRootDir, SCHEMAS_FOLDER_NAME);
-  createDirIfDoesntExist(schemasFolderPath);
+  await createDirIfDoesntExist(schemasFolderPath);
   return schemasFolderPath;
 };
 
@@ -86,30 +91,25 @@ export const getSchemasFolderPath = async (): Promise<string> => {
 export const getOpNameMappingFilePath = async (schemaId: string) => {
   const schemasFolderPath = await getSchemasFolderPath();
 
-  const oPNameMappingFilePath = path.join(
-    schemasFolderPath,
-    schemaId,
+  const opNameMappingFilePath = path.join(schemasFolderPath, schemaId);
+
+  await createDirIfDoesntExist(opNameMappingFilePath);
+
+  return path.join(
+    opNameMappingFilePath,
     OPERATIONS_NAME_TO_ID_MAPPING_FILENAME
   );
-
-  createDirIfDoesntExist(oPNameMappingFilePath);
-
-  return oPNameMappingFilePath;
 };
 
 // e.g. /grogqli/schemas/<schemaId>/types.json
 export const getTypeNameMappingFilePath = async (schemaId: string) => {
   const schemasFolderPath = await getSchemasFolderPath();
 
-  const typeNameMappingFilePath = path.join(
-    schemasFolderPath,
-    schemaId,
-    TYPES_NAME_TO_ID_MAPPING_FILENAME
-  );
+  const typeNameMappingFilePath = path.join(schemasFolderPath, schemaId);
 
-  createDirIfDoesntExist(typeNameMappingFilePath);
+  await createDirIfDoesntExist(typeNameMappingFilePath);
 
-  return typeNameMappingFilePath;
+  return path.join(typeNameMappingFilePath, TYPES_NAME_TO_ID_MAPPING_FILENAME);
 };
 
 // e.g. /grogqli/workflows
@@ -119,22 +119,14 @@ export const getWorkflowsFolderPath = async (): Promise<string> => {
     recordingsRootDir,
     WORKFLOWS_FOLDER_NAME
   );
-  createDirIfDoesntExist(workflowsFolderPath);
+  await createDirIfDoesntExist(workflowsFolderPath);
   return workflowsFolderPath;
 };
 
 // e.g. /grogqli/workflows/index.json
 export const getWorkflowNameMappingFilePath = async (): Promise<string> => {
   const workflowsFolderPath = await getWorkflowsFolderPath();
-
-  const workflowNameMappingFilePath = path.join(
-    workflowsFolderPath,
-    WORKFLOWS_NAME_TO_ID_MAPPING_FILENAME
-  );
-
-  createDirIfDoesntExist(workflowNameMappingFilePath);
-
-  return workflowNameMappingFilePath;
+  return path.join(workflowsFolderPath, WORKFLOWS_NAME_TO_ID_MAPPING_FILENAME);
 };
 
 // e.g. /grogqli/workflows/<workflowId>.json
@@ -142,12 +134,7 @@ export const getWorkflowRecordingFilePath = async (
   workflowId: string
 ): Promise<string> => {
   const workflowsFolderPath = await getWorkflowsFolderPath();
-
-  const workflowFilePath = path.join(workflowsFolderPath, `${workflowId}.json`);
-
-  createDirIfDoesntExist(workflowFilePath);
-
-  return workflowFilePath;
+  return path.join(workflowsFolderPath, `${workflowId}.json`);
 };
 
 // e.g. /grogqli/operations/<opId>.json
@@ -157,28 +144,23 @@ export const getOperationRecordingsFilePath = async (
   const recordingsRootDir = await getRecordingsRootDir();
   const pathToOperationRecordingFile = path.join(
     recordingsRootDir,
-    OPERATIONS_FOLDER_NAME,
-    `${opId}.json`
+    OPERATIONS_FOLDER_NAME
   );
 
-  createDirIfDoesntExist(pathToOperationRecordingFile);
+  await createDirIfDoesntExist(pathToOperationRecordingFile);
 
-  return pathToOperationRecordingFile;
+  return path.join(pathToOperationRecordingFile, `${opId}.json`);
 };
 
 // e.g. /grogqli/types/<typeId>.json
 export const getTypeFilePath = async (typeId: string) => {
   const recordingsRootDir = await getRecordingsRootDir();
 
-  const typeFilePath = path.join(
-    recordingsRootDir,
-    TYPES_FOLDER_NAME,
-    `${typeId}.json`
-  );
+  const typeFilePath = path.join(recordingsRootDir, TYPES_FOLDER_NAME);
 
-  createDirIfDoesntExist(typeFilePath);
+  await createDirIfDoesntExist(typeFilePath);
 
-  return typeFilePath;
+  return path.join(typeFilePath, `${typeId}.json`);
 };
 
 export const getQueryRecordingsFile = async (): Promise<
@@ -192,7 +174,7 @@ export const getQueryRecordingsFile = async (): Promise<
     TEMP_QUERIES_FOLDER_NAME
   );
 
-  createDirIfDoesntExist(queryRecordingsPath);
+  await createDirIfDoesntExist(queryRecordingsPath);
 
   return editJsonFile(
     path.join(queryRecordingsPath, `${config('recordingsFilename')}.json`)
@@ -203,26 +185,19 @@ export const getQueryRecordingsFile = async (): Promise<
 // ***
 // **
 // *
+export interface SchemaFile {
+  id: string;
+  version: number;
+  introspectionQuery: IntrospectionQuery;
+}
 
 export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
   const schemasFolderPath = await getSchemasFolderPath();
-  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-  // reevaluate whether or not this is necessary:
-  // return JSON.parse(
-  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-  //   // bc we want to bypass the auto caching feature of require
-  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
-  // );
-  const pathToSchema = path.join(schemasFolderPath, schemaId, SCHEMA_FILENAME);
+  const absPathToSchema = path.join(schemasFolderPath, schemaId);
 
-  let schema: SchemaFile;
-  try {
-    schema = require(pathToSchema);
-  } catch (error) {
-    // TODO handle case where file doesnt exist for the given schemaId
-    throw new Error(
-      `TODO handle case where a schema file doesnt exist for the given schemaId. schemaId:${schemaId}`
-    );
-  }
-  return schema;
+  await createDirIfDoesntExist(absPathToSchema);
+
+  const absPathToSchemaFile = path.join(absPathToSchema, SCHEMA_FILENAME);
+
+  return JSON.parse(await fs.promises.readFile(absPathToSchemaFile, 'utf8'));
 };
