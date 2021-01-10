@@ -78,10 +78,10 @@ const renderApp = async (req: express.Request, res: express.Response) => {
 
   const apolloState = apolloClient.extract();
   // context.url will contain the URL to redirect to if a <Redirect> was used
-  // TODO needs to be tested
-  // if (context.url) {
-  //   return res.redirect(context.url);
-  // }
+  if (context.url) {
+    return res.redirect(context.url);
+  }
+
   res.send(`
     <!doctype html>
     <html lang="">

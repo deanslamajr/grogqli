@@ -6,7 +6,7 @@ import Transactions from './Transactions';
 
 export type CheckedState = { [id: string]: boolean };
 
-const TransactionsWithData: React.FC = () => {
+export const RequestsPage: React.FC = () => {
   const [checkedState, updateCheckedState] = useState<CheckedState>({});
   const [allAreChecked, setAllAreChecked] = useState(false);
   const { data, loading, error, subscribeToMore } = useQuery(
@@ -105,5 +105,3 @@ const TransactionsWithData: React.FC = () => {
     />
   );
 };
-
-export default TransactionsWithData;

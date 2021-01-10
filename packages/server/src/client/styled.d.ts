@@ -5,6 +5,14 @@ import 'styled-components';
 declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
+      // new colors
+      highGray: string;
+      borders: string;
+      selectedMenuItemBackground: string;
+      selectedMenuItemUnderline: string;
+      selectedMenuItemText: string;
+      unselectedMenuItemText: string;
+      // old colors
       black: string;
       grayDark: string;
       grayLight: string;

@@ -32,8 +32,6 @@ const newWindowButtonStyles = {
     width: 50px;
     height: 50px;
     min-height: 50px;
-    border-radius: 4px;
-    border-color: rgba(31, 54, 61, 1);
   `,
   icon: `
     background:
@@ -56,6 +54,7 @@ export const mountClient = () => {
     grogqliAppIFrame.style.cssText = `
       width: 100%;
       height: 100%;
+      border-top: 1px solid rgba(208, 208, 208, 1);
     `;
 
     const grogqliContainer = document.createElement('div');

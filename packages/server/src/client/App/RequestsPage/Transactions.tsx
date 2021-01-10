@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ApolloError } from '@apollo/client';
 import { GetRecordings } from '@grogqli/schema';
 
-import { CheckedState } from './';
+import { CheckedState } from '.';
 import Transaction from './Transaction';
 import { ReviewRecordingsBeforeSaveButton } from './ReviewRecordingsBeforeSaveButton';
 import { SaveDrawer } from './SaveDrawer';

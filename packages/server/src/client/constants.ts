@@ -2,6 +2,14 @@ import { DefaultTheme } from 'styled-components';
 
 export const cssTheme: DefaultTheme = {
   colors: {
+    // new colors
+    highGray: 'rgba(243, 243, 243, 1)',
+    borders: 'rgba(208, 208, 208, 1)',
+    selectedMenuItemBackground: 'rgba(233, 233, 233, 1)',
+    selectedMenuItemUnderline: 'rgba(46, 79, 235, 1)',
+    selectedMenuItemText: 'rgba(51, 51, 51, 1)',
+    unselectedMenuItemText: 'rgba(90, 93, 95, 1)',
+    // old colors
     black: 'rgba(31, 54, 61, 1)',
     grayDark: 'rgba(188, 216, 220, 1)',
     grayLight: 'rgba(214, 231, 234, 1)',
