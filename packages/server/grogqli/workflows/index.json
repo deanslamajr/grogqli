@@ -1,9 +1,9 @@
 {
   "version": 1,
   "workflows": {
-    "testName": {
-      "name": "testName",
-      "id": "JpFty2nxsRM"
+    "another test": {
+      "name": "another test",
+      "id": "N8D1wIheS7W"
     }
   }
 }

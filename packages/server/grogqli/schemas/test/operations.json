@@ -3,7 +3,11 @@
   "operations": {
     "SearchForArtist": {
       "name": "SearchForArtist",
-      "id": "11u6Hd_jelY"
+      "id": "nxP5HDdG06T"
+    },
+    "ArtistLookup": {
+      "name": "ArtistLookup",
+      "id": "31-6Fad9RJm"
     }
   }
 }
