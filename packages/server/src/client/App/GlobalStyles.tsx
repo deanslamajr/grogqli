@@ -6,7 +6,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     font-family: ${(props) => props.theme.font};
     height: 100vh;
-    background-color: ${(props) => props.theme.colors.white};
+    background-color: ${(props) => props.theme.colors.generalBackgroundColor};
   }
 `;
 

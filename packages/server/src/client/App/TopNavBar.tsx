@@ -6,24 +6,26 @@ import { PageConfig } from './';
 
 const StyledOuterContainer = styled.div`
   width: 100%;
-  height: 27px;
+  height: ${({ theme }) => theme.sizes.menuBarHeight};
   background-color: ${({ theme }) => theme.colors.highGray};
   border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
   line-height: 1.75;
   font-size: 15px;
 `;
 
+const selectedItemUnderlineHeight = '2px';
+
 const StyledLink = styled(NavLink)`
   color: ${(props) => props.theme.colors.unselectedMenuItemText};
   display: inline-block;
-  height: 100%;
+  height: calc(100% - ${selectedItemUnderlineHeight});
   padding: 0 15px 0;
   text-decoration: none;
   cursor: pointer;
 
   &.active {
     color: ${({ theme }) => theme.colors.selectedMenuItemText};
-    border-bottom: 2px solid
+    border-bottom: ${selectedItemUnderlineHeight} solid
       ${({ theme }) => theme.colors.selectedMenuItemUnderline};
 
     &:hover {

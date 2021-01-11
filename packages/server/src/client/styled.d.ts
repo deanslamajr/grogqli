@@ -6,6 +6,7 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       // new colors
+      generalBackgroundColor: string;
       highGray: string;
       borders: string;
       selectedMenuItemBackground: string;
@@ -25,6 +26,7 @@ declare module 'styled-components' {
       red: string;
     };
     sizes: {
+      menuBarHeight: string;
       formFieldWidth: string;
       navbarButtonIconSize: string;
     };

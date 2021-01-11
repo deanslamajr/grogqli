@@ -3,6 +3,7 @@ import { DefaultTheme } from 'styled-components';
 export const cssTheme: DefaultTheme = {
   colors: {
     // new colors
+    generalBackgroundColor: 'rgba(255, 255, 255, 1)',
     highGray: 'rgba(243, 243, 243, 1)',
     borders: 'rgba(208, 208, 208, 1)',
     selectedMenuItemBackground: 'rgba(233, 233, 233, 1)',
@@ -22,6 +23,7 @@ export const cssTheme: DefaultTheme = {
     red: 'rgba(236, 115, 87, 1)',
   },
   sizes: {
+    menuBarHeight: '27px',
     formFieldWidth: '20rem',
     navbarButtonIconSize: '2rem',
   },
