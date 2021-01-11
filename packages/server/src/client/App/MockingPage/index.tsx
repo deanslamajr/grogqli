@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { GetWorkflows } from '@grogqli/schema';
 
 const StyledMainSubMenuBar = styled.div`
   width: 100%;
@@ -43,16 +45,29 @@ const WorkflowsDropdown = styled.select`
 `;
 
 export const MockingPage: React.FC<{}> = ({}) => {
+  const { data, loading, error } = useQuery(GetWorkflows.GetWorkflowsDocument);
+
   return (
     <>
       <StyledMainSubMenuBar>
-        <PlayButton>USE MOCK</PlayButton>
-        <WorkflowsDropdown name="workflows">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
-        </WorkflowsDropdown>
+        {loading ? (
+          'LOADING WORKFLOWS'
+        ) : (
+          <>
+            <WorkflowsDropdown name="workflows">
+              {data && data.workflows?.map ? (
+                data.workflows.map(({ id, name }) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))
+              ) : (
+                <option value="noValue">No Values</option>
+              )}
+            </WorkflowsDropdown>
+            <PlayButton>USE MOCK</PlayButton>
+          </>
+        )}
       </StyledMainSubMenuBar>
     </>
   );

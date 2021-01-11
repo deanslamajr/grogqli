@@ -1,3 +1,4 @@
 type Query {
   recordings: [Recording!]
+  workflows: [Workflow!]
 }

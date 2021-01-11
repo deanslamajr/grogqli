@@ -11,7 +11,6 @@ export const RequestsPage: React.FC = () => {
   const [allAreChecked, setAllAreChecked] = useState(false);
   const { data, loading, error, subscribeToMore } = useQuery(
     GetRecordings.GetRecordingsDocument
-    // { variables: {  } }
   );
 
   if (error) {

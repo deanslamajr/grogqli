@@ -1,0 +1,6 @@
+query GetWorkflows {
+  workflows {
+    id
+    name
+  }
+}

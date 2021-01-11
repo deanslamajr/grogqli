@@ -1,0 +1,4 @@
+type Workflow {
+  id: ID!
+  name: String!
+}

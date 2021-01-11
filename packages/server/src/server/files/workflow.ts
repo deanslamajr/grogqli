@@ -10,17 +10,30 @@ import {
   WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
 } from './';
 
+interface Workflow {
+  name: string;
+  id: string;
+}
+
 // pattern to support versioning this file structure
 export type WorkflowNameMappingFileContents = WorkflowNameMappingFileContentsVersion1;
 interface WorkflowNameMappingFileContentsVersion1 {
   version: 1;
   workflows: {
-    [workflowName: string]: {
-      name: string;
-      id: string;
-    };
+    [workflowName: string]: Workflow;
   };
 }
+
+type GetWorkflows = () => Promise<Workflow[]>;
+export const getWorkflows: GetWorkflows = async () => {
+  const pathToWorkflowNameToIdMappingFile = await getWorkflowNameMappingFilePath();
+  const workflowNameMappingFile = await editJsonFile(
+    pathToWorkflowNameToIdMappingFile
+  );
+  return Object.values<
+    WorkflowNameMappingFileContentsVersion1['workflows'][keyof WorkflowNameMappingFileContentsVersion1['workflows']]
+  >(workflowNameMappingFile.get('workflows'));
+};
 
 type AddNewEntryToWorkflowMappingFile = (
   workflowName: string
