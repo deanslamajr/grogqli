@@ -1,0 +1,6 @@
+mutation PlaybackRecording($input: PlaybackRecordingInput!) {
+  playbackRecording(input: $input) {
+    data
+    errors
+  }
+}

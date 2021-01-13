@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
+import fs from 'fs';
 
 import {
   doesFileExist,
@@ -222,8 +223,11 @@ export const getOperationFile = async (
   const pathToOperationFile = await getOperationRecordingsFilePath(operationId);
 
   try {
-    operationFile = require(pathToOperationFile);
+    operationFile = JSON.parse(
+      await fs.promises.readFile(pathToOperationFile, 'utf8')
+    );
   } catch (error) {
+    console.error(error);
     return null;
   }
 
@@ -246,19 +250,17 @@ export interface OperationNameToIdMappingVersion1 {
 export const loadOperationsMappingFile = async (
   schemaId: string
 ): Promise<OperationNameToIdMappingVersion1 | null> => {
-  // TODO after a feature is added that updates these `${schemaId}.json` files at runtime,
-  // reevaluate whether or not this is necessary:
-  // return JSON.parse(
-  //   // not using require(`${schemaId}.json`) here (unlike in the resolvers)
-  //   // bc we want to bypass the auto caching feature of require
-  //   fs.readFileSync(path.join(schemaRecordingsPath, `${schemaId}.json`), 'utf8')
-  // );
   const pathToOperationsData = await getOpNameMappingFilePath(schemaId);
   let operationsData: OperationNameToIdMappingVersion1;
+
   try {
-    operationsData = require(pathToOperationsData);
+    operationsData = JSON.parse(
+      await fs.promises.readFile(pathToOperationsData, 'utf8')
+    );
   } catch (error) {
+    console.error(error);
     return null;
   }
+
   return operationsData;
 };

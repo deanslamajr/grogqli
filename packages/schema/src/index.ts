@@ -9,6 +9,7 @@ export * as GetWorkflows from './generated/src/queries/query/GetWorkflows.graphq
 //// mutations
 export * as CreateRecording from './generated/src/queries/mutation/CreateRecording.graphql';
 export * as CreateWorkflow from './generated/src/queries/mutation/CreateWorkflow.graphql';
+export * as PlaybackRecording from './generated/src/queries/mutation/PlaybackRecording.graphql';
 export * as RecordResponse from './generated/src/queries/mutation/RecordResponse.graphql';
 //// subscriptions
 export * as OnRecordingSaved from './generated/src/queries/subscription/OnRecordingSave.graphql';

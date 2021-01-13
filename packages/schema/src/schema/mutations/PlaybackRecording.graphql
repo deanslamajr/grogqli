@@ -1,0 +1,11 @@
+input PlaybackRecordingInput {
+  query: String!
+  schemaId: String!
+  workflowId: String!
+  variables: String
+}
+
+type PlaybackRecordingResponse {
+  data: String
+  errors: String
+}

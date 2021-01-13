@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
+import fs from 'fs';
 
 import { DistributiveOmit } from '../types';
 import {
@@ -119,9 +120,16 @@ export const getWorkflowById = async (
 
   const pathToWorkflow = await getWorkflowRecordingFilePath(workflowId);
   let workflow: WorkflowRecordingsFile;
+  // try {
+  //   workflow = require(pathToWorkflow);
+  // } catch (error) {
+  //   return null;
+  // }
+
   try {
-    workflow = require(pathToWorkflow);
+    workflow = JSON.parse(await fs.promises.readFile(pathToWorkflow, 'utf8'));
   } catch (error) {
+    console.error(error);
     return null;
   }
 

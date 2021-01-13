@@ -4,7 +4,11 @@ import {
   GraphQLMockedRequest,
   GraphQLResponseResolver,
 } from 'msw';
-import { CreateRecording, RecordResponse } from '@grogqli/schema';
+import {
+  CreateRecording,
+  PlaybackRecording,
+  RecordResponse,
+} from '@grogqli/schema';
 import { getIntrospectionQuery } from 'graphql';
 
 import { getClient } from './ApolloClient';
@@ -13,8 +17,9 @@ import { serverUrl } from '../constants';
 
 const { CreateRecordingDocument } = CreateRecording;
 const { RecordResponseDocument } = RecordResponse;
+const { PlaybackRecordingDocument } = PlaybackRecording;
 
-const isRecording = true;
+const isRecording = false;
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
 
 interface ResponseData {
@@ -52,22 +57,26 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
     errors: null,
   };
 
+  const apolloClient = getClient({
+    url: serverUrl,
+    fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch'],
+  });
+
+  if (req.body === undefined) {
+    throw new Error('Request body is undefined but this is invalid!');
+  }
+  if (req.body.query === undefined) {
+    throw new Error('Request does not include a query!');
+  }
+
   if (isRecording) {
-    const apolloClient = getClient({
-      url: serverUrl,
-      fetch: ctx.fetch as WindowOrWorkerGlobalScope['fetch'],
-    });
-
-    // TODO Ensure that __typename fields are associated with every type on the query
-
-    // TODO only do this once per session per schema
     const schemaFromIntrospection = await fetchSchema({ req, ctx });
 
     let recordingId;
+
     // TODO refactor 'unknownOperation' case:
     // instead of unknownOperation, make this field optional and have the server handle this case
-    // TODO refactor 'unknownQuery' case:
-    // should this throw an error?
+
     const { data: createRecordingResponse, errors } = await apolloClient.mutate(
       {
         mutation: CreateRecordingDocument,
@@ -78,8 +87,8 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
               url: req.url.toString(),
               content: schemaFromIntrospection || null,
             },
-            operationName: req.body?.operationName || 'unknownOperation',
-            query: req.body?.query || 'unknownQuery',
+            operationName: req.body.operationName || 'unknownOperation',
+            query: req.body.query,
             variables: JSON.stringify(req.body?.variables),
           },
         },
@@ -95,8 +104,6 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
     // Make the real request
     const fetchResponse = await ctx.fetch(req);
     responseData = await fetchResponse.json();
-
-    // TODO use __typename fields in response payload to save the data associated with each type
 
     const response = JSON.stringify(responseData);
 
@@ -116,22 +123,52 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       }
     }
   } else {
-    // - Parse the query from the original request
-    //   - opName
-    //   - ast
-    //   - schemaUrl
-    // - validate ast - validate the ast against the schema saved to disc
-    //   - get the schema - get the local schema that maps to the given schemaUrl
-    //   - error: schema doesn't exist - ???
-    //   - error: invalid ast (could be invalid ast or invalid schema) - ???
-    // - resolve the query with a graphql server
-    //   - for every type on the schema, register the dynamic resolver (grogqli type resolver)
-    //   - grogqli type resolver
-    //     - when invoked, the resolver uses the query’s workflowId and opName to find and open the file associated with the recording for that type
-    //     - error: if a recording for the given workflowId and opName doesn’t exist - ???
+    const { data, errors } = await apolloClient.mutate({
+      mutation: PlaybackRecordingDocument,
+      variables: {
+        input: {
+          schemaId: 'test',
+          workflowId: 'N8D1wIheS7W',
+          query: req.body.query,
+          variables: req.body.variables
+            ? JSON.stringify(req.body.variables)
+            : null,
+        },
+      },
+    });
+
+    if (errors && errors.length) {
+      errors.forEach(error => console.error(error));
+    }
+
+    let dataFromPlayback;
+    let errorsFromPlayback;
+    if (data?.playbackRecording) {
+      dataFromPlayback =
+        data.playbackRecording.data !== null
+          ? JSON.parse(data.playbackRecording.data)
+          : null;
+      errorsFromPlayback =
+        data.playbackRecording.errors !== null
+          ? JSON.parse(data.playbackRecording.errors)
+          : null;
+    }
+
+    responseData = {
+      data: dataFromPlayback,
+      errors: errorsFromPlayback,
+    };
   }
 
-  return res(ctx.data(responseData?.data || null));
+  console.log('responseData', responseData);
+
+  const response = responseData?.errors
+    ? ctx.errors(responseData.errors)
+    : responseData?.data
+    ? ctx.data(responseData.data)
+    : ctx.data(null);
+
+  return res(response);
 };
 
 type Handlers = [
