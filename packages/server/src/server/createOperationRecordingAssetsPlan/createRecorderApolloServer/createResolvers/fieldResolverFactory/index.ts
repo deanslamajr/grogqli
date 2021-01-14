@@ -2,6 +2,7 @@ import {
   GraphQLFieldResolver,
   IntrospectionQuery,
   IntrospectionOutputTypeRef,
+  FieldNode,
 } from 'graphql';
 
 import { isRootType } from '../../../../isRootType';
@@ -48,6 +49,24 @@ const getReturnTypeInfo: GetReturnTypeInfo = (returnType) => {
   };
 };
 
+type GetFieldNameOrAlias = (params: {
+  fieldName: string;
+  fieldNodes: ReadonlyArray<FieldNode>;
+}) => string;
+
+const getFieldNameOrAlias: GetFieldNameOrAlias = ({
+  fieldName,
+  fieldNodes,
+}) => {
+  const currentNode = fieldNodes.find(({ name }) => name.value === fieldName);
+
+  if (currentNode !== undefined && currentNode.alias !== undefined) {
+    return currentNode.alias.value;
+  } else {
+    return fieldName;
+  }
+};
+
 export const fieldResolverFactory = ({
   returnType,
   schema,
@@ -56,6 +75,12 @@ export const fieldResolverFactory = ({
 }: ResolveValueFactoryParams): GraphQLFieldResolver<any, Context> => {
   return async (parent, args, context, info) => {
     const opName = info.operation?.name?.value;
+
+    const fieldNameOrAlias = getFieldNameOrAlias({
+      fieldName,
+      fieldNodes: info.fieldNodes,
+    });
+
     // TODO handle unnamed query case
     if (!opName) {
       throw new Error('TODO handle unnamed query case');
@@ -75,7 +100,7 @@ export const fieldResolverFactory = ({
       //  where context.runTimeVariables.grogqli!.parsedOpRecording.data
       //  === null || undefined
       const fieldValue = context.runTimeVariables.grogqli!.parsedOpRecording
-        .data[fieldName];
+        .data[fieldNameOrAlias];
 
       const rootTypeRecordingId = getRootTypeRecordingId({
         rootTypeName: parentTypeName,
@@ -94,7 +119,7 @@ export const fieldResolverFactory = ({
         isRootType: true,
       });
     } else {
-      const fieldValue = parent.value[fieldName];
+      const fieldValue = parent.value[fieldNameOrAlias];
       const parentTypeRecordingId = parent.parentTypeRecordingId;
 
       fieldResolverValue = updateRecordingsPlan({

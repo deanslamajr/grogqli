@@ -120,11 +120,6 @@ export const getWorkflowById = async (
 
   const pathToWorkflow = await getWorkflowRecordingFilePath(workflowId);
   let workflow: WorkflowRecordingsFile;
-  // try {
-  //   workflow = require(pathToWorkflow);
-  // } catch (error) {
-  //   return null;
-  // }
 
   try {
     workflow = JSON.parse(await fs.promises.readFile(pathToWorkflow, 'utf8'));

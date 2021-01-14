@@ -22,9 +22,11 @@ export const getClient = ({ url, fetch }: GetClientParams) => {
     defaultOptions: {
       query: {
         fetchPolicy: 'network-only',
+        errorPolicy: 'all',
       },
       mutate: {
         fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
       },
     },
   });

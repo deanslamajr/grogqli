@@ -19,7 +19,9 @@ const { CreateRecordingDocument } = CreateRecording;
 const { RecordResponseDocument } = RecordResponse;
 const { PlaybackRecordingDocument } = PlaybackRecording;
 
+// TODO - replace with real data
 const isRecording = false;
+
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
 
 interface ResponseData {
@@ -128,7 +130,7 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
       variables: {
         input: {
           schemaId: 'test',
-          workflowId: 'N8D1wIheS7W',
+          workflowId: 'ITD_Tk6hwo7',
           query: req.body.query,
           variables: req.body.variables
             ? JSON.stringify(req.body.variables)
@@ -160,8 +162,7 @@ const universalHandler: GraphQLResponseResolver<any, any> = async (
     };
   }
 
-  console.log('responseData', responseData);
-
+  // TODO find a way to respond errors and data in same response
   const response = responseData?.errors
     ? ctx.errors(responseData.errors)
     : responseData?.data

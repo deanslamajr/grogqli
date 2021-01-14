@@ -1,9 +1,9 @@
 {
   "version": 1,
   "workflows": {
-    "another test": {
-      "name": "another test",
-      "id": "N8D1wIheS7W"
+    "weezer": {
+      "name": "weezer",
+      "id": "ITD_Tk6hwo7"
     }
   }
 }
