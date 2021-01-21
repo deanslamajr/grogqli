@@ -1,0 +1,7 @@
+mutation CreateHandlerSession($input: CreateHandlerSessionInput!) {
+  createHandlerSession(input: $input) {
+    newHandler {
+      id
+    }
+  }
+}

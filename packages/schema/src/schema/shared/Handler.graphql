@@ -1,0 +1,11 @@
+type Handler {
+  id: ID!
+  name: String!
+  currentState: HandlerState!
+}
+
+enum HandlerState {
+  RECORDING
+  PLAYBACK
+  PASSTHROUGH
+}

@@ -1,3 +1,5 @@
 type Subscription {
   recordingSaved: Recording
+  handlerStateChanged(input: HandlerStateChangeSubscriptionInput!): Handler!
+  handlerSessionCreated(input: HandlerSessionCreateSubscriptionInput!): Handler!
 }

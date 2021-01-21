@@ -1,0 +1,9 @@
+subscription OnHandlerSessionCreate(
+  $input: HandlerSessionCreateSubscriptionInput!
+) {
+  handlerSessionCreated(input: $input) {
+    id
+    name
+    currentState
+  }
+}

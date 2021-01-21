@@ -1,0 +1,7 @@
+input CreateHandlerSessionInput {
+  name: String!
+}
+
+type CreateHandlerSessionResponse {
+  newHandler: Handler!
+}

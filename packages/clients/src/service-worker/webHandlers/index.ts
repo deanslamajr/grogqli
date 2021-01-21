@@ -15,7 +15,7 @@ const getHandlers = (handler): Handlers => [
   graphql.mutation(anyAlphaNumericStringReqExp, handler),
 ];
 
-export const getRecordHandlers = () => {
+export const getRecordingHandlers = () => {
   return getHandlers(recordHandler);
 };
 

@@ -1,0 +1,9 @@
+subscription OnHandlerStateChange(
+  $input: HandlerStateChangeSubscriptionInput!
+) {
+  handlerStateChanged(input: $input) {
+    id
+    name
+    currentState
+  }
+}

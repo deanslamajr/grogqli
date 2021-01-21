@@ -1,25 +1,11 @@
 import { setupWorker } from 'msw';
+import { CreateHandlerSession, OnHandlerStateChange } from '@grogqli/schema';
 
-import { create as createApolloClient } from './apolloClient';
-import { getPlaybackHandlers, getRecordHandlers } from './webHandlers';
+import { get as createApolloClient } from './apolloClient';
+import { getPlaybackHandlers /*getRecordingHandlers*/ } from './webHandlers';
 
-type HandlerState =
-  | {
-      mode: 'RECORDING';
-    }
-  | {
-      mode: 'PLAYBACK';
-    }
-  | {
-      mode: 'PASSTHROUGH';
-    };
-
-const initialState: HandlerState = {
-  mode: 'RECORDING',
-};
-
-const handlerState: HandlerState = {
-  ...initialState,
+const generateSessionName = () => {
+  return 'test';
 };
 
 export const startServiceWorker = async () => {
@@ -28,29 +14,64 @@ export const startServiceWorker = async () => {
     const worker = setupWorker(...getPlaybackHandlers());
     worker.start();
 
-    // const {sessionId} = await apolloClient.mutate('CREATE_SESSION', {variables: {
-    //   input: {
-    //     name: getNameFromBrowser()
-    //   }
-    // }})
+    const { data, errors } = await apolloClient.mutate({
+      mutation: CreateHandlerSession.CreateHandlerSessionDocument,
+      variables: {
+        input: {
+          name: generateSessionName(),
+        },
+      },
+    });
 
-    // apolloClient.subscribe('handlerStateChange', {variables: {sessionId}, onUpdate: (newState: HandlerState) => {
-    //   updateState(newState);
+    if (errors && errors.length) {
+      // TODO better error handling
+      throw errors[0];
+    }
+    if (!data) {
+      throw new Error('Mutation response did not return handler session id!');
+    }
 
-    //   if (newState.mode === 'RECORDING') {
-    //     const recordingHandlers = getRecordingHandlers()
-    //     worker.resetHandlers(...recordingHandlers)
-    //   }
+    const handlerSessionId = data.createHandlerSession.newHandler.id;
 
-    //   if (newState.mode === 'PLAYBACK') {
-    //     const playbackHandlers = getPlaybackHandlers()
-    //     worker.resetHandlers(...playbackHandlers)
-    //   }
+    apolloClient
+      .subscribe({
+        query: OnHandlerStateChange.OnHandlerStateChangeDocument,
+        variables: {
+          input: {
+            id: handlerSessionId,
+          },
+        },
+      })
+      .subscribe({
+        next({ data, errors }) {
+          console.log('onHandlerStateChange data:', { data, errors });
 
-    //   if (newState.mode === 'PASSTHROUGH') {
-    //     const passthroughHandlers = getPassthroughHandlers()
-    //     worker.resetHandlers(...passthroughHandlers)
-    //   }
-    // });
+          if (errors && errors.length) {
+            // TODO better error handling
+            throw errors[0];
+          }
+          if (!data) {
+            throw new Error('onHandlerStateChange didnt return expected data!');
+          }
+
+          // const newState = data.handlerStateChanged.currentState
+
+          // if (newState === 'RECORDING') {
+          //   worker.resetHandlers(...getRecordingHandlers())
+          // }
+
+          // if (newState === 'PLAYBACK') {
+          //   worker.resetHandlers(...getPlaybackHandlers())
+          // }
+
+          // if (newState === 'PASSTHROUGH') {
+          //   const passthroughHandlers = getPassthroughHandlers()
+          //   worker.resetHandlers(...passthroughHandlers)
+          // }
+        },
+        error(error) {
+          throw error;
+        },
+      });
   }
 };
