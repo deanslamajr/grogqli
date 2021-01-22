@@ -23,6 +23,7 @@ describe('resolveQueryFromRecording', () => {
       query,
       schemaId: 'someSchemaId',
       workflowId: 'someWorkflowId',
+      variables: {},
     };
     const actual = await resolveQueryFromRecording(queryConfig);
     expect(actual).toMatchSnapshot();

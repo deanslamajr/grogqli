@@ -1,24 +1,22 @@
 import { setupWorker } from 'msw';
 import { CreateHandlerSession, OnHandlerStateChange } from '@grogqli/schema';
 
-import { get as createApolloClient } from './apolloClient';
-import { getPlaybackHandlers /*getRecordingHandlers*/ } from './webHandlers';
-
-const generateSessionName = () => {
-  return 'test';
-};
-
 export const startServiceWorker = async () => {
   if (typeof window !== 'undefined') {
+    const { get: createApolloClient } = await import('./apolloClient');
     const apolloClient = createApolloClient();
-    const worker = setupWorker(...getPlaybackHandlers());
+
+    const { /*getPlaybackHandlers*/ getRecordingHandlers } = await import(
+      './webHandlers'
+    );
+    const worker = setupWorker(...getRecordingHandlers());
     worker.start();
 
     const { data, errors } = await apolloClient.mutate({
       mutation: CreateHandlerSession.CreateHandlerSessionDocument,
       variables: {
         input: {
-          name: generateSessionName(),
+          name: 'test',
         },
       },
     });

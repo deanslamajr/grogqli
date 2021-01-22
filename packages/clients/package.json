@@ -28,7 +28,9 @@
     "@grogqli/schema": "^0.4.0",
     "graphql": "^15.3.0",
     "msw": "^0.21.2",
-    "shortid": "^2.2.15"
+    "react": "^16.8.0",
+    "shortid": "^2.2.15",
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
     "@types/shortid": "^0.0.29",

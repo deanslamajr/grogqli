@@ -54,6 +54,9 @@ export const WORKFLOWS_NAME_TO_ID_MAPPING_VERSION = 1;
 //   /local
 const TEMP_FOLDER_NAME = 'local';
 //     appState.json
+//     sessions.json
+const HANDLER_SESSIONS_STATE_FILENAME = 'sessions.json';
+export const HANDLER_SESSIONS_STATE_FILE_VERSION = 1;
 //     /schemas
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
 //     /queries
@@ -65,18 +68,6 @@ export const getRecordingsRootDir = async (): Promise<string> => {
   const recordingsRootDir = config('recordingsSaveDirectory');
   await createDirIfDoesntExist(recordingsRootDir);
   return recordingsRootDir;
-};
-
-// e.g. /grogqli/local/schemas
-export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
-  const recordingsRootDir = await getRecordingsRootDir();
-  const schemaRecordingsPath = path.join(
-    recordingsRootDir,
-    TEMP_FOLDER_NAME,
-    TEMP_SCHEMAS_FOLDER_NAME
-  );
-  await createDirIfDoesntExist(schemaRecordingsPath);
-  return schemaRecordingsPath;
 };
 
 // e.g. /grogqli/schemas
@@ -161,6 +152,29 @@ export const getTypeFilePath = async (typeId: string) => {
   await createDirIfDoesntExist(typeFilePath);
 
   return path.join(typeFilePath, `${typeId}.json`);
+};
+
+// e.g. /grogqli/local/schemas
+export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
+  const recordingsRootDir = await getRecordingsRootDir();
+  const schemaRecordingsPath = path.join(
+    recordingsRootDir,
+    TEMP_FOLDER_NAME,
+    TEMP_SCHEMAS_FOLDER_NAME
+  );
+  await createDirIfDoesntExist(schemaRecordingsPath);
+  return schemaRecordingsPath;
+};
+
+// e.g. /grogqli/local/sessions.json
+export const getSessionsFilePath = async () => {
+  const recordingsRootDir = await getRecordingsRootDir();
+
+  const tempFolderPath = path.join(recordingsRootDir, TEMP_FOLDER_NAME);
+
+  await createDirIfDoesntExist(tempFolderPath);
+
+  return path.join(tempFolderPath, HANDLER_SESSIONS_STATE_FILENAME);
 };
 
 export const getQueryRecordingsFile = async (): Promise<
