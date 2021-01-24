@@ -20,7 +20,7 @@ module.exports = {
     const appConfig = webpackConfig; // stay immutable here
 
     // this ensures that the SSR (e.g. renderToStringWithData) use the same react & react-dom instances as the frontend bundles
-    // this avoids the "infamous" react hooks errors
+    // this avoids the "infamous" react hooks errors https://github.com/facebook/react/issues/15315
     if (target === 'node') {
       appConfig.externals = ['react', 'react-dom'];
     }
