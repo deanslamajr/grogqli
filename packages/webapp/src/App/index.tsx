@@ -24,7 +24,7 @@ const pagesConfig: PageConfig[] = [
     path: '/requests',
   },
   {
-    label: 'Mocking',
+    label: 'SMocking',
     component: MockingPage,
     path: '/mocking',
   },

@@ -19,13 +19,16 @@ module.exports = {
   }) {
     const appConfig = webpackConfig; // stay immutable here
 
-    appConfig.resolve.alias = {
-      ...appConfig.resolve.alias,
-      react: path.resolve('../../node_modules/react'),
-      ['react-dom']: path.resolve('../../node_modules/react-dom'),
-    };
+    // appConfig.resolve.alias = {
+    //   ...appConfig.resolve.alias,
+    //   react: path.resolve('../../node_modules/react'),
+    //   ['react-dom']: path.resolve('../../node_modules/react-dom'),
+    // };
 
-    console.log('resolved path:', path.resolve('../../node_modules/react-dom'));
+    // console.log('resolved path:', path.resolve('../../node_modules/react-dom'));
+    if (target === 'node' && dev) {
+      appConfig.externals = ['react', 'react-dom'];
+    }
 
     // let webpack bundle the backend codes too
     // this prevents absolute filepaths of the build system's filesystem
