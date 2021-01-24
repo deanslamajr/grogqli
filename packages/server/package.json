@@ -47,11 +47,14 @@
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "http-terminator": "^2.0.3",
+    "babel-preset-razzle": "^3.3.11",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "http-terminator": "^2.0.3",
     "razzle": "^3.3.11",
-    "razzle-plugin-eslint": "^3.3.11"
+    "razzle-dev-utils": "^3.3.11",
+    "razzle-plugin-eslint": "^3.3.11",
+    "vue": "^2.6.12"
   },
   "prettier": {
     "printWidth": 80,
