@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "npm run init && npm run dev",
-    "init": "lerna clean --y && lerna bootstrap --force-local",
+    "init": "lerna clean --y && lerna bootstrap --force-local --hoist",
     "dev": "lerna run start:dev --parallel",
     "build:publish": "lerna run build:publish --stream",
     "publish:dry": "npm run init && npm run build",

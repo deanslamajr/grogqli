@@ -1,3 +1,5 @@
+const path = require('path');
+
 // https://razzle-git-canary.jared.vercel.app/docs/customization#extending-webpack
 // the sauce -> https://github.com/jaredpalmer/razzle/blob/e3cfbe568e4c8ae202603cb8a41ab19c2d65b963/packages/razzle/config/createConfig.js
 module.exports = {
@@ -16,6 +18,14 @@ module.exports = {
     paths, // the modified paths that will be used by Razzle.
   }) {
     const appConfig = webpackConfig; // stay immutable here
+
+    appConfig.resolve.alias = {
+      ...appConfig.resolve.alias,
+      react: path.resolve('../../node_modules/react'),
+      ['react-dom']: path.resolve('../../node_modules/react-dom'),
+    };
+
+    console.log('resolved path:', path.resolve('../../node_modules/react-dom'));
 
     // let webpack bundle the backend codes too
     // this prevents absolute filepaths of the build system's filesystem

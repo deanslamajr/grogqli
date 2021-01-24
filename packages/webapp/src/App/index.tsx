@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { ApolloProvider, ApolloClient } from '@apollo/react-hooks';
+import { ApolloProvider, ApolloClient } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from './GlobalStyles';
@@ -9,7 +9,7 @@ import { TopNavBar } from './TopNavBar';
 import { RequestsPage } from './RequestsPage';
 import { MockingPage } from './MockingPage';
 
-import { cssTheme } from '../constants';
+import { cssTheme } from './constants';
 
 export interface PageConfig {
   label: string;

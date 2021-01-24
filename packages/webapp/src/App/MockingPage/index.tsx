@@ -45,7 +45,7 @@ const WorkflowsDropdown = styled.select`
 `;
 
 export const MockingPage: React.FC<{}> = ({}) => {
-  const { data, loading, error } = useQuery(GetWorkflows.GetWorkflowsDocument);
+  const { data, loading } = useQuery(GetWorkflows.GetWorkflowsDocument);
 
   return (
     <>

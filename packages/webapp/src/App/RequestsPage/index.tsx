@@ -43,7 +43,7 @@ export const RequestsPage: React.FC = () => {
       updateCheckedState({});
       setAllAreChecked(false);
     } else {
-      const newCheckedState = {};
+      const newCheckedState: CheckedState = {};
       data?.recordings?.forEach(({ id }) => {
         newCheckedState[id] = true;
       });

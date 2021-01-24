@@ -1,21 +1,13 @@
-import React from 'react';
-import { hydrate } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { onError } from '@apollo/client/link/error';
-
-import { App } from '@grogqli/webapp';
-
-import { HttpLink, from, split } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  from,
+  split,
+} from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
-
-import { createApolloClient } from '../shared/createApolloClient';
-
-declare global {
-  interface Window {
-    __APOLLO_STATE__: any;
-  }
-}
+import { onError } from '@apollo/client/link/error';
 
 const grogqliPath = 'http://localhost:4000/grogqli';
 const grogqliWsPath = 'ws://localhost:4000/graphql';
@@ -56,18 +48,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = from([errorLink, splitLink]);
 
-const apolloClient = createApolloClient({
-  link,
-  initialState: window.__APOLLO_STATE__,
-});
+export const createApolloClient = () => {
+  const cache = new InMemoryCache();
 
-hydrate(
-  <BrowserRouter>
-    <App apolloClient={apolloClient} />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
-
-if (module.hot) {
-  module.hot.accept();
-}
+  return new ApolloClient({
+    link,
+    cache,
+  });
+};

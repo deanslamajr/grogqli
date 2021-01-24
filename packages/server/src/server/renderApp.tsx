@@ -1,8 +1,8 @@
 import express from 'express';
 import unless from 'express-unless';
 import React from 'react';
-import { StaticRouterContext } from 'react-router';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouterContext, StaticRouter } from 'react-router';
+// import { StaticRouter } from 'react-router-dom';
 import {
   ApolloClient,
   ApolloLink,
@@ -11,12 +11,13 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { SchemaLink } from 'apollo-link-schema';
-import { renderToStringWithData } from '@apollo/react-ssr';
+import { renderToStringWithData } from '@apollo/client/react/ssr';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+import { App } from '@grogqli/webapp';
 
 import gqlSchema from './graphql/schema';
 
-import App from '../client/App';
+// import App from '../client/App';
 import { createApolloClient as createClient } from '../shared/createApolloClient';
 import { grogqliPath } from '../shared/constants';
 
@@ -59,11 +60,11 @@ const renderApp = async (req: express.Request, res: express.Response) => {
   try {
     // Run all GraphQL queries
     markup = await renderToStringWithData(
-      <StaticRouter context={context} location={req.url}>
-        <StyleSheetManager sheet={sheet.instance}>
+      <StyleSheetManager sheet={sheet.instance}>
+        <StaticRouter context={context} location={req.url}>
           <App apolloClient={apolloClient} />
-        </StyleSheetManager>
-      </StaticRouter>
+        </StaticRouter>
+      </StyleSheetManager>
     );
     styleTags = sheet.getStyleTags();
   } catch (error) {

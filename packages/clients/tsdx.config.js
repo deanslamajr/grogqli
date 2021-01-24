@@ -6,7 +6,8 @@ module.exports = {
   rollup(config, options) {
     const { output, ...restConfig } = config;
     const { file, ...restOutput } = output;
-    // Remove file ref and insert dir to support React.lazy();
+    // Remove file ref and insert dir to support (multiple bundle exports).
+    // This enables dynamic import, React.lazy(), etc.
     return {
       ...restConfig,
       output: {
