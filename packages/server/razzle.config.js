@@ -21,7 +21,7 @@ module.exports = {
 
     // this ensures that the SSR (e.g. renderToStringWithData) use the same react & react-dom instances as the frontend bundles
     // this avoids the "infamous" react hooks errors
-    if (target === 'node' && dev) {
+    if (target === 'node') {
       appConfig.externals = ['react', 'react-dom'];
     }
 
