@@ -19,22 +19,26 @@ module.exports = {
   }) {
     const appConfig = webpackConfig; // stay immutable here
 
-    // appConfig.resolve.alias = {
-    //   ...appConfig.resolve.alias,
-    //   react: path.resolve('../../node_modules/react'),
-    //   ['react-dom']: path.resolve('../../node_modules/react-dom'),
-    // };
-
-    // console.log('resolved path:', path.resolve('../../node_modules/react-dom'));
+    // this ensures that the SSR (e.g. renderToStringWithData) use the same react & react-dom instances as the frontend bundles
+    // this avoids the "infamous" react hooks errors
     if (target === 'node' && dev) {
       appConfig.externals = ['react', 'react-dom'];
     }
 
-    // let webpack bundle the backend codes too
+    // This conditional accomplishes 2 goals
+    // 1. by replacing the default razzle value, we allow
+    // webpack to include all backend dependencies in the bundle
+    // (e.g. replaces require('someDependency') with the dependency's actual code)
     // this prevents absolute filepaths of the build system's filesystem
     // to be included in the backend bundle (server.js)
+    // 2. the reference to consolidate fixes a bug during publish where
+    // the consolidate package's behavior of dynamicly referencing other modules
+    // depending on the particular use case breaks when trying to accomplish #1
+    // https://github.com/tj/consolidate.js/issues/295#issuecomment-551097683
     if (target === 'node' && !dev) {
-      appConfig.externals = [];
+      appConfig.externals = {
+        consolidate: 'commonjs consolidate',
+      };
     }
 
     return appConfig;
