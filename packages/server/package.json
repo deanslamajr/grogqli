@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "MIT",
   "main": "build/server.js",
   "bin": {
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
-    "@grogqli/schema": "^0.4.0",
-    "@grogqli/webapp": "^0.4.0",
+    "@grogqli/schema": "^0.5.0",
+    "@grogqli/webapp": "^0.5.0",
     "apollo-link-schema": "^1.2.5",
     "apollo-server-core": "^2.19.2",
     "apollo-server-express": "^2.19.2",
