@@ -6,7 +6,7 @@
     "init": "lerna clean --y && lerna bootstrap --force-local --hoist",
     "dev": "lerna run start:dev --parallel",
     "build:publish": "lerna run build:publish --stream",
-    "publish:dry": "npm run init && npm run build",
+    "publish:dry": "npm run init && npm run build:publish",
     "publish": "npm run init && npm run build:publish && lerna publish",
     "lint": "lerna run lint --stream",
     "test": "lerna run test --stream"
