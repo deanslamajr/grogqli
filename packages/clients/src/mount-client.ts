@@ -1,6 +1,5 @@
 const iFrameSingletonKey = '__iFrameSingleton';
 const grogqliAppIFrameId = 'grogqli-app';
-const groqliAppUrl = 'http://localhost:4000';
 
 const grogqliContainerStyles = {
   base: `
@@ -42,7 +41,10 @@ const newWindowButtonStyles = {
   `,
 };
 
-export const mountClient = () => {
+type MountClient = (params: { port: number }) => void;
+
+export const mountClient: MountClient = ({ port }) => {
+  const groqliAppUrl = `http://localhost:${port}`;
   // if in a browser context
   //   AND if iframe hasn't already been created i.e. if this isn't a HMR reload
   if (typeof window !== 'undefined' && !window[iFrameSingletonKey]) {

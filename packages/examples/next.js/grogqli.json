@@ -1,4 +1,5 @@
 {
   "recordingsSaveDirectory": "grogqli",
-  "recordingsFilename": "rec"
+  "recordingsFilename": "rec",
+  "port": 5678
 }

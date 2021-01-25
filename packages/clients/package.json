@@ -16,7 +16,7 @@
     "access": "public"
   },
   "scripts": {
-    "start:dev": "wait-on http://localhost:4000 && tsdx watch --verbose",
+    "start:dev": "tsdx watch --verbose",
     "build:publish": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint --fix",

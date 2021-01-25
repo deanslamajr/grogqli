@@ -4,9 +4,12 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apollo";
 
 if (typeof window !== 'undefined') {
-  const { mountClient, startServiceWorker } = require("@grogqli/clients");
-  startServiceWorker();
-  mountClient();
+  const port = 5678;
+  const { mountClient, startServiceWorker } = require('@grogqli/clients');
+  startServiceWorker({ port }).then((sessionId) => {
+    console.log('> new grogqli handler session created, id:', sessionId);
+    mountClient({ port });
+  });
 }
 
 export default function App({ Component, pageProps }: AppProps) {

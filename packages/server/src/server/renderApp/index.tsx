@@ -1,25 +1,16 @@
 import express from 'express';
 import unless from 'express-unless';
 import React from 'react';
-import { StaticRouterContext, StaticRouter } from 'react-router';
-// import { StaticRouter } from 'react-router-dom';
-import {
-  ApolloClient,
-  ApolloLink,
-  from,
-  NormalizedCacheObject,
-} from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
-import { SchemaLink } from 'apollo-link-schema';
+import { StaticRouterContext } from 'react-router';
+import { StaticRouter } from 'react-router-dom';
+
 import { renderToStringWithData } from '@apollo/client/react/ssr';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import { App } from '@grogqli/webapp';
 
-import gqlSchema from './graphql/schema';
-
-// import App from '../client/App';
-import { createApolloClient as createClient } from '../shared/createApolloClient';
-import { grogqliPath } from '../shared/constants';
+import { grogqliPath } from '../../shared/constants';
+import { getConfig } from '../files/getConfig';
+import { createApolloClient } from './createApolloClient';
 
 let assets: any;
 
@@ -28,33 +19,13 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
-  const schemaLink = new SchemaLink({ schema: gqlSchema });
-
-  // TODO replace this with better logging?
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      );
-    if (networkError) console.log(`[Network error]: ${networkError}`);
-  });
-
-  const link = from([errorLink, (schemaLink as unknown) as ApolloLink]);
-
-  return createClient({
-    link,
-    isSSRMode: true,
-  });
-};
-
 const renderApp = async (req: express.Request, res: express.Response) => {
   const context = {} as StaticRouterContext;
 
   const apolloClient = createApolloClient();
+
   let markup: string;
+
   const sheet = new ServerStyleSheet();
   let styleTags;
   try {
@@ -78,10 +49,15 @@ const renderApp = async (req: express.Request, res: express.Response) => {
   }
 
   const apolloState = apolloClient.extract();
+
   // context.url will contain the URL to redirect to if a <Redirect> was used
   if (context.url) {
     return res.redirect(context.url);
   }
+
+  // Pass the server PORT to the frontend
+  const config = await getConfig();
+  const port = config('port');
 
   res.send(`
     <!doctype html>
@@ -108,6 +84,9 @@ const renderApp = async (req: express.Request, res: express.Response) => {
       <body>
           <div id="root">${markup}</div>
           <script>
+            // SERVER PORT
+            window.__PORT__=${port}
+            // GQL SSR
             window.__APOLLO_STATE__=${JSON.stringify(apolloState).replace(
               /</g,
               '\\u003c'

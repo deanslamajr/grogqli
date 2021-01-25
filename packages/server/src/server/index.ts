@@ -3,6 +3,8 @@ import cors from 'cors';
 
 import { renderAppForAllGetPathsExceptGraphql } from './renderApp';
 
+console.log('process.env.RAZZLE_PUBLIC_DIR', process.env.RAZZLE_PUBLIC_DIR);
+
 export { apolloServer } from './graphql';
 export const server = express()
   .disable('x-powered-by')

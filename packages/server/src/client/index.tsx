@@ -14,11 +14,29 @@ import { createApolloClient } from '../shared/createApolloClient';
 declare global {
   interface Window {
     __APOLLO_STATE__: any;
+    __PORT__: number;
   }
 }
 
-const grogqliPath = 'http://localhost:4000/grogqli';
-const grogqliWsPath = 'ws://localhost:4000/graphql';
+if (typeof window !== 'undefined') {
+  const gqlServerPort = 1234;
+
+  console.log('location.port');
+  // prevent infinite grogqli inspection!
+  const currentPagesPort = parseInt(location.port);
+  if (currentPagesPort !== gqlServerPort) {
+    const { mountClient, startServiceWorker } = require('@grogqli/clients');
+    startServiceWorker({ port: gqlServerPort }).then((sessionId) => {
+      console.log('> new grogqli handler session created, id:', sessionId);
+      mountClient({ port: gqlServerPort });
+    });
+  }
+}
+
+const port = window.__PORT__;
+
+const grogqliPath = `http://localhost:${port}/grogqli`;
+const grogqliWsPath = `ws://localhost:${port}/graphql`;
 
 const httpLink = new HttpLink({
   uri: grogqliPath,

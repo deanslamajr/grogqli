@@ -38,6 +38,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@grogqli/clients": "^0.5.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^10.4.9",
     "@testing-library/user-event": "^10.4.1",

@@ -9,20 +9,25 @@ import { split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { context } from 'msw';
 
-import { serverUrl } from '../constants';
-
 let client: ApolloClient<NormalizedCacheObject>;
+let gqlServerPort = 4000;
 
-export const create = (): ApolloClient<NormalizedCacheObject> => {
+type Create = (params: {
+  port?: number;
+}) => ApolloClient<NormalizedCacheObject>;
+
+export const create: Create = ({ port }) => {
+  gqlServerPort = port || gqlServerPort;
+
   const cache = new InMemoryCache();
 
   const httpLink = createHttpLink({
-    uri: `http://${serverUrl}/grogqli`,
+    uri: `http://localhost:${gqlServerPort}/grogqli`,
     fetch: context.fetch as WindowOrWorkerGlobalScope['fetch'],
   });
 
   const wsLink = new WebSocketLink({
-    uri: `ws://${serverUrl}/graphql`,
+    uri: `ws://localhost:${gqlServerPort}/graphql`,
     options: {
       reconnect: true,
     },
@@ -58,7 +63,7 @@ export const create = (): ApolloClient<NormalizedCacheObject> => {
 
 export const get = () => {
   if (client === undefined) {
-    client = create();
+    client = create({});
   }
 
   return client;

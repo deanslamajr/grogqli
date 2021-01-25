@@ -2,11 +2,10 @@ import http from 'http';
 
 import { server, apolloServer } from './server';
 import { grogqliPath } from './shared/constants';
+import { getConfig } from './server/files/getConfig';
 
 let httpServer: http.Server | undefined;
 let httpTerminator;
-
-const port = 4000; //process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 const initializeServer = () => {
   apolloServer.applyMiddleware({ app: server, path: grogqliPath });
@@ -22,12 +21,16 @@ const registerServerForSafeTermination = () => {
   });
 };
 
-const startServer = () => {
+const startServer = async () => {
   if (!httpServer) {
     throw new Error(
       'Attempted to start server but `httpServer` does not exist!'
     );
   }
+
+  const config = await getConfig();
+  const port = config('port');
+
   httpServer.listen(port, () => {
     console.log(`> Server started http://localhost:${port}`);
   });
