@@ -1,15 +1,16 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 
 import { renderAppForAllGetPathsExceptGraphql } from './renderApp';
 
-console.log('process.env.RAZZLE_PUBLIC_DIR', process.env.RAZZLE_PUBLIC_DIR);
+console.log('path.join(__dirname, `public`)', path.join(__dirname, 'public'));
 
 export { apolloServer } from './graphql';
 export const server = express()
   .disable('x-powered-by')
   .use(cors())
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .use(express.static(path.join(__dirname, 'public')))
   .use(renderAppForAllGetPathsExceptGraphql)
   // adjust this if the following error:
   // PayloadTooLargeError: request entity too large

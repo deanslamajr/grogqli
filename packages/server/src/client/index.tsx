@@ -18,18 +18,21 @@ declare global {
   }
 }
 
-if (typeof window !== 'undefined') {
-  const gqlServerPort = 1234;
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
-  console.log('location.port');
-  // prevent infinite grogqli inspection!
-  const currentPagesPort = parseInt(location.port);
-  if (currentPagesPort !== gqlServerPort) {
-    const { mountClient, startServiceWorker } = require('@grogqli/clients');
-    startServiceWorker({ port: gqlServerPort }).then((sessionId) => {
-      console.log('> new grogqli handler session created, id:', sessionId);
-      mountClient({ port: gqlServerPort });
-    });
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined') {
+    const gqlServerPort = 1234;
+
+    // prevent infinite grogqli inspection!
+    const currentPagesPort = parseInt(location.port);
+    if (currentPagesPort !== gqlServerPort) {
+      const { mountClient, startServiceWorker } = require('@grogqli/clients');
+      startServiceWorker({ port: gqlServerPort }).then((sessionId) => {
+        console.log('> new grogqli handler session created, id:', sessionId);
+        mountClient({ port: gqlServerPort });
+      });
+    }
   }
 }
 
