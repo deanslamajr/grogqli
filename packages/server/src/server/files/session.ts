@@ -43,3 +43,16 @@ export const create = async (name: string): Promise<Handler> => {
 
   return newHandler;
 };
+
+const getById = async (sessionId: string): Promise<Handler> => {
+  // TODO implement this
+  return {
+    id: sessionId,
+    name: 'mocked session handler data',
+    currentState: HandlerState.Recording,
+  };
+};
+
+export const getByIds = async (sessionIds: string[]): Promise<Handler[]> => {
+  return Promise.all(sessionIds.map((sessionId) => getById(sessionId)));
+};

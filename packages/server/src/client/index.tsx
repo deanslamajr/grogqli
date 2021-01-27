@@ -18,13 +18,12 @@ declare global {
   }
 }
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === 'development') {
   if (typeof window !== 'undefined') {
     const gqlServerPort = 1234;
 
     // prevent infinite grogqli inspection!
+    // eslint-disable-next-line no-restricted-globals
     const currentPagesPort = parseInt(location.port);
     if (currentPagesPort !== gqlServerPort) {
       const { mountClient, startServiceWorker } = require('@grogqli/clients');

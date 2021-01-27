@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { PageConfig } from './';
 
@@ -42,10 +42,11 @@ interface Props {
   pagesConfig: PageConfig[];
 }
 export const TopNavBar: React.FC<Props> = ({ pagesConfig }) => {
+  const { url } = useRouteMatch();
   return (
     <StyledOuterContainer>
       {pagesConfig.map(({ label, path }) => (
-        <StyledLink key={path} to={path}>
+        <StyledLink key={path} to={`${url}/${path}`}>
           {label}
         </StyledLink>
       ))}

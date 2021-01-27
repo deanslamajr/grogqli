@@ -59,6 +59,7 @@
     "@rooks/use-key": "^3.6.0",
     "final-form": "^4.20.1",
     "graphql-formatter": "^1.0.3",
+    "querystring": "^0.2.0",
     "react-final-form": "^6.5.2",
     "react-icons": "^3.11.0"
   },

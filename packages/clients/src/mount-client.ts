@@ -41,10 +41,10 @@ const newWindowButtonStyles = {
   `,
 };
 
-type MountClient = (params: { port: number }) => void;
+type MountClient = (params: { port: number; initialSessionId: string }) => void;
 
-export const mountClient: MountClient = ({ port }) => {
-  const groqliAppUrl = `http://localhost:${port}`;
+export const mountClient: MountClient = ({ initialSessionId, port }) => {
+  const groqliAppUrl = `http://localhost:${port}/?s=${initialSessionId}`;
   // if in a browser context
   //   AND if iframe hasn't already been created i.e. if this isn't a HMR reload
   if (typeof window !== 'undefined' && !window[iFrameSingletonKey]) {

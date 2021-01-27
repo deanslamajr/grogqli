@@ -4,6 +4,7 @@ export * from './generated/src/schema/schema.graphql';
 
 // operations
 //// queries
+export * as GetHandlers from './generated/src/queries/query/GetHandlers.graphql';
 export * as GetRecordings from './generated/src/queries/query/GetRecordings.graphql';
 export * as GetWorkflows from './generated/src/queries/query/GetWorkflows.graphql';
 //// mutations

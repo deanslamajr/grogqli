@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { VscCheck } from 'react-icons/vsc';
 
 import { NavButtonPositions, NavButton } from './NavButton';
-import { cssTheme } from '../constants';
+import { cssTheme } from '../../../constants';
 
 interface SaveRecordingButtonProps {
   onClick: () => void;

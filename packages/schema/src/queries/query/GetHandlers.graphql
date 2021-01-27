@@ -1,0 +1,7 @@
+query GetHandlers($input: HandlersInput!) {
+  handlers(input: $input) {
+    id
+    name
+    currentState
+  }
+}
