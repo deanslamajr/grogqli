@@ -9,8 +9,10 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { onError } from '@apollo/client/link/error';
 
-const grogqliPath = 'http://localhost:4000/grogqli';
-const grogqliWsPath = 'ws://localhost:4000/graphql';
+const port = 1234;
+
+const grogqliPath = `http://localhost:${port}/grogqli`;
+const grogqliWsPath = `ws://localhost:${port}/graphql`;
 
 const httpLink = new HttpLink({
   uri: grogqliPath,

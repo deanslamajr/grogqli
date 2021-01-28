@@ -19,7 +19,7 @@ export const pagesConfig: PageConfig[] = [
     path: 'requests',
   },
   {
-    label: 'SMocking',
+    label: 'Mocking',
     component: MockingPage,
     path: 'mocking',
   },
