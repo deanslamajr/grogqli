@@ -9,7 +9,7 @@ const StyledOuterContainer = styled.div`
   height: ${({ theme }) => theme.sizes.menuBarHeight};
   background-color: ${({ theme }) => theme.colors.highGray};
   border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
-  line-height: 1.75;
+  line-height: 1.9;
   font-size: 15px;
 `;
 
@@ -30,11 +30,15 @@ const StyledLink = styled(NavLink)`
 
     &:hover {
       background-color: inherit;
+      border-bottom: ${selectedItemUnderlineHeight} solid
+        ${({ theme }) => theme.colors.selectedMenuItemUnderline};
     }
   }
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.selectedMenuItemBackground};
+    border-bottom: ${selectedItemUnderlineHeight} solid
+      ${({ theme }) => theme.colors.selectedMenuItemBackground};
   }
 `;
 

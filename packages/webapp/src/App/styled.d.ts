@@ -6,12 +6,14 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       // new colors
+      sessionMenuBackgroundDark: string;
       generalBackgroundColor: string;
       highGray: string;
       borders: string;
       selectedMenuItemBackground: string;
       selectedMenuItemUnderline: string;
       selectedMenuItemText: string;
+      darkerSelectedMenuItemText: string;
       unselectedMenuItemText: string;
       // old colors
       black: string;

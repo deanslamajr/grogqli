@@ -5,6 +5,7 @@ import { GetHandlers, Handler } from '@grogqli/schema';
 import { useLazyQuery } from '@apollo/client';
 
 import { Session, pagesConfig } from './Session';
+import { SessionsTabs } from './SessionsTabs';
 
 interface Props {}
 
@@ -14,6 +15,8 @@ const getSelectedSession = (sessions: Handler[]): Handler => {
 
 export const SessionsContainer: FC<Props> = ({}) => {
   const [sessions, setSessions] = useState<Handler[] | null>(null);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+
   let location = useLocation();
   const history = useHistory();
 
@@ -43,14 +46,26 @@ export const SessionsContainer: FC<Props> = ({}) => {
     if (data && data.handlers !== null) {
       setSessions(data.handlers);
       const selectedSession = getSelectedSession(data.handlers);
-      history.push(`/session/${selectedSession.id}/${pagesConfig[0].path}`);
+      setActiveSessionId(selectedSession.id);
     }
   }, [data?.handlers]);
+
+  useEffect(() => {
+    if (activeSessionId) {
+      history.push(`/session/${activeSessionId}/${pagesConfig[0].path}`);
+    }
+  }, [activeSessionId]);
 
   return (
     <Switch>
       <Route path="/session/:sessionId">
-        <Session sessions={sessions} />
+        <>
+          <SessionsTabs
+            changeSession={setActiveSessionId}
+            sessions={sessions}
+          />
+          <Session sessions={sessions} />
+        </>
       </Route>
       <Route>
         <div>Loading...</div>

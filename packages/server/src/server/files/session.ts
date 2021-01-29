@@ -48,11 +48,13 @@ const getById = async (sessionId: string): Promise<Handler> => {
   // TODO implement this
   return {
     id: sessionId,
-    name: 'mocked session handler data',
+    name:
+      'mocked session handler data this is a really long title for a session',
     currentState: HandlerState.Recording,
   };
 };
 
 export const getByIds = async (sessionIds: string[]): Promise<Handler[]> => {
-  return Promise.all(sessionIds.map((sessionId) => getById(sessionId)));
+  const mockSessionIds = ['abcdefg', '12345678', 'lkjsdf86c'];
+  return Promise.all(mockSessionIds.map((sessionId) => getById(sessionId)));
 };
