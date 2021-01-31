@@ -2,7 +2,9 @@ type Mutation {
   createHandlerSession(
     input: CreateHandlerSessionInput!
   ): CreateHandlerSessionResponse!
-  createRecording(input: CreateRecordingInput!): CreateRecordingResponse!
+  createTemporaryOperationRecording(
+    input: CreateTemporaryOperationRecordingInput!
+  ): CreateTemporaryOperationRecordingResponse!
   createWorkflow(input: CreateWorkflowInput!): CreateWorkflowResponse!
   playbackRecording(input: PlaybackRecordingInput!): PlaybackRecordingResponse!
   recordResponse(input: RecordResponseInput!): RecordResponseResponse!

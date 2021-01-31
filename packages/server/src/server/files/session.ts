@@ -1,6 +1,7 @@
 import { Handler, HandlerState } from '@grogqli/schema';
 import editJsonFile from 'edit-json-file';
 import shortid from 'shortid';
+import fs from 'fs';
 
 import {
   doesFileExist,
@@ -9,13 +10,10 @@ import {
   mapObjectToJsonFile,
 } from './';
 
-type HandlerSession = Omit<Handler, '__typename'>;
-
 export type HandlerSessionStateFile = HandlerSessionStateFileVersion1;
-interface HandlerSessionStateFileVersion1 {
+type HandlerSessionStateFileVersion1 = {
   version: 1;
-  sessions: { [sessionId: string]: HandlerSession };
-}
+} & Pick<Handler, 'id' | 'name' | 'currentState'>;
 
 export const create = async (name: string): Promise<Handler> => {
   const newHandler: Handler = {
@@ -24,17 +22,22 @@ export const create = async (name: string): Promise<Handler> => {
     currentState: HandlerState.Recording,
   };
 
-  const pathToSessionsFile = await getSessionsFilePath();
-  const handlerSessionStateFile = editJsonFile(pathToSessionsFile);
+  const pathToSessionStateFile = await getSessionsFilePath(newHandler.id);
+  const handlerSessionStateFile = editJsonFile(pathToSessionStateFile);
 
   if (doesFileExist(handlerSessionStateFile)) {
-    handlerSessionStateFile.set(`sessions.${newHandler.id}`, newHandler);
+    // file should not already exist
+    // if it does, this probably means that the generated id is
+    // already in use as an id for another session
+    throw new Error(
+      `The generated session id:${newHandler.id} seems to already be in use!`
+    );
   } else {
     const newSessionStateFileContents: HandlerSessionStateFileVersion1 = {
       version: HANDLER_SESSIONS_STATE_FILE_VERSION,
-      sessions: {
-        [newHandler.id]: newHandler,
-      },
+      id: newHandler.id,
+      name: newHandler.name,
+      currentState: newHandler.currentState,
     };
     mapObjectToJsonFile(newSessionStateFileContents, handlerSessionStateFile);
   }
@@ -44,17 +47,40 @@ export const create = async (name: string): Promise<Handler> => {
   return newHandler;
 };
 
+type GetSessionStateFromDisk = (
+  sessionId: string
+) => Promise<HandlerSessionStateFile>;
+
+export const getSessionStateFromDisk: GetSessionStateFromDisk = async (
+  sessionId
+) => {
+  const pathToSessionStateFile = await getSessionsFilePath(sessionId);
+
+  let sessionStateFile: HandlerSessionStateFile;
+  try {
+    sessionStateFile = JSON.parse(
+      await fs.promises.readFile(pathToSessionStateFile, 'utf8')
+    );
+  } catch (error) {
+    console.error(error);
+    throw new Error(
+      `Error while attempting to open handler session state file associated with sessionId:${sessionId}
+       This probably means a file does not exist for the given id.`
+    );
+  }
+
+  return sessionStateFile;
+};
+
 const getById = async (sessionId: string): Promise<Handler> => {
-  // TODO implement this
+  const sessionStateFile = await getSessionStateFromDisk(sessionId);
   return {
-    id: sessionId,
-    name:
-      'mocked session handler data this is a really long title for a session',
-    currentState: HandlerState.Recording,
+    id: sessionStateFile.id,
+    name: sessionStateFile.name,
+    currentState: sessionStateFile.currentState,
   };
 };
 
 export const getByIds = async (sessionIds: string[]): Promise<Handler[]> => {
-  const mockSessionIds = ['abcdefg', '12345678', 'lkjsdf86c'];
-  return Promise.all(mockSessionIds.map((sessionId) => getById(sessionId)));
+  return Promise.all(sessionIds.map((sessionId) => getById(sessionId)));
 };

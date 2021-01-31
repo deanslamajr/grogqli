@@ -1,6 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { useQuery } from '@apollo/client';
-import { GetRecordings, OnRecordingSaved, Recording } from '@grogqli/schema';
+import {
+  GetTempOpRecordings,
+  OnTemporaryOperationRecordingSave,
+  TemporaryOperationRecording,
+} from '@grogqli/schema';
 
 import Transactions from './Transactions';
 
@@ -10,7 +14,7 @@ export const RequestsPage: React.FC = () => {
   const [checkedState, updateCheckedState] = useState<CheckedState>({});
   const [allAreChecked, setAllAreChecked] = useState(false);
   const { data, loading, error, subscribeToMore } = useQuery(
-    GetRecordings.GetRecordingsDocument
+    GetTempOpRecordings.GetTempOpRecordingsDocument
   );
 
   if (error) {
@@ -23,9 +27,11 @@ export const RequestsPage: React.FC = () => {
       newCheckedState[id] = !Boolean(newCheckedState[id]);
       updateCheckedState(newCheckedState);
 
-      const everyRecordingIsChecked = data?.recordings?.every(({ id }) => {
-        return newCheckedState[id];
-      });
+      const everyRecordingIsChecked = data?.temporaryOperationRecordings?.every(
+        ({ id }) => {
+          return newCheckedState[id];
+        }
+      );
 
       if (everyRecordingIsChecked) {
         setAllAreChecked(true);
@@ -35,7 +41,7 @@ export const RequestsPage: React.FC = () => {
         }
       }
     },
-    [checkedState, allAreChecked, data?.recordings]
+    [checkedState, allAreChecked, data?.temporaryOperationRecordings]
   );
 
   const toggleAllChecked = useCallback(() => {
@@ -44,33 +50,39 @@ export const RequestsPage: React.FC = () => {
       setAllAreChecked(false);
     } else {
       const newCheckedState: CheckedState = {};
-      data?.recordings?.forEach(({ id }) => {
+      data?.temporaryOperationRecordings?.forEach(({ id }) => {
         newCheckedState[id] = true;
       });
       updateCheckedState(newCheckedState);
       setAllAreChecked(true);
     }
-  }, [allAreChecked, data?.recordings]);
+  }, [allAreChecked, data?.temporaryOperationRecordings]);
 
   return (
     <Transactions
       allAreChecked={allAreChecked}
       checkedState={checkedState}
       toggleCheck={toggleCheck}
-      recordings={data?.recordings || []}
+      temporaryOperationRecordings={data?.temporaryOperationRecordings || []}
       loading={loading}
       error={error}
       toggleAllChecked={toggleAllChecked}
       subscribeToRecordings={() => {
         return subscribeToMore({
-          document: OnRecordingSaved.OnRecordingSaveDocument,
+          document:
+            OnTemporaryOperationRecordingSave.OnTemporaryOperationRecordingSaveDocument,
           // variables: {  },
-          updateQuery: (prev, { subscriptionData }) => {
-            if (!subscriptionData.data) {
+          updateQuery: (
+            prev,
+            { subscriptionData: onTemporaryOperationRecordingSaveData }
+          ) => {
+            if (!onTemporaryOperationRecordingSaveData.data) {
               return prev;
             }
 
-            const newFeedItem = subscriptionData.data.recordingSaved;
+            const newFeedItem =
+              onTemporaryOperationRecordingSaveData.data
+                .temporaryOperationRecordingSaved;
 
             if (newFeedItem === null) {
               return prev;
@@ -78,8 +90,8 @@ export const RequestsPage: React.FC = () => {
 
             const combineAndDedupe = () => {
               // deep copy
-              const newSet: Recording[] = JSON.parse(
-                JSON.stringify(prev.recordings)
+              const newSet: TemporaryOperationRecording[] = JSON.parse(
+                JSON.stringify(prev.temporaryOperationRecordings)
               );
 
               const recordedRequest = newSet.find(
@@ -96,7 +108,9 @@ export const RequestsPage: React.FC = () => {
 
             return Object.assign({}, prev, {
               recordings:
-                prev.recordings !== null ? combineAndDedupe() : [newFeedItem],
+                prev.temporaryOperationRecordings !== null
+                  ? combineAndDedupe()
+                  : [newFeedItem],
             });
           },
         });

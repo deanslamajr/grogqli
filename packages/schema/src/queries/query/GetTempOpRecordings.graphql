@@ -1,0 +1,11 @@
+query GetTempOpRecordings {
+  temporaryOperationRecordings {
+    id
+    operationName
+    query
+    variables
+    response
+    tempSchemaRecordingId
+    referrer
+  }
+}

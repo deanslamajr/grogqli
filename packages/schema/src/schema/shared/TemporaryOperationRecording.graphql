@@ -1,9 +1,9 @@
-type Recording {
+type TemporaryOperationRecording {
   id: ID!
   operationName: String!
   query: String!
   variables: String!
   response: String
-  schemaUrl: String!
+  tempSchemaRecordingId: String!
   referrer: String!
 }

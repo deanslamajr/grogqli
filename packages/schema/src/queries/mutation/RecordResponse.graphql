@@ -1,4 +1,4 @@
-mutation RecordResponse ($input: RecordResponseInput!) {
+mutation RecordResponse($input: RecordResponseInput!) {
   recordResponse(input: $input) {
     newRecording {
       id
@@ -6,6 +6,7 @@ mutation RecordResponse ($input: RecordResponseInput!) {
       query
       variables
       response
+      tempSchemaRecordingId
     }
   }
 }

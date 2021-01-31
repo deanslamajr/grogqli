@@ -1,8 +1,11 @@
-import { MutationResolvers, Recording } from '@grogqli/schema';
+import {
+  MutationResolvers,
+  TemporaryOperationRecording,
+} from '@grogqli/schema';
 
-import { getQueryRecordingsFile } from '../../../../files';
+import { update as updateTempOpRecording } from '../../../../files/tempOpRecording';
 import { pubSub } from '../pubSub';
-import { RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
+import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
 
 export const recordResponseResolver: MutationResolvers['recordResponse'] = async (
   _parent,
@@ -11,23 +14,21 @@ export const recordResponseResolver: MutationResolvers['recordResponse'] = async
   _info
 ) => {
   const {
-    input: { response, recordingId },
+    input: { response, sessionId, tempOpRecordingId },
   } = args;
-  const file = await getQueryRecordingsFile();
-  const recording: Recording = file.get(recordingId);
+  const updatedTempOpRecording: TemporaryOperationRecording = await updateTempOpRecording(
+    {
+      response,
+      sessionId,
+      tempOpRecordingId,
+    }
+  );
 
-  if (!recording) {
-    throw new Error(`Recording with id:${recordingId} does not exist!`);
-  }
-
-  recording.response = response;
-
-  file.set(recordingId, recording);
-  file.save();
-
-  pubSub.publish(RECORDING_SAVED, { recordingSaved: recording });
+  pubSub.publish(TEMP_OP_RECORDING_SAVED, {
+    recordingSaved: updatedTempOpRecording,
+  });
 
   return {
-    newRecording: recording,
+    newRecording: updatedTempOpRecording,
   };
 };

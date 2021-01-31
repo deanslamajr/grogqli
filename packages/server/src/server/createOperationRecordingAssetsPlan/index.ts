@@ -1,6 +1,6 @@
 import { Recording } from '@grogqli/schema';
 
-import { getQueryRecordingsFile } from '../files';
+import { getTempOpRecordingFileName } from '../files';
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
@@ -18,7 +18,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   schemasMapping,
   tempRecordingId,
 }) => {
-  const file = await getQueryRecordingsFile();
+  const file = await getTempOpRecordingFileName();
   const recording: Recording = file.get(tempRecordingId);
   if (!recording) {
     throw new Error(

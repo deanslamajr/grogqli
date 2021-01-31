@@ -14,11 +14,14 @@ export const startServiceWorker: StartServiceWorker = async ({ port }) => {
   const worker = setupWorker(...getRecordingHandlers());
   worker.start();
 
+  console.log('document.title', document.title);
+  const name = document.title;
+
   const { data, errors } = await apolloClient.mutate({
     mutation: CreateHandlerSession.CreateHandlerSessionDocument,
     variables: {
       input: {
-        name: 'test',
+        name,
       },
     },
   });

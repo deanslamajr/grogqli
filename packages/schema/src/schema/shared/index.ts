@@ -1,4 +1,4 @@
 import Handler from './Handler.graphql';
-import Recording from './Recording.graphql';
+import TemporaryOperationRecording from './TemporaryOperationRecording.graphql';
 
-export const typeDefs = [Handler, Recording];
+export const typeDefs = [Handler, TemporaryOperationRecording];

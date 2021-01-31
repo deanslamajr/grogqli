@@ -1,7 +1,7 @@
 import Mutation from './Mutation.graphql';
 
 import CreateHandlerSession from './CreateHandlerSession.graphql';
-import CreateRecording from './CreateRecording.graphql';
+import CreateTemporaryOperationRecording from './CreateTemporaryOperationRecording.graphql';
 import CreateWorkflow from './CreateWorkflow.graphql';
 import PlaybackRecording from './PlaybackRecording.graphql';
 import RecordResponse from './RecordResponse.graphql';
@@ -9,7 +9,7 @@ import RecordResponse from './RecordResponse.graphql';
 export const typeDefs = [
   Mutation,
   CreateHandlerSession,
-  CreateRecording,
+  CreateTemporaryOperationRecording,
   CreateWorkflow,
   PlaybackRecording,
   RecordResponse,

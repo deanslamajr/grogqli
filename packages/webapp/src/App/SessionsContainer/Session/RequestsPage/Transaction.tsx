@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { GetRecordings } from '@grogqli/schema';
+import { GetTempOpRecordings } from '@grogqli/schema';
 
 interface CheckBoxProps {
   isChecked: boolean;
@@ -28,7 +28,7 @@ const StyledCell = styled.td`
 
 interface TransactionProps {
   isChecked: boolean;
-  opName: GetRecordings.Recording['operationName'];
+  opName: GetTempOpRecordings.TemporaryOperationRecording['operationName'];
   toggleCheck: () => void;
 }
 

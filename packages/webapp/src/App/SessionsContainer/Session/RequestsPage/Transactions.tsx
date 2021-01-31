@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ApolloError } from '@apollo/client';
-import { GetRecordings } from '@grogqli/schema';
+import { GetTempOpRecordings } from '@grogqli/schema';
 
 import { CheckedState } from '.';
 import Transaction from './Transaction';
@@ -59,7 +59,7 @@ const StyledRow = styled.tr`
 interface TransactionsProps {
   allAreChecked: boolean;
   checkedState: CheckedState;
-  recordings: GetRecordings.Recording[];
+  temporaryOperationRecordings: GetTempOpRecordings.TemporaryOperationRecording[];
   loading: boolean;
   error?: ApolloError;
   subscribeToRecordings: () => void;
@@ -74,7 +74,7 @@ const areAnyTransactionsChecked = (checkedState: CheckedState): boolean => {
 const Transactions: React.FC<TransactionsProps> = ({
   allAreChecked,
   checkedState,
-  recordings,
+  temporaryOperationRecordings,
   subscribeToRecordings,
   toggleAllChecked,
   toggleCheck,
@@ -98,7 +98,7 @@ const Transactions: React.FC<TransactionsProps> = ({
           </StyledRow>
         </thead>
         <tbody>
-          {recordings.map(({ id, operationName }) => (
+          {temporaryOperationRecordings.map(({ id, operationName }) => (
             <StyledRow key={id}>
               <Transaction
                 opName={operationName}
@@ -118,7 +118,7 @@ const Transactions: React.FC<TransactionsProps> = ({
       <SaveDrawer
         handleClose={() => setShowSaveDrawer(false)}
         show={showSaveDrawer}
-        recordingsToSave={recordings.filter(
+        tempOpRecordingsToSave={temporaryOperationRecordings.filter(
           (recording) => checkedState[recording.id]
         )}
       />

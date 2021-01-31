@@ -4,6 +4,7 @@ import path from 'path';
 import { IntrospectionQuery } from 'graphql';
 
 import { getConfig } from './getConfig';
+import { HANDLER_SESSION_CREATED } from '../graphql/schema/resolvers/subscriptions/handlerSessionCreatedResolver';
 
 const createDirIfDoesntExist = (dirPath: string) => {
   return fs.promises.mkdir(dirPath, { recursive: true });
@@ -54,13 +55,17 @@ export const WORKFLOWS_NAME_TO_ID_MAPPING_VERSION = 1;
 //   /local
 const TEMP_FOLDER_NAME = 'local';
 //     appState.json
-//     sessions.json
-const HANDLER_SESSIONS_STATE_FILENAME = 'sessions.json';
+//     /sessions
+const HANDLER_SESSIONS_STATE_FOLDER_NAME = 'sessions';
+//      index.json
+const HANDLER_SESSION_STATE_FILENAME = 'index.json';
 export const HANDLER_SESSIONS_STATE_FILE_VERSION = 1;
-//     /schemas
+//      /schemas
 const TEMP_SCHEMAS_FOLDER_NAME = 'schemas';
-//     /queries
-const TEMP_QUERIES_FOLDER_NAME = 'queries';
+export const TEMP_SCHEMA_FILE_VERSION = 1;
+//     /operations
+const TEMP_OP_RECORDINGS_FOLDER_NAME = 'operations';
+export const TEMP_OP_RECORDING_FILE_VERSION = 1;
 
 // e.g. /grogqli
 export const getRecordingsRootDir = async (): Promise<string> => {
@@ -154,45 +159,82 @@ export const getTypeFilePath = async (typeId: string) => {
   return path.join(typeFilePath, `${typeId}.json`);
 };
 
-// e.g. /grogqli/local/schemas
-export const getTemporarySchemaRecordingsPath = async (): Promise<string> => {
+// e.g. /grogqli/local/sessions/<sessionId>/schemas
+export const getTemporarySchemaRecordingsFolderPath = async (
+  sessionId: string
+): Promise<string> => {
   const recordingsRootDir = await getRecordingsRootDir();
   const schemaRecordingsPath = path.join(
     recordingsRootDir,
     TEMP_FOLDER_NAME,
+    HANDLER_SESSIONS_STATE_FOLDER_NAME,
+    sessionId,
     TEMP_SCHEMAS_FOLDER_NAME
   );
   await createDirIfDoesntExist(schemaRecordingsPath);
   return schemaRecordingsPath;
 };
 
-// e.g. /grogqli/local/sessions.json
-export const getSessionsFilePath = async () => {
-  const recordingsRootDir = await getRecordingsRootDir();
-
-  const tempFolderPath = path.join(recordingsRootDir, TEMP_FOLDER_NAME);
-
-  await createDirIfDoesntExist(tempFolderPath);
-
-  return path.join(tempFolderPath, HANDLER_SESSIONS_STATE_FILENAME);
+// e.g. /grogqli/local/sessions/<sessionId>/schemas/<schemaId>.json
+type GetTemporarySchemaRecordingFilename = (params: {
+  sessionId: string;
+  schemaId: string;
+}) => Promise<string>;
+export const getTemporarySchemaRecordingFilename: GetTemporarySchemaRecordingFilename = async ({
+  schemaId,
+  sessionId,
+}) => {
+  const tempSchemaRecordingsPath = await getTemporarySchemaRecordingsFolderPath(
+    sessionId
+  );
+  return path.join(tempSchemaRecordingsPath, `${schemaId}.json`);
 };
 
-export const getQueryRecordingsFile = async (): Promise<
-  editJsonFile.JsonEditor
-> => {
-  const config = await getConfig();
+// e.g. /grogqli/local/sessions/<sessionId>
+const getSessionFolderPath = async (sessionId: string) => {
   const recordingsRootDir = await getRecordingsRootDir();
-  const queryRecordingsPath = path.join(
+
+  const givenSessionsPersistencePath = path.join(
     recordingsRootDir,
     TEMP_FOLDER_NAME,
-    TEMP_QUERIES_FOLDER_NAME
+    HANDLER_SESSIONS_STATE_FOLDER_NAME,
+    sessionId
   );
 
-  await createDirIfDoesntExist(queryRecordingsPath);
+  await createDirIfDoesntExist(givenSessionsPersistencePath);
 
-  return editJsonFile(
-    path.join(queryRecordingsPath, `${config('recordingsFilename')}.json`)
+  return givenSessionsPersistencePath;
+};
+
+// e.g. /grogqli/local/sessions/<sessionId>/index.json
+export const getSessionsFilePath = async (sessionId: string) => {
+  const givenSessionsPersistencePath = await getSessionFolderPath(sessionId);
+
+  return path.join(
+    givenSessionsPersistencePath,
+    HANDLER_SESSION_STATE_FILENAME
   );
+};
+
+// e.g. /grogqli/local/sessions/<sessionId>/operations/<tempOpRecordingId>.json
+type GetTempOpRecordingFilePath = (params: {
+  sessionId: string;
+  tempOpRecordingId: string;
+}) => Promise<string>;
+export const getTempOpRecordingFileName: GetTempOpRecordingFilePath = async ({
+  sessionId,
+  tempOpRecordingId,
+}) => {
+  const givenSessionsPersistencePath = await getSessionFolderPath(sessionId);
+
+  const tempOpRecordingFolderPath = path.join(
+    givenSessionsPersistencePath,
+    TEMP_OP_RECORDINGS_FOLDER_NAME
+  );
+
+  await createDirIfDoesntExist(tempOpRecordingFolderPath);
+
+  return path.join(tempOpRecordingFolderPath, `${tempOpRecordingId}.json`);
 };
 
 // Schema

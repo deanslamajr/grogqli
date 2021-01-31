@@ -1,0 +1,14 @@
+mutation CreateTemporaryOperationRecording(
+  $input: CreateTemporaryOperationRecordingInput!
+) {
+  createTemporaryOperationRecording(input: $input) {
+    newRecording {
+      id
+      operationName
+      query
+      variables
+      response
+      tempSchemaRecordingId
+    }
+  }
+}

@@ -4,5 +4,5 @@ input RecordResponseInput {
 }
 
 type RecordResponseResponse {
-  newRecording: Recording!
+  newRecording: TemporaryOperationRecording!
 }

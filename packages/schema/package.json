@@ -80,6 +80,7 @@
     "@graphql-typed-document-node/core": "^3.1.0",
     "graphql-let": "^0.16.3",
     "npm-watch": "^0.7.0",
-    "rollup-plugin-graphql-tag": "^0.1.0"
+    "rollup-plugin-graphql-tag": "^0.1.0",
+    "tsdx": "^0.14.1"
   }
 }

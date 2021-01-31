@@ -8,7 +8,10 @@ if (typeof window !== 'undefined') {
   const { mountClient, startServiceWorker } = require('@grogqli/clients');
   startServiceWorker({ port }).then((sessionId) => {
     console.log('> new grogqli handler session created, id:', sessionId);
-    mountClient({ port });
+    mountClient({
+      initialSessionId: sessionId,
+      port
+    });
   });
 }
 

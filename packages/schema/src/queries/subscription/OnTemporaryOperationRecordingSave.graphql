@@ -1,0 +1,10 @@
+subscription OnTemporaryOperationRecordingSave {
+  temporaryOperationRecordingSaved {
+    id
+    operationName
+    query
+    variables
+    response
+    tempSchemaRecordingId
+  }
+}

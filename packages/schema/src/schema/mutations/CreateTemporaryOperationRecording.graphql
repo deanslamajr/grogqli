@@ -1,4 +1,5 @@
-input CreateRecordingInput {
+input CreateTemporaryOperationRecordingInput {
+  sessionId: String!
   schema: SchemaInput!
   referrer: String!
   operationName: String!
@@ -11,6 +12,6 @@ input SchemaInput {
   content: String
 }
 
-type CreateRecordingResponse {
-  newRecording: Recording!
+type CreateTemporaryOperationRecordingResponse {
+  newRecording: TemporaryOperationRecording!
 }
