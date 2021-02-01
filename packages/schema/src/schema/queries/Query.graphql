@@ -1,5 +1,7 @@
 type Query {
   handlers(input: HandlersInput!): [Handler!]
-  temporaryOperationRecordings: [TemporaryOperationRecording!]
+  temporaryOperationRecordings(
+    input: TemporaryOperationRecordingsInput!
+  ): [TemporaryOperationRecording!]
   workflows: [Workflow!]
 }

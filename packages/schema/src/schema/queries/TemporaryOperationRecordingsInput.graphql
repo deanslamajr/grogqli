@@ -1,0 +1,3 @@
+input TemporaryOperationRecordingsInput {
+  sessionId: String!
+}

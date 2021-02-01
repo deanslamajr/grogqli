@@ -20,9 +20,7 @@ const transform = (
 
 export const resolver: QueryResolvers['temporaryOperationRecordings'] = async (
   _parent,
-  args,
-  _context,
-  _info
+  args
 ) => {
   const files = await getTempOpRecordings(args.input.sessionId);
   return files.map((file) => transform(file));

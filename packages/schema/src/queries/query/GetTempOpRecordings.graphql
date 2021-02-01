@@ -1,5 +1,5 @@
-query GetTempOpRecordings {
-  temporaryOperationRecordings {
+query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {
+  temporaryOperationRecordings(input: $input) {
     id
     operationName
     query
