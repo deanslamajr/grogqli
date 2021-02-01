@@ -216,6 +216,22 @@ export const getSessionsFilePath = async (sessionId: string) => {
   );
 };
 
+// e.g. /grogqli/local/sessions/<sessionId>/operations
+export const getTempOpRecordingsFolderPath = async (
+  sessionId: string
+): Promise<string> => {
+  const givenSessionsPersistencePath = await getSessionFolderPath(sessionId);
+
+  const tempOpRecordingFolderPath = path.join(
+    givenSessionsPersistencePath,
+    TEMP_OP_RECORDINGS_FOLDER_NAME
+  );
+
+  await createDirIfDoesntExist(tempOpRecordingFolderPath);
+
+  return tempOpRecordingFolderPath;
+};
+
 // e.g. /grogqli/local/sessions/<sessionId>/operations/<tempOpRecordingId>.json
 type GetTempOpRecordingFilePath = (params: {
   sessionId: string;
@@ -225,14 +241,9 @@ export const getTempOpRecordingFileName: GetTempOpRecordingFilePath = async ({
   sessionId,
   tempOpRecordingId,
 }) => {
-  const givenSessionsPersistencePath = await getSessionFolderPath(sessionId);
-
-  const tempOpRecordingFolderPath = path.join(
-    givenSessionsPersistencePath,
-    TEMP_OP_RECORDINGS_FOLDER_NAME
+  const tempOpRecordingFolderPath = await getTempOpRecordingsFolderPath(
+    sessionId
   );
-
-  await createDirIfDoesntExist(tempOpRecordingFolderPath);
 
   return path.join(tempOpRecordingFolderPath, `${tempOpRecordingId}.json`);
 };

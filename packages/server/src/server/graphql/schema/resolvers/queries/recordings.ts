@@ -1,17 +1,29 @@
 import { QueryResolvers, TemporaryOperationRecording } from '@grogqli/schema';
-import { getTempOpRecordingFileName } from '../../../../files';
+import {
+  getAll as getTempOpRecordings,
+  TemporaryOperationRecordingFile,
+} from '../../../../files/tempOpRecording';
 
-export const resolver: QueryResolvers['recordings'] = async (
+const transform = (
+  file: TemporaryOperationRecordingFile
+): TemporaryOperationRecording => {
+  return {
+    id: file.id,
+    operationName: file.operationName,
+    query: file.query,
+    variables: file.variables,
+    response: file.response,
+    tempSchemaRecordingId: file.tempSchemaRecordingId,
+    referrer: file.referrer,
+  };
+};
+
+export const resolver: QueryResolvers['temporaryOperationRecordings'] = async (
   _parent,
-  _args,
-  context,
+  args,
+  _context,
   _info
 ) => {
-  const file = await getTempOpRecordingFileName();
-  const recordingsFromFile = file.get();
-  const recordings =
-    recordingsFromFile && Object.values(recordingsFromFile).length
-      ? (Object.values(recordingsFromFile) as TemporaryOperationRecording[])
-      : null;
-  return recordings;
+  const files = await getTempOpRecordings(args.input.sessionId);
+  return files.map((file) => transform(file));
 };

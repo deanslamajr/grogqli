@@ -1,8 +1,12 @@
 import editJsonFile from 'edit-json-file';
 import shortid from 'shortid';
+import fs from 'fs';
+import path from 'path';
+import glob from 'glob';
 
 import {
   doesFileExist,
+  getTempOpRecordingsFolderPath,
   getTempOpRecordingFileName,
   mapObjectToJsonFile,
   TEMP_OP_RECORDING_FILE_VERSION,
@@ -24,7 +28,7 @@ type Update = (params: {
   response: string | null;
   sessionId: string;
   tempOpRecordingId: string;
-}) => Promise<TemporaryOperationRecordingFileVersion1>;
+}) => Promise<TemporaryOperationRecordingFile>;
 
 export const update: Update = async ({
   response,
@@ -48,7 +52,7 @@ export const update: Update = async ({
   tempOpRecordingFile.set('response', response);
   tempOpRecordingFile.save();
 
-  return tempOpRecordingFile.read() as TemporaryOperationRecordingFileVersion1;
+  return tempOpRecordingFile.read() as TemporaryOperationRecordingFile;
 };
 
 type Create = (params: {
@@ -59,7 +63,7 @@ type Create = (params: {
   referrer: string;
   sessionId: string;
   tempSchemaRecordingId: string;
-}) => Promise<TemporaryOperationRecordingFileVersion1>;
+}) => Promise<TemporaryOperationRecordingFile>;
 
 export const create: Create = async ({
   operationName,
@@ -70,7 +74,7 @@ export const create: Create = async ({
   sessionId,
   tempSchemaRecordingId,
 }) => {
-  const newTempOpRecordingFileContents: TemporaryOperationRecordingFileVersion1 = {
+  const newTempOpRecordingFileContents: TemporaryOperationRecordingFile = {
     version: TEMP_OP_RECORDING_FILE_VERSION,
     id: shortid.generate(),
     operationName,
@@ -102,4 +106,60 @@ export const create: Create = async ({
   tempOpRecordingFile.save();
 
   return newTempOpRecordingFileContents;
+};
+
+type GetTempOpRecordingFileFromDisk = (
+  filePath: string
+) => Promise<TemporaryOperationRecordingFile>;
+
+const getTempOpRecordingFileFromDisk: GetTempOpRecordingFileFromDisk = async (
+  filePath
+) => {
+  let tempOpRecordingFile: TemporaryOperationRecordingFile;
+  try {
+    tempOpRecordingFile = JSON.parse(
+      await fs.promises.readFile(filePath, 'utf8')
+    );
+  } catch (error) {
+    console.error(error);
+    throw new Error(
+      `Error while attempting to open temporary operation recording file:${filePath}`
+    );
+  }
+
+  return tempOpRecordingFile;
+};
+
+type GetAll = (sessionId: string) => Promise<TemporaryOperationRecordingFile[]>;
+
+export const getAll: GetAll = async (sessionId) => {
+  const tempOpRecordingsFolderPath = await getTempOpRecordingsFolderPath(
+    sessionId
+  );
+
+  const tempOpRecordingsFilenames = await new Promise<string[]>(
+    (resolve, reject) => {
+      // glob path should always use forward slash, even in windows
+      glob(
+        `${tempOpRecordingsFolderPath}/*.json`,
+        { nonull: false },
+        (error, files) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(files);
+        }
+      );
+    }
+  );
+
+  return Promise.all(
+    tempOpRecordingsFilenames.map((filename) => {
+      const tempOpRecordingPath = path.join(
+        tempOpRecordingsFolderPath,
+        filename
+      );
+      return getTempOpRecordingFileFromDisk(tempOpRecordingPath);
+    })
+  );
 };
