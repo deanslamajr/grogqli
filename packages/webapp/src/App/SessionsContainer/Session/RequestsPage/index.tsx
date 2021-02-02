@@ -7,14 +7,23 @@ import {
 } from '@grogqli/schema';
 
 import Transactions from './Transactions';
+import { useSessionState } from '../../SessionContext';
 
 export type CheckedState = { [id: string]: boolean };
 
 export const RequestsPage: React.FC = () => {
   const [checkedState, updateCheckedState] = useState<CheckedState>({});
   const [allAreChecked, setAllAreChecked] = useState(false);
+  const { sessionId } = useSessionState();
   const { data, loading, error, subscribeToMore } = useQuery(
-    GetTempOpRecordings.GetTempOpRecordingsDocument
+    GetTempOpRecordings.GetTempOpRecordingsDocument,
+    {
+      variables: {
+        input: {
+          sessionId,
+        },
+      },
+    }
   );
 
   if (error) {

@@ -12,7 +12,7 @@ export * as CreateHandlerSession from './generated/src/queries/mutation/CreateHa
 export * as CreateTemporaryOperationRecording from './generated/src/queries/mutation/CreateTemporaryOperationRecording.graphql';
 export * as CreateWorkflow from './generated/src/queries/mutation/CreateWorkflow.graphql';
 export * as PlaybackRecording from './generated/src/queries/mutation/PlaybackRecording.graphql';
-export * as RecordResponse from './generated/src/queries/mutation/RecordResponse.graphql';
+export * as UpdateTemporaryOperationRecording from './generated/src/queries/mutation/UpdateTemporaryOperationRecording.graphql';
 //// subscriptions
 export * as OnTemporaryOperationRecordingSave from './generated/src/queries/subscription/OnTemporaryOperationRecordingSave.graphql';
 export * as OnHandlerStateChange from './generated/src/queries/subscription/OnHandlerStateChange.graphql';

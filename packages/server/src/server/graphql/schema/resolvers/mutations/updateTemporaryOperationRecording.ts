@@ -5,9 +5,9 @@ import {
 
 import { update as updateTempOpRecording } from '../../../../files/tempOpRecording';
 import { pubSub } from '../pubSub';
-import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
+import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/temporaryOperationRecordingSavedResolver';
 
-export const recordResponseResolver: MutationResolvers['recordResponse'] = async (
+export const updateTemporaryOperationRecordingResolver: MutationResolvers['updateTemporaryOperationRecording'] = async (
   _parent,
   args,
   _context,
@@ -29,6 +29,6 @@ export const recordResponseResolver: MutationResolvers['recordResponse'] = async
   });
 
   return {
-    newRecording: updatedTempOpRecording,
+    updatedRecording: updatedTempOpRecording,
   };
 };

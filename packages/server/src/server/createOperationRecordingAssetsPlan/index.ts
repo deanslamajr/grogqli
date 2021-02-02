@@ -1,11 +1,11 @@
-import { Recording } from '@grogqli/schema';
+import { get as getTempOpRecording } from '../files/tempOpRecording';
 
-import { getTempOpRecordingFileName } from '../files';
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
 type CreateOperationRecordingAssetsPlan = (params: {
   schemasMapping: SchemasMapping;
+  sessionId: string;
   tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
 
@@ -16,35 +16,46 @@ export type SchemasMapping = Array<{
 
 export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsPlan = async ({
   schemasMapping,
+  sessionId,
   tempRecordingId,
 }) => {
-  const file = await getTempOpRecordingFileName();
-  const recording: Recording = file.get(tempRecordingId);
-  if (!recording) {
-    throw new Error(
-      `Temporary recording with id:${tempRecordingId} does not exist!`
-    );
-  }
+  const tempOpRecording = await getTempOpRecording({
+    sessionId,
+    temporaryOperationRecordingId: tempRecordingId,
+  });
 
   const {
     response,
     query: operationSDL,
-    schemaUrl,
+    tempSchemaRecordingId,
     variables: rawVariables,
-  } = recording;
+  } = tempOpRecording;
 
-  const schema = schemasMapping.find(({ url }) => schemaUrl === url);
-  if (schema === undefined) {
-    throw new Error(
-      `Could not find a schemaId mapping for the given schemaUrl:${schemaUrl}`
-    );
+  // @TODO handle/prevent case where response === null
+  if (response === null) {
+    throw new Error(`
+      The temporary operation recording associated with
+        sessionId:${sessionId}
+        temporaryOperationRecordingId:${tempRecordingId}
+      does not have an associated response.
+    `);
   }
 
-  if (response === null || response === undefined) {
-    throw new Error(
-      `Recording with id:${tempRecordingId} has a null/undefined response value.`
-    );
-  }
+  // @TODO uncomment and refactor to support a better UX
+  //
+  //
+  // const schema = schemasMapping.find(({ url }) => schemaUrl === url);
+  // if (schema === undefined) {
+  //   throw new Error(
+  //     `Could not find a schemaId mapping for the given schemaUrl:${schemaUrl}`
+  //   );
+  // }
+
+  // if (response === null || response === undefined) {
+  //   throw new Error(
+  //     `Recording with id:${tempRecordingId} has a null/undefined response value.`
+  //   );
+  // }
 
   const variables = rawVariables ? JSON.parse(rawVariables) : undefined;
   const parsedOpRecording = JSON.parse(response);
@@ -52,7 +63,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   return generateRecordingPlan({
     parsedOpRecording,
     operationSDL,
-    schemaId: schema.id,
+    schemaId: tempSchemaRecordingId,
     variables,
   });
 };

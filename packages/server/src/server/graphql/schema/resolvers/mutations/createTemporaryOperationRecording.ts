@@ -3,7 +3,7 @@ import { MutationResolvers } from '@grogqli/schema';
 import { persistTempSchemaRecording } from '../../../../files/schema';
 import { create as createTempOpRecording } from '../../../../files/tempOpRecording';
 import { pubSub } from '../pubSub';
-import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/recordingSavedResolver';
+import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/temporaryOperationRecordingSavedResolver';
 
 export const resolver: MutationResolvers['createTemporaryOperationRecording'] = async (
   _parent,

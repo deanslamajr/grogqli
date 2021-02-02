@@ -15,8 +15,12 @@ export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async
   } = args;
 
   const opRecordingsPlans = await Promise.all<OperationRecordingPlan>(
-    operations.map(({ tempRecordingId }) =>
-      createOperationRecordingAssetsPlan({ schemasMapping, tempRecordingId })
+    operations.map(({ sessionId, tempRecordingId }) =>
+      createOperationRecordingAssetsPlan({
+        schemasMapping,
+        sessionId,
+        tempRecordingId,
+      })
     )
   );
 

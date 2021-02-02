@@ -82,6 +82,7 @@
     "babel-loader": "^8.2.2",
     "react-is": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "tsdx": "^0.14.1"
   }
 }

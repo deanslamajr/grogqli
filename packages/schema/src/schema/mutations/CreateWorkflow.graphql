@@ -5,11 +5,12 @@ input CreateWorkflowInput {
 }
 
 input OperationRecordingsInput {
-  tempRecordingId: String!
+  tempRecordingId: ID!
+  sessionId: ID!
 }
 
 input SchemasMappingsInput {
-  id: String!
+  id: ID!
   url: String!
 }
 

@@ -1,0 +1,9 @@
+input UpdateTemporaryOperationRecordingInput {
+  sessionId: ID!
+  tempOpRecordingId: ID!
+  response: String!
+}
+
+type UpdateTemporaryOperationRecordingResponse {
+  updatedRecording: TemporaryOperationRecording!
+}

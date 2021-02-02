@@ -130,6 +130,21 @@ const getTempOpRecordingFileFromDisk: GetTempOpRecordingFileFromDisk = async (
   return tempOpRecordingFile;
 };
 
+type Get = (params: {
+  sessionId: string;
+  temporaryOperationRecordingId: string;
+}) => Promise<TemporaryOperationRecordingFile>;
+export const get: Get = async ({
+  sessionId,
+  temporaryOperationRecordingId,
+}) => {
+  const tempOpRecordingPath = await getTempOpRecordingFileName({
+    sessionId,
+    tempOpRecordingId: temporaryOperationRecordingId,
+  });
+  return getTempOpRecordingFileFromDisk(tempOpRecordingPath);
+};
+
 type GetAll = (sessionId: string) => Promise<TemporaryOperationRecordingFile[]>;
 
 export const getAll: GetAll = async (sessionId) => {
@@ -155,11 +170,11 @@ export const getAll: GetAll = async (sessionId) => {
 
   return Promise.all(
     tempOpRecordingsFilenames.map((filename) => {
-      const tempOpRecordingPath = path.join(
-        tempOpRecordingsFolderPath,
-        filename
-      );
-      return getTempOpRecordingFileFromDisk(tempOpRecordingPath);
+      // const tempOpRecordingPath = path.join(
+      //   tempOpRecordingsFolderPath,
+      //   filename
+      // );
+      return getTempOpRecordingFileFromDisk(filename);
     })
   );
 };

@@ -1,28 +1,31 @@
 import {
   CreateTemporaryOperationRecording,
-  RecordResponse,
+  UpdateTemporaryOperationRecording,
 } from '@grogqli/schema';
 
 import { get as getApolloClient } from '../../apolloClient';
+import { getSessionId } from '../../handlerState';
 import { DoWork, ResponseData, wrapWithBaseHandler } from '../baseHandler';
 import fetchSchema from './fetchSchema';
 
 const {
   CreateTemporaryOperationRecordingDocument,
 } = CreateTemporaryOperationRecording;
-const { RecordResponseDocument } = RecordResponse;
+const {
+  UpdateTemporaryOperationRecordingDocument,
+} = UpdateTemporaryOperationRecording;
 
 const recordOperation: DoWork = async (req, _res, ctx) => {
   const apolloClient = getApolloClient();
 
   const schemaFromIntrospection = await fetchSchema({ req, ctx });
 
-  const sessionId = 'mockSessionId';
+  const sessionId = getSessionId();
 
   const cacheExtract = apolloClient.cache.extract();
   console.log('cacheExtract', cacheExtract);
 
-  let recordingId;
+  let tempOpRecordingId;
 
   // TODO refactor 'unknownOperation' case:
   // instead of unknownOperation, make this field optional and have the server handle this case
@@ -49,7 +52,7 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
   if (errors) {
     errors.forEach((error) => console.error(error));
   } else {
-    recordingId =
+    tempOpRecordingId =
       createTemporaryOperationRecording?.createTemporaryOperationRecording
         .newRecording.id;
   }
@@ -60,13 +63,14 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
 
   const response = JSON.stringify(responseData);
 
-  if (recordingId) {
+  if (tempOpRecordingId) {
     const { errors } = await apolloClient.mutate({
-      mutation: RecordResponseDocument,
+      mutation: UpdateTemporaryOperationRecordingDocument,
       variables: {
         input: {
-          recordingId,
+          tempOpRecordingId,
           response,
+          sessionId,
         },
       },
     });

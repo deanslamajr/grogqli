@@ -3,7 +3,7 @@ import { MutationResolvers } from '@grogqli/schema';
 import { createHandlerSessionResolver } from './createHandlerSession';
 import { resolver as createTemporaryOperationRecordingResolver } from './createTemporaryOperationRecording';
 import { createWorkflowResolver } from './createWorkflow';
-import { recordResponseResolver } from './recordResponse';
+import { updateTemporaryOperationRecordingResolver } from './updateTemporaryOperationRecording';
 import { playbackRecordingResolver } from './playbackRecording';
 
 export const mutationResolver: MutationResolvers = {
@@ -11,5 +11,5 @@ export const mutationResolver: MutationResolvers = {
   createTemporaryOperationRecording: createTemporaryOperationRecordingResolver,
   createWorkflow: createWorkflowResolver,
   playbackRecording: playbackRecordingResolver,
-  recordResponse: recordResponseResolver,
+  updateTemporaryOperationRecording: updateTemporaryOperationRecordingResolver,
 };

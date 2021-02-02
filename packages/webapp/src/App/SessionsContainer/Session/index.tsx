@@ -25,11 +25,9 @@ export const pagesConfig: PageConfig[] = [
   },
 ];
 
-interface Props {
-  sessions: Handler[] | null;
-}
+interface Props {}
 
-export const Session: FC<Props> = ({ sessions }) => {
+export const Session: FC<Props> = ({}) => {
   const { path: matchedPath } = useRouteMatch();
   return (
     <>
@@ -43,7 +41,6 @@ export const Session: FC<Props> = ({ sessions }) => {
           />
         ))}
       </Switch>
-      {JSON.stringify(sessions)}
     </>
   );
 };

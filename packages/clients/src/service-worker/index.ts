@@ -1,11 +1,19 @@
 import { setupWorker } from 'msw';
 import { CreateHandlerSession, OnHandlerStateChange } from '@grogqli/schema';
+import shortId from 'shortid';
 
 import { create as createApolloClient } from './apolloClient';
+import { initialize as initializeState } from './handlerState';
 
-type StartServiceWorker = (params: { port: number }) => Promise<string>;
+type StartServiceWorker = (params: {
+  name?: string;
+  port: number;
+}) => Promise<string>;
 
-export const startServiceWorker: StartServiceWorker = async ({ port }) => {
+export const startServiceWorker: StartServiceWorker = async ({
+  name = shortId.generate(),
+  port,
+}) => {
   const apolloClient = createApolloClient({ port });
 
   const { /*getPlaybackHandlers*/ getRecordingHandlers } = await import(
@@ -13,9 +21,6 @@ export const startServiceWorker: StartServiceWorker = async ({ port }) => {
   );
   const worker = setupWorker(...getRecordingHandlers());
   worker.start();
-
-  console.log('document.title', document.title);
-  const name = document.title;
 
   const { data, errors } = await apolloClient.mutate({
     mutation: CreateHandlerSession.CreateHandlerSessionDocument,
@@ -35,6 +40,7 @@ export const startServiceWorker: StartServiceWorker = async ({ port }) => {
   }
 
   const handlerSessionId = data.createHandlerSession.newHandler.id;
+  initializeState({ sessionId: handlerSessionId });
 
   apolloClient
     .subscribe({

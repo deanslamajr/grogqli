@@ -1,8 +1,0 @@
-input RecordResponseInput {
-  recordingId: ID!
-  response: String!
-}
-
-type RecordResponseResponse {
-  newRecording: TemporaryOperationRecording!
-}

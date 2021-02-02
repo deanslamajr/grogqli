@@ -2,7 +2,7 @@ import React from 'react';
 import { Field } from 'react-final-form';
 import { CreateWorkflowInput } from '@grogqli/schema';
 
-import { FormFieldContainer, InvalidFieldMessage } from './';
+import { FormFieldContainer, InvalidFieldMessage } from './common';
 
 export const SchemaMappingField: React.FC<{}> = () => {
   return (

@@ -5,7 +5,9 @@ type Mutation {
   createTemporaryOperationRecording(
     input: CreateTemporaryOperationRecordingInput!
   ): CreateTemporaryOperationRecordingResponse!
+  updateTemporaryOperationRecording(
+    input: UpdateTemporaryOperationRecordingInput!
+  ): UpdateTemporaryOperationRecordingResponse!
   createWorkflow(input: CreateWorkflowInput!): CreateWorkflowResponse!
   playbackRecording(input: PlaybackRecordingInput!): PlaybackRecordingResponse!
-  recordResponse(input: RecordResponseInput!): RecordResponseResponse!
 }

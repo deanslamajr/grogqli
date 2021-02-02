@@ -6,6 +6,7 @@ import { useLazyQuery } from '@apollo/client';
 
 import { Session, pagesConfig } from './Session';
 import { SessionsTabs } from './SessionsTabs';
+import { SessionProvider } from './SessionContext';
 
 interface Props {}
 
@@ -15,7 +16,7 @@ const getSelectedSession = (sessions: Handler[]): Handler => {
 
 export const SessionsContainer: FC<Props> = ({}) => {
   const [sessions, setSessions] = useState<Handler[] | null>(null);
-  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [activeSessionId, setActiveSessionId] = useState<string>();
 
   let location = useLocation();
   const history = useHistory();
@@ -59,13 +60,15 @@ export const SessionsContainer: FC<Props> = ({}) => {
   return (
     <Switch>
       <Route path="/session/:sessionId">
-        <>
-          <SessionsTabs
-            changeSession={setActiveSessionId}
-            sessions={sessions}
-          />
-          <Session sessions={sessions} />
-        </>
+        <SessionProvider sessionId={activeSessionId!}>
+          <>
+            <SessionsTabs
+              changeSession={setActiveSessionId}
+              sessions={sessions}
+            />
+            <Session />
+          </>
+        </SessionProvider>
       </Route>
       <Route>
         <div>Loading...</div>
