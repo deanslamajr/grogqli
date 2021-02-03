@@ -9,7 +9,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { onError } from '@apollo/client/link/error';
 
-const port = 1234;
+import { port } from '../grogqli.json';
 
 const grogqliPath = `http://localhost:${port}/grogqli`;
 const grogqliWsPath = `ws://localhost:${port}/graphql`;

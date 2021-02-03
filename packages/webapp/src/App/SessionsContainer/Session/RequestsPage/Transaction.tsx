@@ -9,8 +9,8 @@ interface CheckBoxProps {
 export const CheckBox = styled.td<CheckBoxProps>`
   background-color: ${(props) =>
     props.isChecked ? props.theme.colors.blue : props.theme.colors.white};
-  width: 3rem;
-  height: 3rem;
+  width: ${({ theme }) => theme.sizes.menuBarHeight};
+  height: ${({ theme }) => theme.sizes.menuBarHeight};
 
   &:hover {
     background-color: ${(props) =>
@@ -23,7 +23,13 @@ export const CheckBox = styled.td<CheckBoxProps>`
 
 const StyledCell = styled.td`
   text-align: left;
-  padding: 0.5em 1em;
+  line-height: 1.9;
+  font-size: 14px;
+  text-align: left;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.selectedMenuItemText};
+  padding: 0 15px 0;
+  cursor: pointer;
 `;
 
 interface TransactionProps {

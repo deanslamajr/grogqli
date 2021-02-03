@@ -20,14 +20,10 @@
     "test": "tsdx test",
     "lint": "tsdx lint --fix",
     "prepare": "tsdx build",
+    "grogqli": "grogqli",
     "lint:output": "tsdx lint --write-file",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "__start": "tsdx watch",
-    "__build": "tsdx build",
-    "__test": "tsdx test --passWithNoTests",
-    "__lint": "tsdx lint",
-    "__prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -74,6 +70,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@grogqli/server": "^0.6.1",
     "@storybook/addon-essentials": "^6.1.15",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.15",

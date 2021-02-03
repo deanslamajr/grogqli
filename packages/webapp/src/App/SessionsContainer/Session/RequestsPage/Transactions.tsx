@@ -20,10 +20,16 @@ const StyledTable = styled.table`
 const StyledHeader = styled.th`
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
-  background-color: ${(props) => props.theme.colors.black};
-  color: ${(props) => props.theme.colors.white};
+  height: ${({ theme }) => theme.sizes.menuBarHeight};
+  background-color: ${({ theme }) => theme.colors.highGray};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borders};
+  line-height: 1.9;
+  font-size: 15px;
   text-align: left;
-  padding: 0.5em 1em;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.selectedMenuItemText};
+  padding: 0 15px 0;
+  cursor: pointer;
 `;
 
 const CheckAllHeader = styled(StyledHeader)<{
@@ -32,8 +38,7 @@ const CheckAllHeader = styled(StyledHeader)<{
   padding: 0;
   background-color: ${(props) =>
     props.isChecked ? props.theme.colors.blue : props.theme.colors.white};
-  width: 3rem;
-  height: 3rem;
+  width: ${({ theme }) => theme.sizes.menuBarHeight};
   &:hover {
     background-color: ${(props) =>
       props.isChecked
@@ -43,13 +48,11 @@ const CheckAllHeader = styled(StyledHeader)<{
   }
 `;
 
-const StyledRow = styled.tr`
-  &:nth-child(odd) {
-    background-color: ${(props) => props.theme.colors.grayDark};
-  }
-  &:nth-child(even) {
-    background-color: ${(props) => props.theme.colors.grayLight};
-  }
+const StyledRow = styled.tr<{ isOdd: boolean }>`
+  height: ${({ theme }) => theme.sizes.menuBarHeight};
+  background-color: ${({ isOdd, theme }) =>
+    isOdd ? theme.colors.highGray : theme.colors.generalBackgroundColor};
+
   &:hover {
     background-color: ${(props) => props.theme.colors.blueClear};
     cursor: pointer;
@@ -89,17 +92,17 @@ const Transactions: React.FC<TransactionsProps> = ({
     <TransactionsContainer>
       <StyledTable>
         <thead>
-          <StyledRow>
+          <tr>
             <CheckAllHeader
               isChecked={allAreChecked}
               onClick={toggleAllChecked}
             />
             <StyledHeader>op name</StyledHeader>
-          </StyledRow>
+          </tr>
         </thead>
         <tbody>
-          {temporaryOperationRecordings.map(({ id, operationName }) => (
-            <StyledRow key={id}>
+          {temporaryOperationRecordings.map(({ id, operationName }, index) => (
+            <StyledRow key={id} isOdd={index % 2 === 1}>
               <Transaction
                 opName={operationName}
                 isChecked={checkedState[id]}
