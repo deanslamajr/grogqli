@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/server",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "license": "MIT",
   "main": "build/server.js",
   "bin": {
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
-    "@grogqli/schema": "^0.6.0",
-    "@grogqli/webapp": "^0.6.0",
+    "@grogqli/schema": "^0.7.0",
+    "@grogqli/webapp": "^0.7.0",
     "apollo-link-schema": "^1.2.5",
     "apollo-server-core": "^2.19.2",
     "apollo-server-express": "^2.19.2",
@@ -38,7 +38,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
-    "@grogqli/clients": "^0.6.0",
+    "@grogqli/clients": "^0.7.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^10.4.9",
     "@testing-library/user-event": "^10.4.1",
