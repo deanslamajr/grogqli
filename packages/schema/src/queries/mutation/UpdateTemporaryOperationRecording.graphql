@@ -1,14 +1,10 @@
+# import TempOpRecordingFragment from '../fragments/TempOpRecordingFragment.graphql'
 mutation UpdateTemporaryOperationRecording(
   $input: UpdateTemporaryOperationRecordingInput!
 ) {
   updateTemporaryOperationRecording(input: $input) {
     updatedRecording {
-      id
-      operationName
-      query
-      variables
-      response
-      tempSchemaRecordingId
+      ...TempOpRecordingFragment
     }
   }
 }

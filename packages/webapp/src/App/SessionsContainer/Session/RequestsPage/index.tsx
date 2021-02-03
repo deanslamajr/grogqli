@@ -80,7 +80,11 @@ export const RequestsPage: React.FC = () => {
         return subscribeToMore({
           document:
             OnTemporaryOperationRecordingSave.OnTemporaryOperationRecordingSaveDocument,
-          // variables: {  },
+          variables: {
+            input: {
+              sessionId,
+            },
+          },
           updateQuery: (
             prev,
             { subscriptionData: onTemporaryOperationRecordingSaveData }
@@ -88,6 +92,11 @@ export const RequestsPage: React.FC = () => {
             if (!onTemporaryOperationRecordingSaveData.data) {
               return prev;
             }
+
+            console.log(
+              'onTemporaryOperationRecordingSaveData',
+              onTemporaryOperationRecordingSaveData
+            );
 
             const newFeedItem =
               onTemporaryOperationRecordingSaveData.data
@@ -116,11 +125,11 @@ export const RequestsPage: React.FC = () => {
             };
 
             return Object.assign({}, prev, {
-              recordings:
+              temporaryOperationRecordings:
                 prev.temporaryOperationRecordings !== null
                   ? combineAndDedupe()
                   : [newFeedItem],
-            });
+            } as GetTempOpRecordings.GetTempOpRecordingsQuery);
           },
         });
       }}

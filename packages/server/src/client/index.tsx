@@ -15,11 +15,12 @@ declare global {
   interface Window {
     __APOLLO_STATE__: any;
     __PORT__: number;
+    __SHOULD_DOGFOOD__: boolean;
   }
 }
 
 if (process.env.NODE_ENV === 'development') {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && window.__SHOULD_DOGFOOD__) {
     const gqlServerPort = 1234;
 
     // prevent infinite grogqli inspection!

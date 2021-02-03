@@ -55,9 +55,10 @@ const renderApp = async (req: express.Request, res: express.Response) => {
     return res.redirect(context.url);
   }
 
-  // Pass the server PORT to the frontend
+  // Pass some config values to the frontend
   const config = await getConfig();
   const port = config('port');
+  const shouldDogFood = config('shouldDogFood');
 
   res.send(`
     <!doctype html>
@@ -85,7 +86,9 @@ const renderApp = async (req: express.Request, res: express.Response) => {
           <div id="root">${markup}</div>
           <script>
             // SERVER PORT
-            window.__PORT__=${port}
+            window.__PORT__=${port};
+            // USE GROGQLI ON GROGQLI?
+            window.__SHOULD_DOGFOOD__=${shouldDogFood};
             // GQL SSR
             window.__APOLLO_STATE__=${JSON.stringify(apolloState).replace(
               /</g,

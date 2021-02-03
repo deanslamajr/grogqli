@@ -1,0 +1,10 @@
+fragment TempOpRecordingFragment on TemporaryOperationRecording {
+  id
+  operationName
+  sessionId
+  query
+  variables
+  response
+  tempSchemaRecordingId
+  referrer
+}

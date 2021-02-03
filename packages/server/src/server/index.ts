@@ -4,8 +4,6 @@ import path from 'path';
 
 import { renderAppForAllGetPathsExceptGraphql } from './renderApp';
 
-console.log('path.join(__dirname, `public`)', path.join(__dirname, 'public'));
-
 export { apolloServer } from './graphql';
 export const server = express()
   .disable('x-powered-by')

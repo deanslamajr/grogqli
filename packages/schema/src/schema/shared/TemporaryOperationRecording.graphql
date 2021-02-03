@@ -1,6 +1,7 @@
 type TemporaryOperationRecording {
   id: ID!
   operationName: String!
+  sessionId: ID!
   query: String!
   variables: String!
   response: String

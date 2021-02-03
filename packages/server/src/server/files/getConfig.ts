@@ -6,13 +6,13 @@ const CONFIG_FILE_NAME = 'grogqli.json';
 
 export interface GrogqliConfig {
   recordingsSaveDirectory: string;
-  recordingsFilename: string;
   port: number;
+  shouldDogFood: boolean;
 }
 const DEFAULT_CONFIG: GrogqliConfig = {
   recordingsSaveDirectory: path.join(process.cwd(), 'grogqli'),
-  recordingsFilename: 'groql_rec',
   port: 4000,
+  shouldDogFood: false,
 };
 
 type GetGrogqliConfigValue = (configKey: keyof GrogqliConfig) => string;

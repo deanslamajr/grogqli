@@ -21,6 +21,7 @@ type TemporaryOperationRecordingFileVersion1 = {
   variables: string;
   response: string | null;
   referrer: string;
+  sessionId: string;
   tempSchemaRecordingId: string;
 };
 
@@ -82,6 +83,7 @@ export const create: Create = async ({
     variables,
     response,
     referrer,
+    sessionId,
     tempSchemaRecordingId,
   };
 

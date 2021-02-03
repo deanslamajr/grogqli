@@ -17,15 +17,10 @@ const {
 
 const recordOperation: DoWork = async (req, _res, ctx) => {
   const apolloClient = getApolloClient();
+  const sessionId = getSessionId();
+  let tempOpRecordingId;
 
   const schemaFromIntrospection = await fetchSchema({ req, ctx });
-
-  const sessionId = getSessionId();
-
-  const cacheExtract = apolloClient.cache.extract();
-  console.log('cacheExtract', cacheExtract);
-
-  let tempOpRecordingId;
 
   // TODO refactor 'unknownOperation' case:
   // instead of unknownOperation, make this field optional and have the server handle this case

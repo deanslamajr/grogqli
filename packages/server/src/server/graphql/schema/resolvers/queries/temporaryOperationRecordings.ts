@@ -14,6 +14,7 @@ const transform = (
     variables: file.variables,
     response: file.response,
     tempSchemaRecordingId: file.tempSchemaRecordingId,
+    sessionId: file.sessionId,
     referrer: file.referrer,
   };
 };

@@ -1,10 +1,8 @@
-subscription OnTemporaryOperationRecordingSave {
-  temporaryOperationRecordingSaved {
-    id
-    operationName
-    query
-    variables
-    response
-    tempSchemaRecordingId
+# import TempOpRecordingFragment from '../fragments/TempOpRecordingFragment.graphql'
+subscription OnTemporaryOperationRecordingSave(
+  $input: TemporaryOperationRecordingSavedInput!
+) {
+  temporaryOperationRecordingSaved(input: $input) {
+    ...TempOpRecordingFragment
   }
 }

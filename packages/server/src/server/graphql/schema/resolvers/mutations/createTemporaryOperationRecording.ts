@@ -1,9 +1,15 @@
-import { MutationResolvers } from '@grogqli/schema';
+import {
+  MutationResolvers,
+  TemporaryOperationRecording,
+} from '@grogqli/schema';
 
 import { persistTempSchemaRecording } from '../../../../files/schema';
 import { create as createTempOpRecording } from '../../../../files/tempOpRecording';
 import { pubSub } from '../pubSub';
-import { TEMP_OP_RECORDING_SAVED } from '../subscriptions/temporaryOperationRecordingSavedResolver';
+import {
+  TEMP_OP_RECORDING_SAVED,
+  TempOpRecordingSavedPubSubPayload,
+} from '../subscriptions/temporaryOperationRecordingSavedResolver';
 
 export const resolver: MutationResolvers['createTemporaryOperationRecording'] = async (
   _parent,
@@ -23,7 +29,7 @@ export const resolver: MutationResolvers['createTemporaryOperationRecording'] = 
     });
   }
 
-  const newTempOpRecording = await createTempOpRecording({
+  const newTempOpRecordingFile = await createTempOpRecording({
     operationName,
     query,
     variables,
@@ -33,9 +39,21 @@ export const resolver: MutationResolvers['createTemporaryOperationRecording'] = 
     tempSchemaRecordingId,
   });
 
-  pubSub.publish(TEMP_OP_RECORDING_SAVED, {
-    recordingSaved: newTempOpRecording,
-  });
+  const newTempOpRecording: TemporaryOperationRecording = {
+    id: newTempOpRecordingFile.id,
+    operationName: newTempOpRecordingFile.operationName,
+    sessionId: newTempOpRecordingFile.sessionId,
+    query: newTempOpRecordingFile.query,
+    variables: newTempOpRecordingFile.variables,
+    response: newTempOpRecordingFile.response,
+    tempSchemaRecordingId: newTempOpRecordingFile.tempSchemaRecordingId,
+    referrer: newTempOpRecordingFile.referrer,
+  };
+
+  const payload: TempOpRecordingSavedPubSubPayload = {
+    temporaryOperationRecordingSaved: newTempOpRecording,
+  };
+  pubSub.publish(TEMP_OP_RECORDING_SAVED, payload);
 
   return {
     newRecording: newTempOpRecording,
