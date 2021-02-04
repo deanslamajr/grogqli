@@ -11,7 +11,7 @@ type StartServiceWorker = (params: {
 }) => Promise<string>;
 
 export const startServiceWorker: StartServiceWorker = async ({
-  name = shortId.generate(),
+  name = window.document.URL.toString(),
   port,
 }) => {
   const apolloClient = createApolloClient({ port });

@@ -1,9 +1,8 @@
+# import HandlerSessionFragment from '../fragments/HandlerSessionFragment.graphql'
 subscription OnHandlerStateChange(
   $input: HandlerStateChangeSubscriptionInput!
 ) {
   handlerStateChanged(input: $input) {
-    id
-    name
-    currentState
+    ...HandlerSessionFragment
   }
 }

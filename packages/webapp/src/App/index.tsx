@@ -1,23 +1,18 @@
 import React from 'react';
-import { ApolloProvider, ApolloClient } from '@apollo/client';
-import { ThemeProvider } from 'styled-components';
-
-import GlobalStyles from './GlobalStyles';
+import { ApolloClient } from '@apollo/client';
+import { SessionsContainer } from './SessionsContainer';
 
 import { cssTheme } from './constants';
-import { SessionsContainer } from './SessionsContainer';
+import { Providers } from './Providers';
 
 interface Props {
   apolloClient: ApolloClient<any>;
 }
 
 const App: React.FC<Props> = ({ apolloClient }) => (
-  <ApolloProvider client={apolloClient}>
-    <ThemeProvider theme={cssTheme}>
-      <GlobalStyles />
-      <SessionsContainer />
-    </ThemeProvider>
-  </ApolloProvider>
+  <Providers apolloClient={apolloClient} cssTheme={cssTheme}>
+    <SessionsContainer />
+  </Providers>
 );
 
 export default App;

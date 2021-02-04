@@ -2,6 +2,9 @@ type Mutation {
   createHandlerSession(
     input: CreateHandlerSessionInput!
   ): CreateHandlerSessionResponse!
+  updateHandlerSession(
+    input: UpdateHandlerSessionInput!
+  ): UpdateHandlerSessionResponse!
   createTemporaryOperationRecording(
     input: CreateTemporaryOperationRecordingInput!
   ): CreateTemporaryOperationRecordingResponse!

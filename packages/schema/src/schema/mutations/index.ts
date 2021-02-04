@@ -4,6 +4,7 @@ import CreateHandlerSession from './CreateHandlerSession.graphql';
 import CreateTemporaryOperationRecording from './CreateTemporaryOperationRecording.graphql';
 import CreateWorkflow from './CreateWorkflow.graphql';
 import PlaybackRecording from './PlaybackRecording.graphql';
+import UpdateHandlerSession from './UpdateHandlerSession.graphql';
 import UpdateTemporaryOperationRecording from './UpdateTemporaryOperationRecording.graphql';
 
 export const typeDefs = [
@@ -12,5 +13,6 @@ export const typeDefs = [
   CreateTemporaryOperationRecording,
   CreateWorkflow,
   PlaybackRecording,
+  UpdateHandlerSession,
   UpdateTemporaryOperationRecording,
 ];

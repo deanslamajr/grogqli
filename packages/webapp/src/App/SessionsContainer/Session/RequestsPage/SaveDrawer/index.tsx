@@ -13,7 +13,7 @@ import { FormFieldContainer, InvalidFieldMessage } from './common';
 
 const { CreateWorkflowDocument } = CreateWorkflow;
 
-interface SaveDrawerProps {
+export interface SaveDrawerProps {
   handleClose: () => void;
   tempOpRecordingsToSave: GetTempOpRecordings.TemporaryOperationRecording[];
   show: boolean;

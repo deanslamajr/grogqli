@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
-import { GetWorkflows } from '@grogqli/schema';
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  GetWorkflows,
+  UpdateHandlerSession,
+  HandlerState,
+} from '@grogqli/schema';
+
+import { useSessionState } from '../../SessionContext';
 
 const StyledMainSubMenuBar = styled.div`
   width: 100%;
@@ -45,18 +51,25 @@ const WorkflowsDropdown = styled.select`
 `;
 
 export const MockingPage: React.FC<{}> = ({}) => {
-  const { data, loading } = useQuery(GetWorkflows.GetWorkflowsDocument);
+  const { data: workflowData, loading: isGettingWorkflows } = useQuery(
+    GetWorkflows.GetWorkflowsDocument
+  );
+  const [
+    updateHandlerSession,
+    { data: updateHandlerSessionResponse, loading: isUpdatingHandlerSession },
+  ] = useMutation(UpdateHandlerSession.UpdateHandlerSessionDocument);
+  const { sessionId } = useSessionState();
 
   return (
     <>
       <StyledMainSubMenuBar>
-        {loading ? (
+        {isGettingWorkflows ? (
           'LOADING WORKFLOWS'
         ) : (
           <>
             <WorkflowsDropdown name="workflows">
-              {data && data.workflows?.map ? (
-                data.workflows.map(({ id, name }) => (
+              {workflowData && workflowData.workflows?.map ? (
+                workflowData.workflows.map(({ id, name }) => (
                   <option key={id} value={id}>
                     {name}
                   </option>
@@ -65,7 +78,21 @@ export const MockingPage: React.FC<{}> = ({}) => {
                 <option value="noValue">No Values</option>
               )}
             </WorkflowsDropdown>
-            <PlayButton>USE MOCK</PlayButton>
+            <PlayButton
+              onClick={() =>
+                updateHandlerSession({
+                  variables: {
+                    input: {
+                      sessionId,
+                      name: null,
+                      currentState: HandlerState.Playback,
+                    },
+                  },
+                })
+              }
+            >
+              USE MOCK
+            </PlayButton>
           </>
         )}
       </StyledMainSubMenuBar>

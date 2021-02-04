@@ -1,7 +1,6 @@
+# import HandlerSessionFragment from '../fragments/HandlerSessionFragment.graphql'
 query GetHandlers($input: HandlersInput!) {
   handlers(input: $input) {
-    id
-    name
-    currentState
+    ...HandlerSessionFragment
   }
 }

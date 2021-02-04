@@ -1,0 +1,8 @@
+# import HandlerSessionFragment from '../fragments/HandlerSessionFragment.graphql'
+mutation UpdateHandlerSession($input: UpdateHandlerSessionInput!) {
+  updateHandlerSession(input: $input) {
+    updatedHandler {
+      ...HandlerSessionFragment
+    }
+  }
+}

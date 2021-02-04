@@ -1,0 +1,9 @@
+input UpdateHandlerSessionInput {
+  sessionId: ID!
+  name: String
+  currentState: HandlerState
+}
+
+type UpdateHandlerSessionResponse {
+  updatedHandler: Handler!
+}
