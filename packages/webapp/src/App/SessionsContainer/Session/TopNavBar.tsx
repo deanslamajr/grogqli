@@ -50,7 +50,7 @@ export const TopNavBar: React.FC<Props> = ({ pagesConfig }) => {
   return (
     <StyledOuterContainer>
       {pagesConfig.map(({ label, path }) => (
-        <StyledLink key={path} to={`${url}/${path}`}>
+        <StyledLink replace key={path} to={`${url}/${path}`}>
           {label}
         </StyledLink>
       ))}

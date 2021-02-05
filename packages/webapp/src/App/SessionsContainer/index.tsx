@@ -53,7 +53,7 @@ export const SessionsContainer: FC<Props> = ({}) => {
 
   useEffect(() => {
     if (activeSessionId) {
-      history.push(`/session/${activeSessionId}/${pagesConfig[0].path}`);
+      history.replace(`/session/${activeSessionId}/${pagesConfig[0].path}`);
     }
   }, [activeSessionId]);
 
