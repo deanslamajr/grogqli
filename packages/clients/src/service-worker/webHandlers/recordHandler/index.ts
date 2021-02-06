@@ -6,7 +6,7 @@ import {
 import { get as getApolloClient } from '../../apolloClient';
 import { getSessionId } from '../../handlerState';
 import { DoWork, ResponseData, wrapWithBaseHandler } from '../baseHandler';
-import fetchSchema from './fetchSchema';
+import { getSchemaMetaAndConditionallyRecordSchema } from './recordSchema';
 
 const {
   CreateTemporaryOperationRecordingDocument,
@@ -20,7 +20,9 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
   const sessionId = getSessionId();
   let tempOpRecordingId;
 
-  const schemaFromIntrospection = await fetchSchema({ req, ctx });
+  const schemaFromIntrospection = await getSchemaMetaAndConditionallyRecordSchema(
+    { req, ctx }
+  );
 
   // TODO refactor 'unknownOperation' case:
   // instead of unknownOperation, make this field optional and have the server handle this case

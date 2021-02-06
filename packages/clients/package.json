@@ -27,12 +27,14 @@
     "@apollo/client": "^3.2.2",
     "@grogqli/schema": "^0.7.0",
     "graphql": "^15.3.0",
+    "memoizee": "^0.4.15",
     "msw": "^0.21.2",
     "react": "^16.8.0",
     "shortid": "^2.2.15",
     "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
+    "@types/memoizee": "^0.4.5",
     "@types/shortid": "^0.0.29",
     "@typescript-eslint/parser": "^2.34.0",
     "tsdx": "^0.14.0",

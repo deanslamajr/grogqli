@@ -21,7 +21,7 @@ export const setSessionId = (sessionId: string): void => {
 };
 
 type Initialize = (params: { sessionId: string }) => void;
-export const initialize: Initialize = ({ sessionId }): void => {
+export const initialize: Initialize = ({ sessionId }) => {
   handlerState = {} as HandlerState;
   setSessionId(sessionId);
 };
