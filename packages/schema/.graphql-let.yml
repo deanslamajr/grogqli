@@ -1,14 +1,16 @@
-schema: "src/schema/**/*.graphql"
-documents: "src/queries/**/*.graphql"
+schema: 'src/schema/**/*.graphql'
+documents: 'src/queries/**/*.graphql'
 plugins:
   - typescript
   - typescript-operations
   - typed-document-node
   - typescript-resolvers
-schemaEntrypoint: "src/schema/schema.graphql"
+schemaEntrypoint: 'src/schema/schema.graphql'
 respectGitIgnore: true
 cacheDir: src/generated
 config:
   avoidOptionals: true
   useIndexSignature: true
   defaultMapper: Partial<{T}>
+  scalars:
+    JSON: GraphQLScalarType | undefined

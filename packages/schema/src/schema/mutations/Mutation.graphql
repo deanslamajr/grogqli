@@ -11,6 +11,9 @@ type Mutation {
   updateTemporaryOperationRecording(
     input: UpdateTemporaryOperationRecordingInput!
   ): UpdateTemporaryOperationRecordingResponse!
+  createSchemaRecording(
+    input: CreateSchemaRecordingInput!
+  ): CreateSchemaRecordingResponse!
   createWorkflow(input: CreateWorkflowInput!): CreateWorkflowResponse!
   playbackRecording(input: PlaybackRecordingInput!): PlaybackRecordingResponse!
 }

@@ -1,6 +1,9 @@
 import { GraphQLMockedContext, GraphQLMockedRequest } from 'msw';
 import { getIntrospectionQuery } from 'graphql';
 import memoize from 'memoizee';
+import { CreateSchemaRecording } from '@grogqli/schema';
+
+import { get as getApolloClient } from '../../apolloClient';
 
 interface FetchSchemaParams {
   req: GraphQLMockedRequest<any>;
@@ -17,13 +20,34 @@ const memoizedFetchAndRecordSchema = memoize(
       query: getIntrospectionQuery(),
     });
     const introspectionRequestResult = await ctx.fetch(introspectionReq);
-    const introspectionResult = await introspectionRequestResult.json();
+    const schemaIntrospectionResult = await introspectionRequestResult.json();
 
-    // TODO:
-    // invoke recordSchema mutation
+    const apolloClient = getApolloClient();
+    const { data, errors } = await apolloClient.mutate({
+      mutation: CreateSchemaRecording.CreateSchemaRecordingDocument,
+      variables: {
+        input: {
+          schemaIntrospectionResult,
+        },
+      },
+    });
 
-    // TODO return schemaHash and schemaUrl
-    return JSON.stringify(introspectionResult.data, null, 2);
+    if (errors && errors.length) {
+      throw errors[0];
+    }
+    if (data === null || data === undefined) {
+      throw new Error(
+        'CreateSchemaRecording mutation returned without error but without any data!'
+      );
+    }
+
+    const {
+      createSchemaRecording: { schemaHash },
+    } = data;
+
+    console.log('schemaHash', schemaHash);
+
+    return schemaHash;
   },
   {
     length: 1, // only key the cache on the first argument ie. schemaUrl
