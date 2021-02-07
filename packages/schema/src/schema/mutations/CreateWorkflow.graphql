@@ -10,8 +10,8 @@ input OperationRecordingsInput {
 }
 
 input SchemasMappingsInput {
-  id: ID!
-  url: String!
+  opsRecordingsSchemaHash: ID!
+  targetSchemaId: ID!
 }
 
 input NewWorkflowInput {

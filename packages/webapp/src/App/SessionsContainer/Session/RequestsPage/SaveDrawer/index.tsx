@@ -8,7 +8,11 @@ import { useMutation } from '@apollo/client';
 
 import { SaveRecordingsButton } from '../SaveRecordingsButton';
 
-import { SchemaMappingField } from './SchemaMappingField';
+import {
+  NEW_SCHEMA_ID,
+  SchemaMappingField,
+  SchemasMapping,
+} from './SchemaMappingField';
 import { FormFieldContainer, InvalidFieldMessage } from './common';
 
 const { CreateWorkflowDocument } = CreateWorkflow;
@@ -52,10 +56,7 @@ const SaveDrawerContainer = styled.div<{ show: boolean }>`
 interface CreateWorkflowForm {
   workflowName: string;
   workflowDescription: string;
-  schemasMapping: Array<{
-    id: string;
-    url: string;
-  }>;
+  schemasMappings: Array<SchemasMapping>;
 }
 
 type ValidationErrors = Partial<CreateWorkflowForm>;
@@ -71,7 +72,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
   const _createWorkflow = ({
     workflowName,
     workflowDescription,
-    schemasMapping,
+    schemasMappings,
   }: CreateWorkflowForm) => {
     const operations = tempOpRecordingsToSave.map(({ id }) => ({
       sessionId: 'replaceMe!',
@@ -86,7 +87,12 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
             name: workflowName,
             description: workflowDescription,
           },
-          schemasMapping,
+          schemasMapping: schemasMappings.map(
+            ({ opsRecordingsSchemaHash, targetSchemaId }) => ({
+              opsRecordingsSchemaHash,
+              targetSchemaId,
+            })
+          ),
         },
       },
     });
@@ -114,25 +120,30 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
   };
 
   const initialValues = useMemo<CreateWorkflowForm>(() => {
-    const tempSchemaRecordingIds = tempOpRecordingsToSave.map(
-      ({ tempSchemaRecordingId }) => tempSchemaRecordingId
-    );
-    const setOfTempSchemaRecordingIds = new Set(tempSchemaRecordingIds);
-    const uniqueTempSchemaRecordingIds = Array.from(
-      setOfTempSchemaRecordingIds
-    );
+    const schemaUrls = tempOpRecordingsToSave.map(({ schemaUrl }) => schemaUrl);
+    const setOfSchemaUrls = new Set(schemaUrls);
+    const uniqueSchemaUrls = Array.from(setOfSchemaUrls);
 
-    const schemaMappings = uniqueTempSchemaRecordingIds.map(
-      (tempSchemaRecordingId) => ({
-        url: tempSchemaRecordingId,
-        id: '',
-      })
-    );
+    const schemasMappings = uniqueSchemaUrls.map((uniqueSchemaUrl) => {
+      const tempOpRecording = tempOpRecordingsToSave.find(
+        ({ schemaUrl }) => schemaUrl === uniqueSchemaUrl
+      );
+      if (!tempOpRecording) {
+        throw new Error(`Data corruption: tempOpRecordingsToSave did not have an expected matching schemaUrl:
+            tempOpRecordingsToSave: ${JSON.stringify(tempOpRecordingsToSave)}
+          `);
+      }
+      return {
+        opsRecordingsSchemaUrl: tempOpRecording.schemaUrl,
+        opsRecordingsSchemaHash: tempOpRecording.schemaHash,
+        targetSchemaId: NEW_SCHEMA_ID,
+      };
+    });
 
     return {
       workflowName: '',
       workflowDescription: '',
-      schemasMapping: schemaMappings,
+      schemasMappings,
     };
   }, [tempOpRecordingsToSave]);
 

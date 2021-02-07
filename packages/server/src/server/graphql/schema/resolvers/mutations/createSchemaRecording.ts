@@ -13,8 +13,6 @@ export const createSchemaRecordingResolver: MutationResolvers['createSchemaRecor
     input: { schemaIntrospectionResult },
   } = args;
 
-  console.log('schemaIntrospectionResult', schemaIntrospectionResult);
-
   const schemaHash = await persistTempSchemaRecording(
     schemaIntrospectionResult as IntrospectionQuery
   );

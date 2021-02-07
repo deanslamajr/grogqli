@@ -1,24 +1,23 @@
+import { SchemasMappingsInput } from '@grogqli/schema';
+
 import { get as getTempOpRecording } from '../files/tempOpRecording';
 
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
 type CreateOperationRecordingAssetsPlan = (params: {
-  schemasMapping: SchemasMapping;
+  schemasMapping: SchemasMappingsInput[];
   sessionId: string;
   tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
-
-export type SchemasMapping = Array<{
-  id: string;
-  url: string;
-}>;
 
 export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsPlan = async ({
   schemasMapping,
   sessionId,
   tempRecordingId,
 }) => {
+  console.log('schemasMapping', schemasMapping);
+
   const tempOpRecording = await getTempOpRecording({
     sessionId,
     temporaryOperationRecordingId: tempRecordingId,

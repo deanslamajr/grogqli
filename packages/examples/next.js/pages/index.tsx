@@ -14,7 +14,7 @@ type Artist = NonNullable<NonNullable<NonNullable<NonNullable<SearchForArtistQue
 
 const ArtistSearchResult: FC<{artist: Artist}> = ({artist})=> {
   return (<Link href={`/artist/${artist.id}`}>
-    <p className={styles['artist']}>
+    <div className={styles['artist']}>
       <h2>{artist.name}</h2>
       {artist.area ? (<div>{artist.area.name}</div>) : null}
       <div>
@@ -22,7 +22,7 @@ const ArtistSearchResult: FC<{artist: Artist}> = ({artist})=> {
         <div>{artist.lifeSpan.begin}</div>
       ) : null}
       </div>
-    </p>
+    </div>
   </Link>)
 };
 
