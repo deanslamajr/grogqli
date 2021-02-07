@@ -11,23 +11,29 @@ interface FetchSchemaParams {
 }
 
 const memoizedFetchAndRecordSchema = memoize(
-  async (
-    _schemaUrl: string, // provided for memoize cache key, req has its own reference to this
-    { req, ctx }: FetchSchemaParams
-  ) => {
+  async (schemaUrl: string, { req, ctx }: FetchSchemaParams) => {
     const introspectionReq = { ...req, body: {} };
     introspectionReq.body = JSON.stringify({
       query: getIntrospectionQuery(),
     });
     const introspectionRequestResult = await ctx.fetch(introspectionReq);
-    const schemaIntrospectionResult = await introspectionRequestResult.json();
+    const introspectionRequestResultJson = await introspectionRequestResult.json();
+
+    if (
+      !introspectionRequestResultJson ||
+      !introspectionRequestResultJson.data
+    ) {
+      throw new Error(
+        `Unexpected response from the schema introspection query:${introspectionRequestResultJson}`
+      );
+    }
 
     const apolloClient = getApolloClient();
     const { data, errors } = await apolloClient.mutate({
       mutation: CreateSchemaRecording.CreateSchemaRecordingDocument,
       variables: {
         input: {
-          schemaIntrospectionResult,
+          schemaIntrospectionResult: introspectionRequestResultJson.data,
         },
       },
     });
@@ -45,9 +51,10 @@ const memoizedFetchAndRecordSchema = memoize(
       createSchemaRecording: { schemaHash },
     } = data;
 
-    console.log('schemaHash', schemaHash);
-
-    return schemaHash;
+    return {
+      schemaHash,
+      schemaUrl,
+    };
   },
   {
     length: 1, // only key the cache on the first argument ie. schemaUrl
@@ -57,7 +64,10 @@ const memoizedFetchAndRecordSchema = memoize(
 
 type GetSchemaMetaAndConditionallyRecordSchema = (
   params: FetchSchemaParams
-) => Promise<string>;
+) => Promise<{
+  schemaHash: string;
+  schemaUrl: string;
+}>;
 
 export const getSchemaMetaAndConditionallyRecordSchema: GetSchemaMetaAndConditionallyRecordSchema = ({
   req,

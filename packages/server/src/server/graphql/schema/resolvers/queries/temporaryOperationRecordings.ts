@@ -13,7 +13,8 @@ const transform = (
     query: file.query,
     variables: file.variables,
     response: file.response,
-    tempSchemaRecordingId: file.tempSchemaRecordingId,
+    schemaHash: file.schemaHash,
+    schemaUrl: file.schemaUrl,
     sessionId: file.sessionId,
     referrer: file.referrer,
   };

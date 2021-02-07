@@ -1,7 +1,6 @@
 import editJsonFile from 'edit-json-file';
 import shortid from 'shortid';
 import fs from 'fs';
-import path from 'path';
 import glob from 'glob';
 
 import {
@@ -22,7 +21,8 @@ type TemporaryOperationRecordingFileVersion1 = {
   response: string | null;
   referrer: string;
   sessionId: string;
-  tempSchemaRecordingId: string;
+  schemaUrl: string;
+  schemaHash: string;
 };
 
 type Update = (params: {
@@ -63,7 +63,8 @@ type Create = (params: {
   response: string | null;
   referrer: string;
   sessionId: string;
-  tempSchemaRecordingId: string;
+  schemaUrl: string;
+  schemaHash: string;
 }) => Promise<TemporaryOperationRecordingFile>;
 
 export const create: Create = async ({
@@ -73,7 +74,8 @@ export const create: Create = async ({
   response,
   referrer,
   sessionId,
-  tempSchemaRecordingId,
+  schemaHash,
+  schemaUrl,
 }) => {
   const newTempOpRecordingFileContents: TemporaryOperationRecordingFile = {
     version: TEMP_OP_RECORDING_FILE_VERSION,
@@ -84,7 +86,8 @@ export const create: Create = async ({
     response,
     referrer,
     sessionId,
-    tempSchemaRecordingId,
+    schemaUrl,
+    schemaHash,
   };
 
   const tempOpRecordingFileName = await getTempOpRecordingFileName({

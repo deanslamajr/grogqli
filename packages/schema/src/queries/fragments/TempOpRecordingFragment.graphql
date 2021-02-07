@@ -5,6 +5,7 @@ fragment TempOpRecordingFragment on TemporaryOperationRecording {
   query
   variables
   response
-  tempSchemaRecordingId
+  schemaUrl
+  schemaHash
   referrer
 }

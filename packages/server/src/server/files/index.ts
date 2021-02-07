@@ -159,35 +159,27 @@ export const getTypeFilePath = async (typeId: string) => {
   return path.join(typeFilePath, `${typeId}.json`);
 };
 
-// e.g. /grogqli/local/sessions/<sessionId>/schemas
-export const getTemporarySchemaRecordingsFolderPath = async (
-  sessionId: string
-): Promise<string> => {
+// e.g. /grogqli/local/schemas
+export const getTemporarySchemaRecordingsFolderPath = async (): Promise<string> => {
   const recordingsRootDir = await getRecordingsRootDir();
   const schemaRecordingsPath = path.join(
     recordingsRootDir,
     TEMP_FOLDER_NAME,
-    HANDLER_SESSIONS_STATE_FOLDER_NAME,
-    sessionId,
     TEMP_SCHEMAS_FOLDER_NAME
   );
   await createDirIfDoesntExist(schemaRecordingsPath);
   return schemaRecordingsPath;
 };
 
-// e.g. /grogqli/local/sessions/<sessionId>/schemas/<schemaId>.json
-type GetTemporarySchemaRecordingFilename = (params: {
-  sessionId: string;
-  schemaId: string;
-}) => Promise<string>;
-export const getTemporarySchemaRecordingFilename: GetTemporarySchemaRecordingFilename = async ({
-  schemaId,
-  sessionId,
-}) => {
-  const tempSchemaRecordingsPath = await getTemporarySchemaRecordingsFolderPath(
-    sessionId
-  );
-  return path.join(tempSchemaRecordingsPath, `${schemaId}.json`);
+// e.g. /grogqli/local/schemas/<schemaHash>.json
+type GetTemporarySchemaRecordingFilename = (
+  schemaHash: string
+) => Promise<string>;
+export const getTemporarySchemaRecordingFilename: GetTemporarySchemaRecordingFilename = async (
+  schemaHash
+) => {
+  const tempSchemaRecordingsPath = await getTemporarySchemaRecordingsFolderPath();
+  return path.join(tempSchemaRecordingsPath, `${schemaHash}.json`);
 };
 
 // e.g. /grogqli/local/sessions/<sessionId>

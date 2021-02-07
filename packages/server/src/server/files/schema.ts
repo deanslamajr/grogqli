@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
+import { IntrospectionQuery } from 'graphql';
 
 import {
   doesFileExist,
@@ -11,48 +12,38 @@ import {
 type TemporarySchemaRecording = TemporarySchemaRecordingVersion1;
 interface TemporarySchemaRecordingVersion1 {
   version: 1;
-  id: string;
-  url: string;
-  schema: string;
+  hash: string;
+  introspectionQuery: IntrospectionQuery;
 }
 
-type PersistTempSchemaRecording = (params: {
-  schema: string;
-  sessionId: string;
-  url: string;
-}) => Promise<string>;
+type PersistTempSchemaRecording = (
+  schemaIntrospectionResult: IntrospectionQuery
+) => Promise<string>;
 
-export const persistTempSchemaRecording: PersistTempSchemaRecording = async ({
-  schema,
-  sessionId,
-  url,
-}) => {
+export const persistTempSchemaRecording: PersistTempSchemaRecording = async (
+  schemaIntrospectionResult
+) => {
+  // TODO generate schema hash
+  const schemaHash = shortid.generate();
+
   const newTempSchemaRecording: TemporarySchemaRecording = {
     version: TEMP_SCHEMA_FILE_VERSION,
-    id: shortid.generate(),
-    url,
-    schema,
+    hash: schemaHash,
+    introspectionQuery: schemaIntrospectionResult,
   };
 
-  const schemaRecordingsPath = await getTemporarySchemaRecordingFilename({
-    sessionId,
-    schemaId: newTempSchemaRecording.id,
-  });
+  const schemaRecordingsPath = await getTemporarySchemaRecordingFilename(
+    schemaHash
+  );
 
   const newTempSchemaRecordingFile = editJsonFile(schemaRecordingsPath);
 
-  if (doesFileExist(newTempSchemaRecordingFile)) {
-    // file should not already exist
-    // if it does, this probably means that the generated id is
-    // already in use as an id for another session
-    throw new Error(
-      `The generated temporary schema recording id:${newTempSchemaRecording.id} seems to already be in use!`
-    );
-  } else {
+  if (!doesFileExist(newTempSchemaRecordingFile)) {
     mapObjectToJsonFile(newTempSchemaRecording, newTempSchemaRecordingFile);
+    newTempSchemaRecordingFile.save();
+  } else {
+    console.log(`Schema with hash:${schemaHash} has already been recorded!`);
   }
 
-  newTempSchemaRecordingFile.save();
-
-  return newTempSchemaRecording.id;
+  return schemaHash;
 };

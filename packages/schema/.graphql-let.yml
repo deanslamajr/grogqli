@@ -11,6 +11,3 @@ cacheDir: src/generated
 config:
   avoidOptionals: true
   useIndexSignature: true
-  defaultMapper: Partial<{T}>
-  scalars:
-    JSON: GraphQLScalarType | undefined

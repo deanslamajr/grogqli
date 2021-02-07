@@ -27,7 +27,8 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   const {
     response,
     query: operationSDL,
-    tempSchemaRecordingId,
+    schemaHash,
+    schemaUrl,
     variables: rawVariables,
   } = tempOpRecording;
 
@@ -63,7 +64,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   return generateRecordingPlan({
     parsedOpRecording,
     operationSDL,
-    schemaId: tempSchemaRecordingId,
+    schemaId: '',
     variables,
   });
 };

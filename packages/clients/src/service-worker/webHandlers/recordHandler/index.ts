@@ -20,9 +20,10 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
   const sessionId = getSessionId();
   let tempOpRecordingId;
 
-  const schemaFromIntrospection = await getSchemaMetaAndConditionallyRecordSchema(
-    { req, ctx }
-  );
+  const {
+    schemaHash,
+    schemaUrl,
+  } = await getSchemaMetaAndConditionallyRecordSchema({ req, ctx });
 
   // TODO refactor 'unknownOperation' case:
   // instead of unknownOperation, make this field optional and have the server handle this case
@@ -35,8 +36,8 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
       input: {
         referrer: req.referrer,
         schema: {
-          url: req.url.toString(),
-          content: schemaFromIntrospection || null,
+          url: schemaUrl,
+          hash: schemaHash,
         },
         operationName: req.body!.operationName || 'unknownOperation',
         query: req.body!.query,

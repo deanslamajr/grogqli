@@ -18,16 +18,15 @@ export const resolver: MutationResolvers['createTemporaryOperationRecording'] = 
   _info
 ) => {
   const {
-    input: { operationName, query, variables, schema, sessionId, referrer },
-  } = args;
-  let tempSchemaRecordingId;
-  if (schema.content) {
-    tempSchemaRecordingId = await persistTempSchemaRecording({
-      schema: schema.content,
+    input: {
+      operationName,
+      query,
+      variables,
+      schema: { hash: schemaHash, url: schemaUrl },
       sessionId,
-      url: schema.url,
-    });
-  }
+      referrer,
+    },
+  } = args;
 
   const newTempOpRecordingFile = await createTempOpRecording({
     operationName,
@@ -36,7 +35,8 @@ export const resolver: MutationResolvers['createTemporaryOperationRecording'] = 
     response: null,
     referrer,
     sessionId,
-    tempSchemaRecordingId,
+    schemaHash,
+    schemaUrl,
   });
 
   const newTempOpRecording: TemporaryOperationRecording = {
@@ -46,7 +46,8 @@ export const resolver: MutationResolvers['createTemporaryOperationRecording'] = 
     query: newTempOpRecordingFile.query,
     variables: newTempOpRecordingFile.variables,
     response: newTempOpRecordingFile.response,
-    tempSchemaRecordingId: newTempOpRecordingFile.tempSchemaRecordingId,
+    schemaUrl,
+    schemaHash,
     referrer: newTempOpRecordingFile.referrer,
   };
 

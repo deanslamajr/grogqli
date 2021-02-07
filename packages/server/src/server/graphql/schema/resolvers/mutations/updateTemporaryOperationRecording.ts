@@ -32,7 +32,8 @@ export const updateTemporaryOperationRecordingResolver: MutationResolvers['updat
     query: updatedTempOpRecordingFile.query,
     variables: updatedTempOpRecordingFile.variables,
     response: updatedTempOpRecordingFile.response,
-    tempSchemaRecordingId: updatedTempOpRecordingFile.tempSchemaRecordingId,
+    schemaHash: updatedTempOpRecordingFile.schemaHash,
+    schemaUrl: updatedTempOpRecordingFile.schemaUrl,
     referrer: updatedTempOpRecordingFile.referrer,
   };
 

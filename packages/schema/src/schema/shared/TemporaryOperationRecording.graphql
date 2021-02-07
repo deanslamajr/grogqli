@@ -5,6 +5,7 @@ type TemporaryOperationRecording {
   query: String!
   variables: String!
   response: String
-  tempSchemaRecordingId: String!
+  schemaUrl: String!
+  schemaHash: String!
   referrer: String!
 }

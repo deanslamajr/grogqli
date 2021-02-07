@@ -93,11 +93,6 @@ export const RequestsPage: React.FC = () => {
               return prev;
             }
 
-            console.log(
-              'onTemporaryOperationRecordingSaveData',
-              onTemporaryOperationRecordingSaveData
-            );
-
             const newFeedItem =
               onTemporaryOperationRecordingSaveData.data
                 .temporaryOperationRecordingSaved;
