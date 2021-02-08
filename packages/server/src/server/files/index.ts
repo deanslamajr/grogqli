@@ -35,6 +35,7 @@ export const OPERATIONS_NAME_TO_ID_MAPPING_FILENAME = 'operations.json';
 export const OPERATIONS_NAME_TO_ID_MAPPING_VERSION = 1;
 //       schema.json
 const SCHEMA_FILENAME = 'schema.json';
+export const SCHEMA_FILE_VERSION = 1;
 //       types.json
 const TYPES_NAME_TO_ID_MAPPING_FILENAME = 'types.json';
 export const TYPES_NAME_TO_ID_MAPPING_VERSION = 1;
@@ -83,29 +84,39 @@ export const getSchemasFolderPath = async (): Promise<string> => {
   return schemasFolderPath;
 };
 
-// e.g. /grogqli/schemas/<schemaId>/operations.json
-export const getOpNameMappingFilePath = async (schemaId: string) => {
+// e.g. /grogqli/schemas/<schemaId>/
+export const getSchemaIdFolderPath = async (
+  schemaId: string
+): Promise<string> => {
   const schemasFolderPath = await getSchemasFolderPath();
 
-  const opNameMappingFilePath = path.join(schemasFolderPath, schemaId);
+  const schemaIdFolderPath = path.join(schemasFolderPath, schemaId);
 
-  await createDirIfDoesntExist(opNameMappingFilePath);
+  await createDirIfDoesntExist(schemaIdFolderPath);
 
-  return path.join(
-    opNameMappingFilePath,
-    OPERATIONS_NAME_TO_ID_MAPPING_FILENAME
-  );
+  return schemaIdFolderPath;
+};
+
+export const getSchemaRecordingFilePath = async (
+  schemaId: string
+): Promise<string> => {
+  const schemaIdFolderPath = await getSchemaIdFolderPath(schemaId);
+
+  return path.join(schemaIdFolderPath, SCHEMA_FILENAME);
+};
+
+// e.g. /grogqli/schemas/<schemaId>/operations.json
+export const getOpNameMappingFilePath = async (schemaId: string) => {
+  const schemaIdFolderPath = await getSchemaIdFolderPath(schemaId);
+
+  return path.join(schemaIdFolderPath, OPERATIONS_NAME_TO_ID_MAPPING_FILENAME);
 };
 
 // e.g. /grogqli/schemas/<schemaId>/types.json
 export const getTypeNameMappingFilePath = async (schemaId: string) => {
-  const schemasFolderPath = await getSchemasFolderPath();
+  const schemaIdFolderPath = await getSchemaIdFolderPath(schemaId);
 
-  const typeNameMappingFilePath = path.join(schemasFolderPath, schemaId);
-
-  await createDirIfDoesntExist(typeNameMappingFilePath);
-
-  return path.join(typeNameMappingFilePath, TYPES_NAME_TO_ID_MAPPING_FILENAME);
+  return path.join(schemaIdFolderPath, TYPES_NAME_TO_ID_MAPPING_FILENAME);
 };
 
 // e.g. /grogqli/workflows
@@ -238,25 +249,4 @@ export const getTempOpRecordingFileName: GetTempOpRecordingFilePath = async ({
   );
 
   return path.join(tempOpRecordingFolderPath, `${tempOpRecordingId}.json`);
-};
-
-// Schema
-// ***
-// **
-// *
-export interface SchemaFile {
-  id: string;
-  version: number;
-  introspectionQuery: IntrospectionQuery;
-}
-
-export const getSchema = async (schemaId: string): Promise<SchemaFile> => {
-  const schemasFolderPath = await getSchemasFolderPath();
-  const absPathToSchema = path.join(schemasFolderPath, schemaId);
-
-  await createDirIfDoesntExist(absPathToSchema);
-
-  const absPathToSchemaFile = path.join(absPathToSchema, SCHEMA_FILENAME);
-
-  return JSON.parse(await fs.promises.readFile(absPathToSchemaFile, 'utf8'));
 };

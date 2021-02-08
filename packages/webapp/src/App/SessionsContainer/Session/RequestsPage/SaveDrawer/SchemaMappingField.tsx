@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field } from 'react-final-form';
-import { CreateWorkflowInput } from '@grogqli/schema';
 import styled from 'styled-components';
 
 import { FormFieldContainer, InvalidFieldMessage } from './common';

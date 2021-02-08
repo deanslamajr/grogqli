@@ -74,8 +74,8 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     workflowDescription,
     schemasMappings,
   }: CreateWorkflowForm) => {
-    const operations = tempOpRecordingsToSave.map(({ id }) => ({
-      sessionId: 'replaceMe!',
+    const operations = tempOpRecordingsToSave.map(({ id, sessionId }) => ({
+      sessionId,
       tempRecordingId: id,
     }));
 
@@ -87,12 +87,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
             name: workflowName,
             description: workflowDescription,
           },
-          schemasMapping: schemasMappings.map(
-            ({ opsRecordingsSchemaHash, targetSchemaId }) => ({
-              opsRecordingsSchemaHash,
-              targetSchemaId,
-            })
-          ),
+          schemasMappings,
         },
       },
     });

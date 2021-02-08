@@ -1,6 +1,6 @@
 import { ApolloServerBase } from 'apollo-server-core';
 
-import { getSchema, SchemaFile } from '../files';
+import { getSchemaRecordingFile, SchemaRecording } from '../files/schema';
 import { createSchemaSDL } from '../createSchemaSDL';
 import { createResolvers } from './createResolvers';
 
@@ -22,7 +22,7 @@ export interface Context {
 export const createApolloServer = async ({
   schemaId,
 }: CreateApolloServerParams): Promise<ApolloServerBase> => {
-  const schemaFile: SchemaFile = await getSchema(schemaId);
+  const schemaFile: SchemaRecording = await getSchemaRecordingFile(schemaId);
 
   const [schemaSDL, resolvers] = await Promise.all([
     createSchemaSDL(schemaFile.introspectionQuery),

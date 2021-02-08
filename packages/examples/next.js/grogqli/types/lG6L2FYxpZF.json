@@ -1,0 +1,141 @@
+{
+  "id": "lG6L2FYxpZF",
+  "version": 1,
+  "recordings": {
+    "0QtFMkqJJ3Y": {
+      "id": "0QtFMkqJJ3Y",
+      "value": {
+        "image": "http://coverartarchive.org/release/e18c4164-8f0e-4b49-b75e-ad595bae1bb5/24658668088.jpg",
+        "thumbnails": "Iy5vHEc6bPy",
+        "front": true,
+        "back": false
+      }
+    },
+    "Okgb1Yl0njE": {
+      "id": "Okgb1Yl0njE",
+      "value": {
+        "image": "http://coverartarchive.org/release/71e4f48f-146f-406b-a45f-f6eca8dd1cb7/6250559938.jpg",
+        "thumbnails": "gmEFdZYtzme",
+        "front": true,
+        "back": false
+      }
+    },
+    "-qKlv8xi3YZ": {
+      "id": "-qKlv8xi3YZ",
+      "value": {
+        "image": "http://coverartarchive.org/release/71e4f48f-146f-406b-a45f-f6eca8dd1cb7/6250549488.jpg",
+        "thumbnails": "fNPaONYFX6m",
+        "front": false,
+        "back": true
+      }
+    },
+    "PNyfkg6oKNb": {
+      "id": "PNyfkg6oKNb",
+      "value": {
+        "image": "http://coverartarchive.org/release/71e4f48f-146f-406b-a45f-f6eca8dd1cb7/6250556789.jpg",
+        "thumbnails": "YiofPgkIV81",
+        "front": false,
+        "back": false
+      }
+    },
+    "DHRFOxkHQ8a": {
+      "id": "DHRFOxkHQ8a",
+      "value": {
+        "image": "http://coverartarchive.org/release/71e4f48f-146f-406b-a45f-f6eca8dd1cb7/6250565115.jpg",
+        "thumbnails": "jrcFn0EB4LH",
+        "front": false,
+        "back": false
+      }
+    },
+    "Ox8R3ZVlB_b": {
+      "id": "Ox8R3ZVlB_b",
+      "value": {
+        "image": "http://coverartarchive.org/release/b6d8dfbc-b5e7-4c48-a895-a7a462b08df3/19924108942.jpg",
+        "thumbnails": "J-VYpKx1R8i",
+        "front": true,
+        "back": false
+      }
+    },
+    "me_lOsS2ULp": {
+      "id": "me_lOsS2ULp",
+      "value": {
+        "image": "http://coverartarchive.org/release/90950e0c-3661-49b4-ae5b-2998ead5f8f3/22903828566.jpg",
+        "thumbnails": "ceNh4PDa3bw",
+        "front": true,
+        "back": false
+      }
+    },
+    "jEU4ZtPrE2F": {
+      "id": "jEU4ZtPrE2F",
+      "value": {
+        "image": "http://coverartarchive.org/release/90950e0c-3661-49b4-ae5b-2998ead5f8f3/22903830669.jpg",
+        "thumbnails": "hq24aO9JYGJ",
+        "front": false,
+        "back": true
+      }
+    },
+    "kG-v7ZpRX6S": {
+      "id": "kG-v7ZpRX6S",
+      "value": {
+        "image": "http://coverartarchive.org/release/75aac13d-07c5-4acb-b419-fe91e1698333/23697870878.jpg",
+        "thumbnails": "D8vl_muCYow",
+        "front": true,
+        "back": false
+      }
+    },
+    "D3QDwB3lPI6": {
+      "id": "D3QDwB3lPI6",
+      "value": {
+        "image": "http://coverartarchive.org/release/716f5d29-b063-49d6-bd5a-65b3e96819c6/24658689115.jpg",
+        "thumbnails": "_ePHi_AhOoz",
+        "front": false,
+        "back": true
+      }
+    },
+    "SlCHQLgW3f7": {
+      "id": "SlCHQLgW3f7",
+      "value": {
+        "image": "http://coverartarchive.org/release/716f5d29-b063-49d6-bd5a-65b3e96819c6/24658690781.jpg",
+        "thumbnails": "mCwS8jARtVb",
+        "front": true,
+        "back": false
+      }
+    },
+    "h-XY6gtehl4": {
+      "id": "h-XY6gtehl4",
+      "value": {
+        "image": "http://coverartarchive.org/release/3fa7f290-4416-4408-a9f3-79f479a18913/26478589830.jpg",
+        "thumbnails": "4a1I1VxsckO",
+        "front": true,
+        "back": false
+      }
+    },
+    "xlKToO_cZB2": {
+      "id": "xlKToO_cZB2",
+      "value": {
+        "image": "http://coverartarchive.org/release/3fa7f290-4416-4408-a9f3-79f479a18913/26478591988.jpg",
+        "thumbnails": "xLlWJaN_Fr9",
+        "front": false,
+        "back": true
+      }
+    },
+    "xcR4rQLsspB": {
+      "id": "xcR4rQLsspB",
+      "value": {
+        "image": "http://coverartarchive.org/release/3fa7f290-4416-4408-a9f3-79f479a18913/26478594659.jpg",
+        "thumbnails": "AzCfjEDuqAa",
+        "front": false,
+        "back": false
+      }
+    },
+    "6nd7ZsIqqZ3": {
+      "id": "6nd7ZsIqqZ3",
+      "value": {
+        "image": "http://coverartarchive.org/release/3fa7f290-4416-4408-a9f3-79f479a18913/26478596837.jpg",
+        "thumbnails": "_QCbuefF5EI",
+        "front": false,
+        "back": false
+      }
+    }
+  }
+}

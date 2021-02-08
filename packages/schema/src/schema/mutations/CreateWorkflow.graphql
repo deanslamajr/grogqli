@@ -1,6 +1,6 @@
 input CreateWorkflowInput {
   operations: [OperationRecordingsInput!]!
-  schemasMapping: [SchemasMappingsInput!]!
+  schemasMappings: [SchemasMappingsInput!]!
   workflow: NewWorkflowInput!
 }
 
@@ -11,6 +11,7 @@ input OperationRecordingsInput {
 
 input SchemasMappingsInput {
   opsRecordingsSchemaHash: ID!
+  opsRecordingsSchemaUrl: String!
   targetSchemaId: ID!
 }
 

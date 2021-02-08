@@ -1,7 +1,7 @@
 import { IObjectTypeResolver } from 'graphql-tools';
 import { Config } from 'apollo-server-core';
 
-import { SchemaFile } from '../files';
+import { SchemaRecording } from '../files/schema';
 import { openTypeNameToIdMapping } from '../files/type';
 import { loadOperationsMappingFile } from '../files/operation';
 import { fieldResolverFactory } from './fieldResolverFactory';
@@ -14,7 +14,7 @@ type Resolvers = NonNullable<Config['resolvers']>;
 export const createResolvers = async ({
   introspectionQuery: schema,
   id: schemaId,
-}: SchemaFile): Promise<Resolvers> => {
+}: SchemaRecording): Promise<Resolvers> => {
   const [operationsData, typeNameToIdMappingData] = await Promise.all([
     loadOperationsMappingFile(schemaId),
     openTypeNameToIdMapping(schemaId),
@@ -40,19 +40,20 @@ export const createResolvers = async ({
     if (CurrentType.kind === 'OBJECT' && !CurrentType.name.includes('__')) {
       const currentTypeName = CurrentType.name;
 
-      const resolverForCurrentType = CurrentType.fields.reduce<
-        IObjectTypeResolver
-      >((resolver, { name: fieldName }) => {
-        const resolveField = fieldResolverFactory({
-          operationsData,
-          typeNameToIdMappingData,
-          schema,
-          parentTypeName: currentTypeName,
-          fieldName,
-        });
-        resolver[fieldName] = resolveField;
-        return resolver;
-      }, {} as IObjectTypeResolver);
+      const resolverForCurrentType = CurrentType.fields.reduce<IObjectTypeResolver>(
+        (resolver, { name: fieldName }) => {
+          const resolveField = fieldResolverFactory({
+            operationsData,
+            typeNameToIdMappingData,
+            schema,
+            parentTypeName: currentTypeName,
+            fieldName,
+          });
+          resolver[fieldName] = resolveField;
+          return resolver;
+        },
+        {} as IObjectTypeResolver
+      );
 
       resolvers[currentTypeName] = resolverForCurrentType;
     }

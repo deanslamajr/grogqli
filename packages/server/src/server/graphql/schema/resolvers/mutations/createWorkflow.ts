@@ -1,8 +1,14 @@
-import { MutationResolvers, CreateWorkflowResultCode } from '@grogqli/schema';
+import {
+  MutationResolvers,
+  CreateWorkflowResultCode,
+  SchemasMappingsInput,
+} from '@grogqli/schema';
 
 import { createOperationRecordingAssetsPlan } from '../../../../createOperationRecordingAssetsPlan';
 import { OperationRecordingPlan } from '../../../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import { createWorkflowAssetsFromPlan } from '../../../../createWorkflowAssetsFromPlan';
+
+import { conditionallyCreateOrUpdateSchemaRecordings } from '../../../../files/schema';
 
 export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async (
   _parent: {},
@@ -11,19 +17,26 @@ export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async
   _info: {}
 ) => {
   const {
-    input: { workflow, schemasMapping, operations },
+    input: { workflow, schemasMappings, operations },
   } = args;
 
+  // First, handle persisting new schemas and/or updates to existing schemas
+  const updatedSchemasMapping = await conditionallyCreateOrUpdateSchemaRecordings(
+    schemasMappings
+  );
+
+  // Next, generate plans for creating recording assets
   const opRecordingsPlans = await Promise.all<OperationRecordingPlan>(
     operations.map(({ sessionId, tempRecordingId }) =>
       createOperationRecordingAssetsPlan({
-        schemasMapping,
+        schemasMapping: updatedSchemasMapping,
         sessionId,
         tempRecordingId,
       })
     )
   );
 
+  // Finally, create the recording assets from the plans
   await createWorkflowAssetsFromPlan({
     name: workflow.name,
     description: workflow.description,

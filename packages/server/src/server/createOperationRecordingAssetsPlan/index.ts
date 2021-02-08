@@ -1,12 +1,11 @@
-import { SchemasMappingsInput } from '@grogqli/schema';
-
 import { get as getTempOpRecording } from '../files/tempOpRecording';
+import { UpdatedSchemasMapping } from '../files/schema';
 
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
 type CreateOperationRecordingAssetsPlan = (params: {
-  schemasMapping: SchemasMappingsInput[];
+  schemasMapping: UpdatedSchemasMapping[];
   sessionId: string;
   tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
@@ -16,8 +15,6 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   sessionId,
   tempRecordingId,
 }) => {
-  console.log('schemasMapping', schemasMapping);
-
   const tempOpRecording = await getTempOpRecording({
     sessionId,
     temporaryOperationRecordingId: tempRecordingId,
@@ -26,13 +23,12 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   const {
     response,
     query: operationSDL,
-    schemaHash,
-    schemaUrl,
+    schemaHash: schemaHashFromOpRecording,
     variables: rawVariables,
   } = tempOpRecording;
 
-  // @TODO handle/prevent case where response === null
-  if (response === null) {
+  // @TODO improve/ prevent this case
+  if (response === null || response === undefined) {
     throw new Error(`
       The temporary operation recording associated with
         sessionId:${sessionId}
@@ -41,21 +37,15 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
     `);
   }
 
-  // @TODO uncomment and refactor to support a better UX
-  //
-  //
-  // const schema = schemasMapping.find(({ url }) => schemaUrl === url);
-  // if (schema === undefined) {
-  //   throw new Error(
-  //     `Could not find a schemaId mapping for the given schemaUrl:${schemaUrl}`
-  //   );
-  // }
-
-  // if (response === null || response === undefined) {
-  //   throw new Error(
-  //     `Recording with id:${tempRecordingId} has a null/undefined response value.`
-  //   );
-  // }
+  const schemaMapping = schemasMapping.find(
+    ({ schemaHash: schemaHashFromMapping }) =>
+      schemaHashFromMapping === schemaHashFromOpRecording
+  );
+  if (schemaMapping === undefined) {
+    throw new Error(
+      `Could not find a schemaId mapping for the given schemaHash:${schemaHashFromOpRecording}`
+    );
+  }
 
   const variables = rawVariables ? JSON.parse(rawVariables) : undefined;
   const parsedOpRecording = JSON.parse(response);
@@ -63,7 +53,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   return generateRecordingPlan({
     parsedOpRecording,
     operationSDL,
-    schemaId: '',
+    schemaId: schemaMapping.schemaId,
     variables,
   });
 };
