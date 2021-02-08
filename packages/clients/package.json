@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/clients",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Clients for consumption of Grogqli data",
   "author": "Dean Slama <deanslamajr@gmail.com>",
   "homepage": "",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.2",
-    "@grogqli/schema": "^0.7.0",
+    "@grogqli/schema": "^0.8.0",
     "graphql": "^15.3.0",
     "memoizee": "^0.4.15",
     "msw": "^0.21.2",
