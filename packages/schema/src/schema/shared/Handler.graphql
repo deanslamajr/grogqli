@@ -2,6 +2,7 @@ type Handler {
   id: ID!
   name: String!
   currentState: HandlerState!
+  workflowId: ID
 }
 
 enum HandlerState {

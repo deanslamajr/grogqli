@@ -50,6 +50,8 @@ const WorkflowsDropdown = styled.select`
   }
 `;
 
+const noValueOptionValue = undefined;
+
 export const MockingPage: React.FC<{}> = ({}) => {
   const { data: workflowData, loading: isGettingWorkflows } = useQuery(
     GetWorkflows.GetWorkflowsDocument
@@ -59,6 +61,9 @@ export const MockingPage: React.FC<{}> = ({}) => {
     { data: updateHandlerSessionResponse, loading: isUpdatingHandlerSession },
   ] = useMutation(UpdateHandlerSession.UpdateHandlerSessionDocument);
   const { sessionId } = useSessionState();
+  const [workflowId, setWorkflowId] = React.useState<string | undefined>(
+    noValueOptionValue
+  );
 
   return (
     <>
@@ -67,32 +72,40 @@ export const MockingPage: React.FC<{}> = ({}) => {
           'LOADING WORKFLOWS'
         ) : (
           <>
-            <WorkflowsDropdown name="workflows">
-              {workflowData && workflowData.workflows?.map ? (
-                workflowData.workflows.map(({ id, name }) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))
-              ) : (
-                <option value="noValue">No Values</option>
-              )}
-            </WorkflowsDropdown>
-            <PlayButton
-              onClick={() =>
-                updateHandlerSession({
-                  variables: {
-                    input: {
-                      sessionId,
-                      name: null,
-                      currentState: HandlerState.Playback,
-                    },
-                  },
-                })
-              }
+            <WorkflowsDropdown
+              name="workflows"
+              onChange={(e) => {
+                const newValue = e.target.value;
+                setWorkflowId(newValue);
+              }}
             >
-              USE MOCK
-            </PlayButton>
+              {workflowData && workflowData.workflows?.map
+                ? workflowData.workflows.map(({ id, name }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  ))
+                : null}
+              <option value={noValueOptionValue}>No workflow selected</option>
+            </WorkflowsDropdown>
+            {workflowId && (
+              <PlayButton
+                onClick={() =>
+                  updateHandlerSession({
+                    variables: {
+                      input: {
+                        sessionId,
+                        name: null,
+                        currentState: HandlerState.Playback,
+                        workflowId,
+                      },
+                    },
+                  })
+                }
+              >
+                USE MOCK
+              </PlayButton>
+            )}
           </>
         )}
       </StyledMainSubMenuBar>

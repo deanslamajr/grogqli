@@ -13,13 +13,59 @@ import {
 export type HandlerSessionStateFile = HandlerSessionStateFileVersion1;
 type HandlerSessionStateFileVersion1 = {
   version: 1;
-} & Pick<Handler, 'id' | 'name' | 'currentState'>;
+  id: string;
+  name: string;
+  currentState: HandlerState;
+  workflowId: string | null;
+};
+
+export interface UpdateParameters {
+  sessionId: string;
+  name?: HandlerSessionStateFile['name'];
+  currentState?: HandlerSessionStateFile['currentState'];
+  workflowId?: NonNullable<HandlerSessionStateFile['workflowId']>;
+}
+type Update = (params: UpdateParameters) => Promise<HandlerSessionStateFile>;
+export const update: Update = async ({
+  sessionId,
+  name,
+  currentState,
+  workflowId,
+}) => {
+  const pathToSessionStateFile = await getSessionsFilePath(sessionId);
+  const handlerSessionStateFile = editJsonFile(pathToSessionStateFile);
+
+  if (doesFileExist(handlerSessionStateFile)) {
+    if (name) {
+      handlerSessionStateFile.set('name', name);
+    }
+    if (currentState) {
+      handlerSessionStateFile.set('currentState', currentState);
+    }
+    if (workflowId) {
+      handlerSessionStateFile.set('workflowId', workflowId);
+    }
+  } else {
+    // can't find a file for sessionId
+    // TODO handle this more gracefully e.g. just create a new session?
+    throw new Error(
+      `Update session error: can't find a session file associated with session id:${sessionId}`
+    );
+  }
+
+  handlerSessionStateFile.save();
+
+  const newHandler = handlerSessionStateFile.toObject() as HandlerSessionStateFile;
+
+  return newHandler;
+};
 
 export const create = async (name: string): Promise<Handler> => {
   const newHandler: Handler = {
     id: shortid.generate(),
     name,
     currentState: HandlerState.Recording,
+    workflowId: null,
   };
 
   const pathToSessionStateFile = await getSessionsFilePath(newHandler.id);
@@ -33,11 +79,12 @@ export const create = async (name: string): Promise<Handler> => {
       `The generated session id:${newHandler.id} seems to already be in use!`
     );
   } else {
-    const newSessionStateFileContents: HandlerSessionStateFileVersion1 = {
+    const newSessionStateFileContents: HandlerSessionStateFile = {
       version: HANDLER_SESSIONS_STATE_FILE_VERSION,
       id: newHandler.id,
       name: newHandler.name,
       currentState: newHandler.currentState,
+      workflowId: newHandler.workflowId,
     };
     mapObjectToJsonFile(newSessionStateFileContents, handlerSessionStateFile);
   }
@@ -78,6 +125,7 @@ const getById = async (sessionId: string): Promise<Handler> => {
     id: sessionStateFile.id,
     name: sessionStateFile.name,
     currentState: sessionStateFile.currentState,
+    workflowId: sessionStateFile.workflowId,
   };
 };
 

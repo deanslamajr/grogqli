@@ -2,4 +2,5 @@ fragment HandlerSessionFragment on Handler {
   id
   name
   currentState
+  workflowId
 }

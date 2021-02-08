@@ -2,6 +2,7 @@ input UpdateHandlerSessionInput {
   sessionId: ID!
   name: String
   currentState: HandlerState
+  workflowId: ID
 }
 
 type UpdateHandlerSessionResponse {

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "operations": {
+    "SearchForArtist": {
+      "name": "SearchForArtist",
+      "id": "r-fXTqJaVlI"
+    }
+  }
+}
