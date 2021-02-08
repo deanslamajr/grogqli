@@ -1,9 +1,18 @@
 import { setupWorker } from 'msw';
-import { CreateHandlerSession, OnHandlerStateChange } from '@grogqli/schema';
-import shortId from 'shortid';
+import {
+  CreateHandlerSession,
+  OnHandlerStateChange,
+  HandlerState as Modes,
+} from '@grogqli/schema';
 
 import { create as createApolloClient } from './apolloClient';
-import { initialize as initializeState } from './handlerState';
+import {
+  initialize as initializeState,
+  getMode,
+  setMode,
+  getWorkflowId,
+  setWorkflowId,
+} from './handlerState';
 
 type StartServiceWorker = (params: {
   name?: string;
@@ -16,7 +25,7 @@ export const startServiceWorker: StartServiceWorker = async ({
 }) => {
   const apolloClient = createApolloClient({ port });
 
-  const { /*getPlaybackHandlers*/ getRecordingHandlers } = await import(
+  const { getPlaybackHandlers, getRecordingHandlers } = await import(
     './webHandlers'
   );
   const worker = setupWorker(...getRecordingHandlers());
@@ -59,24 +68,37 @@ export const startServiceWorker: StartServiceWorker = async ({
           // TODO better error handling
           throw errors[0];
         }
-        if (!data) {
+        if (!data || !data.handlerStateChanged) {
           throw new Error('onHandlerStateChange didnt return expected data!');
         }
 
-        // const newState = data.handlerStateChanged.currentState
+        const {
+          currentState: newMode,
+          workflowId: newWorkflowId,
+        } = data.handlerStateChanged;
 
-        // if (newState === 'RECORDING') {
-        //   worker.resetHandlers(...getRecordingHandlers())
-        // }
+        // Update mode?
+        if (getMode() !== newMode) {
+          setMode(newMode);
 
-        // if (newState === 'PLAYBACK') {
-        //   worker.resetHandlers(...getPlaybackHandlers())
-        // }
+          if (newMode === Modes.Recording) {
+            worker.resetHandlers(...getRecordingHandlers());
+          }
 
-        // if (newState === 'PASSTHROUGH') {
-        //   const passthroughHandlers = getPassthroughHandlers()
-        //   worker.resetHandlers(...passthroughHandlers)
-        // }
+          if (newMode === Modes.Playback) {
+            worker.resetHandlers(...getPlaybackHandlers());
+          }
+
+          // if (newState === 'PASSTHROUGH') {
+          //   const passthroughHandlers = getPassthroughHandlers()
+          //   worker.resetHandlers(...passthroughHandlers)
+          // }
+        }
+
+        // Update workflowId?
+        if (getWorkflowId() !== newWorkflowId) {
+          setWorkflowId(newWorkflowId);
+        }
       },
       error(error) {
         throw error;

@@ -19,9 +19,7 @@ export const resolveQueryFromRecording = async ({
   schemaId,
   variables,
   workflowId,
-}: ResolveQueryFromRecordingParams): Promise<
-  ResolveQueryFromRecordingResponse
-> => {
+}: ResolveQueryFromRecordingParams): Promise<ResolveQueryFromRecordingResponse> => {
   // TODO do this work a single time at server start
   // will need to provide a way to manually "reinitialize" these whenever any of the static data is changed
   // eg the schema file is updated as part of a recording save mutation)

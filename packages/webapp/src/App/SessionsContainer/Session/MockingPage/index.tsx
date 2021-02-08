@@ -50,7 +50,7 @@ const WorkflowsDropdown = styled.select`
   }
 `;
 
-const noValueOptionValue = undefined;
+const noValueOptionValue = 'NONE_SELECTED';
 
 export const MockingPage: React.FC<{}> = ({}) => {
   const { data: workflowData, loading: isGettingWorkflows } = useQuery(
@@ -60,8 +60,8 @@ export const MockingPage: React.FC<{}> = ({}) => {
     updateHandlerSession,
     { data: updateHandlerSessionResponse, loading: isUpdatingHandlerSession },
   ] = useMutation(UpdateHandlerSession.UpdateHandlerSessionDocument);
-  const { sessionId } = useSessionState();
-  const [workflowId, setWorkflowId] = React.useState<string | undefined>(
+  const { mode, setMode, sessionId } = useSessionState();
+  const [workflowId, setWorkflowId] = React.useState<string>(
     noValueOptionValue
   );
 
@@ -78,6 +78,7 @@ export const MockingPage: React.FC<{}> = ({}) => {
                 const newValue = e.target.value;
                 setWorkflowId(newValue);
               }}
+              value={workflowId}
             >
               {workflowData && workflowData.workflows?.map
                 ? workflowData.workflows.map(({ id, name }) => (
@@ -88,22 +89,28 @@ export const MockingPage: React.FC<{}> = ({}) => {
                 : null}
               <option value={noValueOptionValue}>No workflow selected</option>
             </WorkflowsDropdown>
-            {workflowId && (
+            {workflowId !== noValueOptionValue && (
               <PlayButton
-                onClick={() =>
-                  updateHandlerSession({
+                onClick={async () => {
+                  const newMode =
+                    mode !== HandlerState.Playback
+                      ? HandlerState.Playback
+                      : HandlerState.Recording;
+                  await updateHandlerSession({
                     variables: {
                       input: {
                         sessionId,
                         name: null,
-                        currentState: HandlerState.Playback,
+                        currentState: newMode,
                         workflowId,
                       },
                     },
-                  })
-                }
+                  });
+
+                  setMode(newMode);
+                }}
               >
-                USE MOCK
+                {mode !== HandlerState.Playback ? 'USE MOCK' : 'STOP MOCKING'}
               </PlayButton>
             )}
           </>

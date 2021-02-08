@@ -16,9 +16,11 @@ const getHandlers = (handler): Handlers => [
 ];
 
 export const getRecordingHandlers = () => {
+  console.log('setting recording handlers');
   return getHandlers(recordHandler);
 };
 
 export const getPlaybackHandlers = () => {
+  console.log('setting playback handlers');
   return getHandlers(playbackHandler);
 };

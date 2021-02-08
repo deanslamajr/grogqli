@@ -1,6 +1,9 @@
 import React from 'react';
+import { HandlerState } from '@grogqli/schema';
 
 interface SessionState {
+  mode: HandlerState;
+  setMode: React.Dispatch<React.SetStateAction<HandlerState>>;
   sessionId: string;
 }
 
@@ -10,7 +13,11 @@ export const SessionProvider: React.FC<SessionState> = ({
   children,
   sessionId,
 }) => {
-  const value = React.useMemo(() => ({ sessionId }), [sessionId]);
+  const [mode, setMode] = React.useState<HandlerState>(HandlerState.Recording);
+  const value = React.useMemo(() => ({ mode, setMode, sessionId }), [
+    mode,
+    sessionId,
+  ]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
