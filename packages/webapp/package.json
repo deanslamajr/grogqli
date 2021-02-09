@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/webapp",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -51,7 +51,7 @@
     }
   ],
   "dependencies": {
-    "@grogqli/schema": "^0.8.0",
+    "@grogqli/schema": "^0.9.0",
     "@rooks/use-key": "^3.6.0",
     "final-form": "^4.20.1",
     "graphql-formatter": "^1.0.3",
