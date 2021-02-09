@@ -21,13 +21,16 @@ export const create: Create = ({ port }) => {
 
   const cache = new InMemoryCache();
 
+  const grogqliPath = `http://localhost:${gqlServerPort}/grogqli`;
+  const wsPath = `ws://localhost:${gqlServerPort}/grogqli`;
+
   const httpLink = createHttpLink({
-    uri: `http://localhost:${gqlServerPort}/grogqli`,
+    uri: ({ operationName }) => `${grogqliPath}/?swOp=${operationName}`,
     fetch: context.fetch as WindowOrWorkerGlobalScope['fetch'],
   });
 
   const wsLink = new WebSocketLink({
-    uri: `ws://localhost:${gqlServerPort}/graphql`,
+    uri: wsPath,
     options: {
       reconnect: true,
     },

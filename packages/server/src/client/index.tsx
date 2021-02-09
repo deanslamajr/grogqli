@@ -41,10 +41,10 @@ if (process.env.NODE_ENV === 'development') {
 const port = window.__PORT__;
 
 const grogqliPath = `http://localhost:${port}/grogqli`;
-const grogqliWsPath = `ws://localhost:${port}/graphql`;
+const grogqliWsPath = `ws://localhost:${port}/grogqli`;
 
 const httpLink = new HttpLink({
-  uri: grogqliPath,
+  uri: ({ operationName }) => `${grogqliPath}/?waOp=${operationName}`,
   credentials: 'same-origin',
 });
 
