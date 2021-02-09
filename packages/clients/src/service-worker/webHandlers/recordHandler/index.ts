@@ -20,6 +20,8 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
   const sessionId = getSessionId();
   let tempOpRecordingId;
 
+  console.log('sessionId', sessionId);
+
   const {
     schemaHash,
     schemaUrl,

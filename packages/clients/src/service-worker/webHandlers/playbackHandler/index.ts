@@ -22,12 +22,10 @@ const playbackOperation: DoWork = async (req, _res, _ctx) => {
     mutation: PlaybackRecordingDocument,
     variables: {
       input: {
-        schemaId: 'test',
-        workflowId: getWorkflowId(),
+        schemaUrl: `${req.url.host}${req.url.pathname}`,
+        workflowId: workflowId,
         query: req.body!.query,
-        variables: req.body!.variables
-          ? JSON.stringify(req.body!.variables)
-          : null,
+        variables: req.body!.variables || {},
       },
     },
   });

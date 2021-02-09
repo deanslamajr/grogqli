@@ -1,11 +1,10 @@
 import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
 import { IntrospectionQuery } from 'graphql';
-import {
-  CreateTemporaryOperationRecording,
-  SchemasMappingsInput,
-} from '@grogqli/schema';
+import { SchemasMappingsInput } from '@grogqli/schema';
 import fs from 'fs';
+
+import { add as createSchemaMapping } from './schemaMapping';
 
 import {
   doesFileExist,
@@ -61,7 +60,6 @@ interface SchemaRecordingVersion1 {
   id: string;
   name: string;
   hash: string;
-  urls: string[];
   introspectionQuery: IntrospectionQuery;
 }
 
@@ -106,7 +104,6 @@ const createNewSchemaRecording: CreateNewSchemaRecording = async ({
       id: shortid.generate(),
       name: 'tester schema', // TODO replace with user input
       hash: schemaHash,
-      urls: [schemaUrl],
       introspectionQuery: temporarySchemaRecordingFile.introspectionQuery,
     };
 
@@ -125,9 +122,13 @@ const createNewSchemaRecording: CreateNewSchemaRecording = async ({
     }
   };
 
-  const newSchemaRecording = await generateUniqueSchemaIdAndCreateSchemaRecordingFile();
+  const {
+    id: schemaId,
+  } = await generateUniqueSchemaIdAndCreateSchemaRecordingFile();
 
-  return newSchemaRecording.id;
+  await createSchemaMapping({ schemaUrl, schemaId });
+
+  return schemaId;
 };
 
 export interface UpdatedSchemasMapping {

@@ -73,6 +73,6 @@ export const getSchemaMetaAndConditionallyRecordSchema: GetSchemaMetaAndConditio
   req,
   ctx,
 }) => {
-  const schemaUrl = req.url.toString();
+  const schemaUrl = `${req.url.host}${req.url.pathname}`;
   return memoizedFetchAndRecordSchema(schemaUrl, { req, ctx });
 };

@@ -1,11 +1,8 @@
 {
   "version": 1,
-  "id": "BH_NL1Yua",
+  "id": "aG6TNcn2F",
   "name": "tester schema",
-  "hash": "qUAg9LwIi",
-  "urls": [
-    "https://graphbrainz.herokuapp.com/"
-  ],
+  "hash": "uC3n73zH7",
   "introspectionQuery": {
     "__schema": {
       "queryType": {

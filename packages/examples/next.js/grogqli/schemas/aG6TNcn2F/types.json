@@ -3,51 +3,51 @@
   "types": {
     "Query": {
       "name": "Query",
-      "id": "wAOk-bzpoh9"
+      "id": "kAtFE5cUYGQ"
     },
     "SearchQuery": {
       "name": "SearchQuery",
-      "id": "uOYELnvU_mJ"
+      "id": "8cAOx1yg_Ib"
     },
     "ArtistConnection": {
       "name": "ArtistConnection",
-      "id": "NLsyuJLEs9v"
+      "id": "F05gXYn3Pr9"
     },
     "Artist": {
       "name": "Artist",
-      "id": "0w7hTBGfvdN"
+      "id": "oh-cAzuHYfs"
     },
     "Area": {
       "name": "Area",
-      "id": "mDWJfRTTKmL"
+      "id": "aUXOkLN3AvN"
     },
     "LifeSpan": {
       "name": "LifeSpan",
-      "id": "7Cf5Eyong7d"
+      "id": "BsnKhIViVKF"
     },
     "LookupQuery": {
       "name": "LookupQuery",
-      "id": "MHqGuTnf2Kd"
+      "id": "Ji5zb2L8QOL"
     },
     "ReleaseGroupConnection": {
       "name": "ReleaseGroupConnection",
-      "id": "JUgJFzcpBiZ"
+      "id": "OcbUKi3mGhG"
     },
     "ReleaseGroup": {
       "name": "ReleaseGroup",
-      "id": "PNrtVrsFy7g"
+      "id": "rRcA0Vx_zV8"
     },
     "CoverArtArchiveRelease": {
       "name": "CoverArtArchiveRelease",
-      "id": "nZypraOB_17"
+      "id": "hRCFfTDG5Iv"
     },
     "CoverArtArchiveImage": {
       "name": "CoverArtArchiveImage",
-      "id": "lG6L2FYxpZF"
+      "id": "qDCTmtDnSdr"
     },
     "CoverArtArchiveImageThumbnails": {
       "name": "CoverArtArchiveImageThumbnails",
-      "id": "vuGTaWDtydF"
+      "id": "i09-KKkM2bN"
     }
   }
 }

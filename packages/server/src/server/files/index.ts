@@ -29,6 +29,8 @@ export const mapObjectToJsonFile = <T extends object>(
 //   /schemas
 const SCHEMAS_FOLDER_NAME = 'schemas';
 //     index.json
+const SCHEMA_MAPPINGS_FILENAME = 'index.json';
+export const SCHEMA_MAPPINGS_FILE_VERSION = 1;
 //     /<schemaId>
 //       operations.json
 export const OPERATIONS_NAME_TO_ID_MAPPING_FILENAME = 'operations.json';
@@ -82,6 +84,12 @@ export const getSchemasFolderPath = async (): Promise<string> => {
   const schemasFolderPath = path.join(recordingsRootDir, SCHEMAS_FOLDER_NAME);
   await createDirIfDoesntExist(schemasFolderPath);
   return schemasFolderPath;
+};
+
+// e.g. /grogqli/schemas/index.json
+export const getSchemaMappingFilePath = async (): Promise<string> => {
+  const schemasFolderPath = await getSchemasFolderPath();
+  return path.join(schemasFolderPath, SCHEMA_MAPPINGS_FILENAME);
 };
 
 // e.g. /grogqli/schemas/<schemaId>/

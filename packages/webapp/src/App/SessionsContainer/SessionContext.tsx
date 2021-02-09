@@ -7,12 +7,11 @@ interface SessionState {
   sessionId: string;
 }
 
+type Props = Pick<SessionState, 'sessionId'>;
+
 const Context = React.createContext<SessionState | null>(null);
 
-export const SessionProvider: React.FC<SessionState> = ({
-  children,
-  sessionId,
-}) => {
+export const SessionProvider: React.FC<Props> = ({ children, sessionId }) => {
   const [mode, setMode] = React.useState<HandlerState>(HandlerState.Recording);
   const value = React.useMemo(() => ({ mode, setMode, sessionId }), [
     mode,

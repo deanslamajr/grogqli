@@ -1,15 +1,15 @@
 import { HandlerState as Modes } from '@grogqli/schema';
 
-interface HandlerState {
+interface State {
   mode: Modes;
   sessionId: string;
   workflowId: string | null;
 }
 
-let handlerState: HandlerState;
+let state: State;
 
 const throwIfNotInitialized = () => {
-  if (!handlerState) {
+  if (!state) {
     throw new Error('Handler state has not been initialized.');
   }
 };
@@ -17,34 +17,34 @@ const throwIfNotInitialized = () => {
 // mode
 export const getMode = (): Modes => {
   throwIfNotInitialized();
-  return handlerState.mode;
+  return state.mode;
 };
 
 export const setMode = (newMode: Modes): void => {
   throwIfNotInitialized();
-  handlerState.sessionId = newMode;
+  state.mode = newMode;
 };
 
 // sessionId
 export const getSessionId = (): string => {
   throwIfNotInitialized();
-  return handlerState.sessionId;
+  return state.sessionId;
 };
 
 export const setSessionId = (sessionId: string): void => {
   throwIfNotInitialized();
-  handlerState.sessionId = sessionId;
+  state.sessionId = sessionId;
 };
 
 // workflowId
 export const getWorkflowId = (): string | null => {
   throwIfNotInitialized();
-  return handlerState.workflowId;
+  return state.workflowId;
 };
 
 export const setWorkflowId = (newWorkflowId: string | null): void => {
   throwIfNotInitialized();
-  handlerState.workflowId = newWorkflowId;
+  state.workflowId = newWorkflowId;
 };
 
 type Initialize = (params: {
@@ -57,7 +57,7 @@ export const initialize: Initialize = ({
   sessionId,
   workflowId = null,
 }) => {
-  handlerState = {} as HandlerState;
+  state = {} as State;
 
   setSessionId(sessionId);
   setMode(mode);

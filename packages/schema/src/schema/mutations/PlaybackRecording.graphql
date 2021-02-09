@@ -1,8 +1,8 @@
 input PlaybackRecordingInput {
   query: String!
-  schemaId: String!
+  schemaUrl: String!
   workflowId: String!
-  variables: String
+  variables: JSONObject!
 }
 
 type PlaybackRecordingResponse {

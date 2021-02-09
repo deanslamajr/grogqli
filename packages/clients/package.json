@@ -24,12 +24,12 @@
     "lint:output": "tsdx lint --write-file"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.2",
+    "@apollo/client": "^3.3.7",
     "@grogqli/schema": "^0.8.0",
     "graphql": "^15.3.0",
     "memoizee": "^0.4.15",
     "msw": "^0.21.2",
-    "react": "^16.8.0",
+    "react": "^17.0.1",
     "shortid": "^2.2.15",
     "subscriptions-transport-ws": "^0.9.18"
   },
