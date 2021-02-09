@@ -34,16 +34,14 @@ const playbackOperation: DoWork = async (req, _res, _ctx) => {
     errors.forEach((error) => console.error(error));
   }
 
-  let dataFromPlayback;
-  let errorsFromPlayback;
+  let dataFromPlayback = null;
+  let errorsFromPlayback = null;
   if (data?.playbackRecording) {
     dataFromPlayback =
-      data.playbackRecording.data !== null
-        ? JSON.parse(data.playbackRecording.data)
-        : null;
+      data.playbackRecording.data !== null ? data.playbackRecording.data : null;
     errorsFromPlayback =
       data.playbackRecording.errors !== null
-        ? JSON.parse(data.playbackRecording.errors)
+        ? data.playbackRecording.errors
         : null;
   }
 

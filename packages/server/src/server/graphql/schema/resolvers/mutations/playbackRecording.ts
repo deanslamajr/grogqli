@@ -28,13 +28,8 @@ export const playbackRecordingResolver: MutationResolvers['playbackRecording'] =
     workflowId,
   });
 
-  console.log({ data, errors });
-
-  const stringifiedData = JSON.stringify(data);
-  const stringifiedErrors = JSON.stringify(errors);
-
   return {
-    data: stringifiedData,
-    errors: stringifiedErrors,
+    data: data || null,
+    errors: errors || null,
   };
 };

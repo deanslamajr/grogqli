@@ -24,7 +24,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
     response,
     query: operationSDL,
     schemaHash: schemaHashFromOpRecording,
-    variables: rawVariables,
+    variables,
   } = tempOpRecording;
 
   // @TODO improve/ prevent this case
@@ -47,11 +47,8 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
     );
   }
 
-  const variables = rawVariables ? JSON.parse(rawVariables) : undefined;
-  const parsedOpRecording = JSON.parse(response);
-
   return generateRecordingPlan({
-    parsedOpRecording,
+    parsedOpRecording: response,
     operationSDL,
     schemaId: schemaMapping.schemaId,
     variables,

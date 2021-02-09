@@ -6,6 +6,6 @@ input PlaybackRecordingInput {
 }
 
 type PlaybackRecordingResponse {
-  data: String
-  errors: String
+  data: JSONObject
+  errors: JSONObject
 }

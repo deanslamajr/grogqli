@@ -44,7 +44,7 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
         operationName: req.body!.operationName || 'unknownOperation',
         query: req.body!.query,
         sessionId,
-        variables: JSON.stringify(req.body?.variables),
+        variables: req.body!.variables || {},
       },
     },
   });
@@ -59,9 +59,7 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
 
   // Make the real request
   const fetchResponse = await ctx.fetch(req);
-  const responseData: ResponseData = await fetchResponse.json();
-
-  const response = JSON.stringify(responseData);
+  const response: ResponseData = await fetchResponse.json();
 
   if (tempOpRecordingId) {
     const { errors } = await apolloClient.mutate({
@@ -80,7 +78,7 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
     }
   }
 
-  return responseData;
+  return response;
 };
 
 const recordHandler = wrapWithBaseHandler(recordOperation);

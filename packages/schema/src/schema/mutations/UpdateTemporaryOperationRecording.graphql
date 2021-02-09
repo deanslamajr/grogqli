@@ -1,7 +1,7 @@
 input UpdateTemporaryOperationRecordingInput {
   sessionId: ID!
   tempOpRecordingId: ID!
-  response: String!
+  response: JSONObject!
 }
 
 type UpdateTemporaryOperationRecordingResponse {

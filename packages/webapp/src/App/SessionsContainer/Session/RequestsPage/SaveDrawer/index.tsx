@@ -181,11 +181,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
                   <OperationName>{recording.operationName}</OperationName>
                   <Code>{format(recording.query)}</Code>
                   <Code>
-                    {JSON.stringify(
-                      JSON.parse(recording?.response || ''),
-                      null,
-                      2
-                    )}
+                    {JSON.stringify(recording?.response || {}, null, 2)}
                   </Code>
                 </OperationContainer>
               ))}

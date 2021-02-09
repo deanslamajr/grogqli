@@ -3,8 +3,8 @@ type TemporaryOperationRecording {
   operationName: String!
   sessionId: ID!
   query: String!
-  variables: String!
-  response: String
+  variables: JSONObject!
+  response: JSONObject
   schemaUrl: String!
   schemaHash: String!
   referrer: String!

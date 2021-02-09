@@ -17,8 +17,8 @@ type TemporaryOperationRecordingFileVersion1 = {
   id: string;
   operationName: string;
   query: string;
-  variables: string;
-  response: string | null;
+  variables: any;
+  response: any;
   referrer: string;
   sessionId: string;
   schemaUrl: string;
