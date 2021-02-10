@@ -8,10 +8,14 @@ import {
   SCHEMA_MAPPINGS_FILE_VERSION,
 } from './';
 
+interface SchemaMappings {
+  [schemaUrl: string]: string;
+}
+
 type SchemaMappingFile = SchemaMappingFileVersion1;
 interface SchemaMappingFileVersion1 {
   version: 1;
-  mappings: { [schemaUrl: string]: string };
+  mappings: SchemaMappings;
 }
 
 type Add = (params: { schemaId: string; schemaUrl: string }) => Promise<void>;
@@ -20,7 +24,9 @@ export const add: Add = async ({ schemaId, schemaUrl }) => {
   const schemaMappingFile = editJsonFile(schemaMappingFilePath);
 
   if (doesFileExist(schemaMappingFile)) {
-    schemaMappingFile.set(`mappings.${schemaUrl}`, schemaId);
+    const mappings = schemaMappingFile.get('mappings') as SchemaMappings;
+    mappings[schemaUrl] = schemaId;
+    schemaMappingFile.set('mappings', mappings);
   } else {
     const newSchemaMappingFileContents: SchemaMappingFile = {
       version: SCHEMA_MAPPINGS_FILE_VERSION,

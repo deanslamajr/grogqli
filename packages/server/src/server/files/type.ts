@@ -12,12 +12,16 @@ import {
   TYPES_NAME_TO_ID_MAPPING_VERSION,
 } from './';
 
+interface TypeRecordings {
+  [recordingId: string]: TypeRecording;
+}
+
 // pattern to support versioning this file structure
 export type TypeRecordingsFile = TypeRecordingsFileVersion1;
 export interface TypeRecordingsFileVersion1 {
   id: string;
   version: 1;
-  recordings: { [recordingId: string]: TypeRecording };
+  recordings: TypeRecordings;
 }
 
 interface TypeRecording {
@@ -45,10 +49,15 @@ export const addNewRecordingToTypeFile: AddNewRecordingToTypeFile = async ({
     throw new Error(`File for typeId:${typeId} does not exist!`);
   }
 
-  typeFile.set(`recordings.${typeRecordingPlan.typeRecordingId}`, {
+  const recordings = typeFile.get('recordings') as TypeRecordings;
+
+  recordings[typeRecordingPlan.typeRecordingId] = {
     id: typeRecordingPlan.typeRecordingId,
     value: typeRecordingPlan.value,
-  });
+  };
+
+  typeFile.set('recordings', recordings);
+
   typeFile.save();
 };
 
@@ -107,46 +116,44 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
   let newTypeId;
   // handle the case where mappings file does not exist
   if (!doesFileExist(typesMappingFile)) {
+    newTypeId = shortid.generate();
+    const types: Types = {
+      [typeName]: {
+        name: typeName,
+        id: newTypeId,
+      },
+    };
     const initializedTypeMappingFileData: TypeNameToIdMappingVersion1 = {
       version: TYPES_NAME_TO_ID_MAPPING_VERSION,
-      types: {},
+      types,
     };
     mapObjectToJsonFile(initializedTypeMappingFileData, typesMappingFile);
-    newTypeId = shortid.generate();
   } else {
-    let newIdIsNotUnique = true;
+    const types = typesMappingFile.get('types') as Types;
 
-    // generate a new typeId that is unique against the existing set of typeId's
-    do {
-      newTypeId = shortid.generate();
-      const typeMappings = Object.values<
-        TypeNameToIdMappingVersion1['types'][keyof TypeNameToIdMappingVersion1['types']]
-      >(typesMappingFile.get('types'));
-      // eslint-disable-next-line no-loop-func
-      newIdIsNotUnique = typeMappings.some(({ id }) => id === newTypeId);
-    } while (newIdIsNotUnique);
+    types[typeName] = {
+      name: typeName,
+      id: shortid.generate(),
+    };
+    typesMappingFile.set('types', types);
   }
 
-  typesMappingFile.set(`types.${typeName}`, {
-    name: typeName,
-    id: newTypeId,
-  });
   typesMappingFile.save();
 
   return newTypeId;
 };
 
+interface Types {
+  [typeName: string]: {
+    name: string;
+    id: string;
+  };
+}
 // allows versioning of this file structure
 export type TypeNameToIdMapping = TypeNameToIdMappingVersion1;
-
 export interface TypeNameToIdMappingVersion1 {
   version: 1;
-  types: {
-    [typeName: string]: {
-      name: string;
-      id: string;
-    };
-  };
+  types: Types;
 }
 
 export const openTypeNameToIdMapping = async (
