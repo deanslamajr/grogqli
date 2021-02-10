@@ -23,6 +23,7 @@ export const RequestsPage: React.FC = () => {
           sessionId,
         },
       },
+      fetchPolicy: 'network-only',
     }
   );
 

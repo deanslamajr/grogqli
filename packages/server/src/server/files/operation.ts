@@ -162,30 +162,38 @@ export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = as
   let newOpId;
   // handle the case where mappings file does not exist
   if (!doesFileExist(opsMappingFile)) {
+    newOpId = shortid.generate();
     const initializedOpMappingFileData: OperationNameToIdMappingVersion1 = {
       version: OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
-      operations: {},
+      operations: {
+        [opName]: {
+          name: opName,
+          id: newOpId,
+        },
+      },
     };
     mapObjectToJsonFile(initializedOpMappingFileData, opsMappingFile);
-    newOpId = shortid.generate();
   } else {
-    let newIdIsNotUnique = true;
+    const opMappings = Object.values<
+      OperationNameToIdMappingVersion1['operations'][keyof OperationNameToIdMappingVersion1['operations']]
+    >(opsMappingFile.get('operations'));
 
     // generate a new typeId that is unique against the existing set of typeId's
+    let newIdIsNotUnique = true;
     do {
       newOpId = shortid.generate();
-      const opMappings = Object.values<
-        OperationNameToIdMappingVersion1['operations'][keyof OperationNameToIdMappingVersion1['operations']]
-      >(opsMappingFile.get('operations'));
       // eslint-disable-next-line no-loop-func
       newIdIsNotUnique = opMappings.some(({ id }) => id === newOpId);
     } while (newIdIsNotUnique);
+
+    opMappings[opName] = {
+      name: opName,
+      id: newOpId,
+    };
+
+    opsMappingFile.set('operations', opMappings);
   }
 
-  opsMappingFile.set(`operations.${opName}`, {
-    name: opName,
-    id: newOpId,
-  });
   opsMappingFile.save();
 
   return newOpId;

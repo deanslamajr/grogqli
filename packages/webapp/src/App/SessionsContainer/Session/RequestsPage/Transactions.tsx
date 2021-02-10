@@ -65,7 +65,7 @@ interface TransactionsProps {
   temporaryOperationRecordings: GetTempOpRecordings.TemporaryOperationRecording[];
   loading: boolean;
   error?: ApolloError;
-  subscribeToRecordings: () => void;
+  subscribeToRecordings: () => () => void;
   toggleCheck: (id: string) => void;
   toggleAllChecked: () => void;
 }
@@ -83,7 +83,8 @@ const Transactions: React.FC<TransactionsProps> = ({
   toggleCheck,
 }) => {
   useEffect(() => {
-    subscribeToRecordings();
+    const unsubscribe = subscribeToRecordings();
+    return () => unsubscribe();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showSaveDrawer, setShowSaveDrawer] = useState(false);

@@ -1,10 +1,8 @@
 import editJsonFile from 'edit-json-file';
 import fs from 'fs';
 import path from 'path';
-import { IntrospectionQuery } from 'graphql';
 
 import { getConfig } from './getConfig';
-import { HANDLER_SESSION_CREATED } from '../graphql/schema/resolvers/subscriptions/handlerSessionCreatedResolver';
 
 const createDirIfDoesntExist = (dirPath: string) => {
   return fs.promises.mkdir(dirPath, { recursive: true });
@@ -19,7 +17,9 @@ export const mapObjectToJsonFile = <T extends object>(
   file: editJsonFile.JsonEditor
 ): void => {
   Object.entries(object).forEach(([key, value]) => {
-    file.set(key, value);
+    // Replace all periods with \\. to
+    const keyWithEscapedDots = key.replace(/\./g, '\\\\.');
+    file.set(keyWithEscapedDots, value);
   });
 };
 

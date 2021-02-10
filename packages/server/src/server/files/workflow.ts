@@ -50,35 +50,43 @@ export const addNewEntryToWorkflowMappingFile: AddNewEntryToWorkflowMappingFile 
   let newWorkflowId;
   // handle the case where mappings file does not exist
   if (!doesFileExist(workflowNameMappingFile)) {
+    newWorkflowId = shortid.generate();
     const initializedWorkflowNamesMappingFileData: WorkflowNameMappingFileContentsVersion1 = {
       version: WORKFLOWS_NAME_TO_ID_MAPPING_VERSION,
-      workflows: {},
+      workflows: {
+        [workflowName]: {
+          name: workflowName,
+          id: newWorkflowId,
+        },
+      },
     };
     mapObjectToJsonFile(
       initializedWorkflowNamesMappingFileData,
       workflowNameMappingFile
     );
-    newWorkflowId = shortid.generate();
   } else {
-    let newIdIsNotUnique = true;
+    const workflowMappings = Object.values<
+      WorkflowNameMappingFileContentsVersion1['workflows'][keyof WorkflowNameMappingFileContentsVersion1['workflows']]
+    >(workflowNameMappingFile.get('workflows'));
 
     // generate a new workflowId that is unique against the existing set of workflowId's
+    let newIdIsNotUnique = true;
     do {
       newWorkflowId = shortid.generate();
-      const workflowMappings = Object.values<
-        WorkflowNameMappingFileContentsVersion1['workflows'][keyof WorkflowNameMappingFileContentsVersion1['workflows']]
-      >(workflowNameMappingFile.get('workflows'));
       newIdIsNotUnique = workflowMappings.some(
         // eslint-disable-next-line no-loop-func
         ({ id }) => id === newWorkflowId
       );
     } while (newIdIsNotUnique);
+
+    workflowMappings[workflowName] = {
+      name: workflowName,
+      id: newWorkflowId,
+    };
+
+    workflowNameMappingFile.set('workflows', workflowMappings);
   }
 
-  workflowNameMappingFile.set(`workflows.${workflowName}`, {
-    name: workflowName,
-    id: newWorkflowId,
-  });
   workflowNameMappingFile.save();
 
   return newWorkflowId;
