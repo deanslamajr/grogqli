@@ -57,8 +57,7 @@
     "http-terminator": "^2.0.3",
     "razzle": "^3.3.11",
     "razzle-dev-utils": "^3.3.11",
-    "razzle-plugin-eslint": "^3.3.11",
-    "vue": "^2.6.12"
+    "razzle-plugin-eslint": "^3.3.11"
   },
   "prettier": {
     "printWidth": 80,
