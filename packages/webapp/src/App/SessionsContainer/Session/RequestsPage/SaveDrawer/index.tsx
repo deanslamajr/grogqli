@@ -67,9 +67,11 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
   show,
 }) => {
   useKey(['Escape'], handleClose);
-  const [createWorkflow] = useMutation(CreateWorkflowDocument);
+  const [createWorkflow, { loading, error }] = useMutation(
+    CreateWorkflowDocument
+  );
 
-  const _createWorkflow = ({
+  const _createWorkflow = async ({
     workflowName,
     workflowDescription,
     schemasMappings,
@@ -79,18 +81,23 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
       tempRecordingId: id,
     }));
 
-    createWorkflow({
-      variables: {
-        input: {
-          operations,
-          workflow: {
-            name: workflowName,
-            description: workflowDescription,
+    try {
+      await createWorkflow({
+        variables: {
+          input: {
+            operations,
+            workflow: {
+              name: workflowName,
+              description: workflowDescription,
+            },
+            schemasMappings,
           },
-          schemasMappings,
         },
-      },
-    });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    handleClose();
   };
 
   // TODO
@@ -144,6 +151,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
 
   return (
     <SaveDrawerContainer show={show}>
+      {loading && <div>Loading...</div>}
       <Form
         onSubmit={(values) => _createWorkflow(values)}
         initialValues={initialValues}

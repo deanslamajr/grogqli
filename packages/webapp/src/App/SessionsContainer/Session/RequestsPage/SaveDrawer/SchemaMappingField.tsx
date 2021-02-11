@@ -40,8 +40,12 @@ export const SchemaMappingField: React.FC<{}> = () => {
             <label>Schema Mappings</label>
             {input?.value
               ? input.value.map(
-                  ({ opsRecordingsSchemaUrl, targetSchemaId }) => (
-                    <div>
+                  ({
+                    opsRecordingsSchemaUrl,
+                    opsRecordingsSchemaHash,
+                    targetSchemaId,
+                  }) => (
+                    <div key={opsRecordingsSchemaHash}>
                       <span>{opsRecordingsSchemaUrl}</span>
                       <SchemasDropdown
                         value={targetSchemaId}
