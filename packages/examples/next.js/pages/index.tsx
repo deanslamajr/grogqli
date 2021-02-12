@@ -1,5 +1,5 @@
-import {FC, useState} from 'react';
-import Link from 'next/link'
+import { FC, useState } from "react";
+import Link from "next/link";
 
 import {
   useSearchForArtistLazyQuery,
@@ -8,49 +8,67 @@ import {
 } from "../lib/SearchForArtist.graphql";
 import { initializeApollo } from "../lib/apollo";
 
-import styles from '../components/index.module.css';
+import styles from "../components/index.module.css";
 
-type Artist = NonNullable<NonNullable<NonNullable<NonNullable<SearchForArtistQuery["search"]>["artists"]>["nodes"]>[number]>;
+type Artist = NonNullable<
+  NonNullable<
+    NonNullable<NonNullable<SearchForArtistQuery["search"]>["artists"]>["nodes"]
+  >[number]
+>;
 
-const ArtistSearchResult: FC<{artist: Artist}> = ({artist})=> {
-  return (<Link href={`/artist/${artist.id}`}>
-    <div className={styles['artist']}>
-      <h2>{artist.name}</h2>
-      {artist.area ? (<div>{artist.area.name}</div>) : null}
-      <div>
-      {artist?.lifeSpan?.begin !== null && artist.lifeSpan?.begin !== undefined? (
-        <div>{artist.lifeSpan.begin}</div>
-      ) : null}
+const ArtistSearchResult: FC<{ artist: Artist }> = ({ artist }) => {
+  return (
+    <Link href={`/artist/${artist.id}`}>
+      <div className={styles["artist"]}>
+        <h2>{artist.name}</h2>
+        {artist.area ? <div>{artist.area.name}</div> : null}
+        <div>
+          {artist?.lifeSpan?.begin !== null &&
+          artist.lifeSpan?.begin !== undefined ? (
+            <div>{artist.lifeSpan.begin}</div>
+          ) : null}
+        </div>
       </div>
-    </div>
-  </Link>)
+    </Link>
+  );
 };
 
 const Index = () => {
   const [invokeQuery, { data, loading }] = useSearchForArtistLazyQuery();
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   return (
-    <div className={styles['flex-container']}>
+    <div className={styles["flex-container"]}>
       {loading ? (
         <>'Loading...'</>
       ) : (
         <>
-          <form className={styles['form']} onSubmit={() => invokeQuery({variables: {query: inputValue}})}>
+          <form
+            className={styles["form"]}
+            onSubmit={() => invokeQuery({ variables: { query: inputValue } })}
+          >
             <div>
-              <label htmlFor="musicians">Musicians</label>  
+              <label htmlFor="musicians">Musicians</label>
             </div>
             <div>
-              <input ref={input => input && input.focus()} type="text" id="musicians" name="musicians" value={inputValue} onChange={(e) => setInputValue(e.target.value)}></input>
+              <input
+                ref={(input) => input && input.focus()}
+                type="text"
+                id="musicians"
+                name="musicians"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              ></input>
             </div>
             <div>
               <button type="submit">Search</button>
             </div>
           </form>
           <div>
-            {data?.search?.artists?.nodes?.map(artist => artist
-              ? (<ArtistSearchResult key={artist.id} artist={artist} />)
-              : null
+            {data?.search?.artists?.nodes?.map((artist) =>
+              artist ? (
+                <ArtistSearchResult key={artist.id} artist={artist} />
+              ) : null
             )}
           </div>
         </>

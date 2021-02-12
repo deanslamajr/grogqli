@@ -111,6 +111,7 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
   const pathToTypeNameToIdMappingFile = await getTypeNameMappingFilePath(
     schemaId
   );
+
   const typesMappingFile = await editJsonFile(pathToTypeNameToIdMappingFile);
 
   let newTypeId;

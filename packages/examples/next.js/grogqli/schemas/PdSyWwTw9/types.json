@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "types": {
+    "Query": {
+      "name": "Query",
+      "id": "93pmmgE32TH"
+    },
+    "SearchQuery": {
+      "name": "SearchQuery",
+      "id": "OVRLXWgw5jE"
+    }
+  }
+}

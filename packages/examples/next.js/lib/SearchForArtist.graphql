@@ -1,4 +1,4 @@
-query SearchForArtist ($query: String!) {
+query SearchForArtist($query: String!) {
   search {
     artists(query: $query) {
       nodes {
