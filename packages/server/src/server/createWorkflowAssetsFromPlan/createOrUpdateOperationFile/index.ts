@@ -26,6 +26,7 @@ export const createOrUpdateOpFile: CreateOrUpdateOpFile = async (opPlan) => {
     opName: opPlan.name!,
     schemaId: opPlan.schemaId,
   });
+
   if (opId === null) {
     ({ opId, opRecordingId } = await createNewOperationRecordingsFile({
       schemaId: opPlan.schemaId,

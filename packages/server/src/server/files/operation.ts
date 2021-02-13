@@ -235,7 +235,6 @@ export const getOperationFile = async (
       await fs.promises.readFile(pathToOperationFile, 'utf8')
     );
   } catch (error) {
-    console.error(error);
     return null;
   }
 
@@ -266,8 +265,6 @@ export const loadOperationsMappingFile = async (
       await fs.promises.readFile(pathToOperationsData, 'utf8')
     );
   } catch (error) {
-    console.log('broke #1');
-    console.error(error);
     return null;
   }
 

@@ -114,10 +114,9 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
 
   const typesMappingFile = await editJsonFile(pathToTypeNameToIdMappingFile);
 
-  let newTypeId;
+  const newTypeId = shortid.generate();
   // handle the case where mappings file does not exist
   if (!doesFileExist(typesMappingFile)) {
-    newTypeId = shortid.generate();
     const types: Types = {
       [typeName]: {
         name: typeName,
@@ -134,7 +133,7 @@ export const addNewTypeToTypesMappingFile: AddNewTypeToTypesMappingFile = async 
 
     types[typeName] = {
       name: typeName,
-      id: shortid.generate(),
+      id: newTypeId,
     };
     typesMappingFile.set('types', types);
   }

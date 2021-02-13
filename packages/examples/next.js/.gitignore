@@ -39,4 +39,4 @@ __generated__
 *.graphqls.d.ts
 
 # grogqli
-grogqli/local
+grogqli

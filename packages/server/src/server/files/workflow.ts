@@ -16,13 +16,15 @@ interface Workflow {
   id: string;
 }
 
+type WorkflowsMappings = {
+  [workflowName: string]: Workflow;
+};
+
 // pattern to support versioning this file structure
 export type WorkflowNameMappingFileContents = WorkflowNameMappingFileContentsVersion1;
 interface WorkflowNameMappingFileContentsVersion1 {
   version: 1;
-  workflows: {
-    [workflowName: string]: Workflow;
-  };
+  workflows: WorkflowsMappings;
 }
 
 type GetWorkflows = () => Promise<Workflow[]>;
@@ -65,19 +67,21 @@ export const addNewEntryToWorkflowMappingFile: AddNewEntryToWorkflowMappingFile 
       workflowNameMappingFile
     );
   } else {
-    const workflowMappings = Object.values<
-      WorkflowNameMappingFileContentsVersion1['workflows'][keyof WorkflowNameMappingFileContentsVersion1['workflows']]
-    >(workflowNameMappingFile.get('workflows'));
+    const workflowMappings = workflowNameMappingFile.get(
+      'workflows'
+    ) as WorkflowsMappings;
 
-    // generate a new workflowId that is unique against the existing set of workflowId's
-    let newIdIsNotUnique = true;
-    do {
-      newWorkflowId = shortid.generate();
-      newIdIsNotUnique = workflowMappings.some(
-        // eslint-disable-next-line no-loop-func
-        ({ id }) => id === newWorkflowId
+    // check if workflow name has already been used
+    const isWorkflowNameAlreadyInUse = Boolean(workflowMappings[workflowName]);
+    // don't allow duplicate workflow names
+    if (isWorkflowNameAlreadyInUse) {
+      // TODO improve the UX for this case
+      throw new Error(
+        `Workflow name:${workflowName} cannot be used as it is already mapped to an existing workflow recording.`
       );
-    } while (newIdIsNotUnique);
+    }
+
+    newWorkflowId = shortid.generate();
 
     workflowMappings[workflowName] = {
       name: workflowName,
@@ -132,7 +136,6 @@ export const getWorkflowById = async (
   try {
     workflow = JSON.parse(await fs.promises.readFile(pathToWorkflow, 'utf8'));
   } catch (error) {
-    console.error(error);
     return null;
   }
 
