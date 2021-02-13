@@ -1,7 +1,7 @@
 import { MutationResolvers } from '@grogqli/schema';
 import { IntrospectionQuery } from 'graphql';
 
-import { persistTempSchemaRecording } from '../../../../files/schema';
+import { persistTempSchemaRecording } from '../../../../files/tempSchemaRecording';
 
 export const createSchemaRecordingResolver: MutationResolvers['createSchemaRecording'] = async (
   _parent,

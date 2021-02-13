@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tempSchemaRecording generateHashFromSchema should generate a stable hash 1`] = `"OdKUL9Gjd6B+RDrmLyh+25VjKIE="`;
