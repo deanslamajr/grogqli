@@ -2,14 +2,14 @@ import { GraphQLFieldResolver, IntrospectionQuery } from 'graphql';
 
 import { isRootType } from '../../isRootType';
 import { TypeNameToIdMapping } from '../../files/type';
-import { OperationNameToIdMappingVersion1 } from '../../files/operation';
+import { OperationNameToIdMapping } from '../../files/operation';
 import { Context } from '..';
 
 import { fetchRootTypeRecording } from './fetchRootTypeRecording';
 import { fetchNestedTypeRecording } from './fetchNestedTypeRecording';
 
 export interface ResolveValueFactoryParams {
-  operationsData: OperationNameToIdMappingVersion1;
+  operationsData: OperationNameToIdMapping;
   typeNameToIdMappingData: TypeNameToIdMapping;
   schema: IntrospectionQuery;
   parentTypeName: string;

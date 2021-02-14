@@ -45,7 +45,10 @@ const Index = () => {
         <>
           <form
             className={styles["form"]}
-            onSubmit={() => invokeQuery({ variables: { query: inputValue } })}
+            onSubmit={(e) => {
+              e.preventDefault();
+              invokeQuery({ variables: { query: inputValue } });
+            }}
           >
             <div>
               <label htmlFor="musicians">Musicians</label>

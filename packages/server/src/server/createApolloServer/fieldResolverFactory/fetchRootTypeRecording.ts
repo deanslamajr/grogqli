@@ -11,11 +11,11 @@ import {
 import {
   getOperationFile,
   OperationRecordingsFileVersion1,
-  OperationNameToIdMappingVersion1,
+  OperationNameToIdMapping,
 } from '../../files/operation';
 
 interface GetOpDataParams {
-  operationsData: OperationNameToIdMappingVersion1;
+  operationsData: OperationNameToIdMapping;
   opName: string;
 }
 
@@ -114,7 +114,7 @@ export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOp
 
 export interface FetchRootTypeRecordingParams {
   opName: string;
-  operationsData: OperationNameToIdMappingVersion1;
+  operationsData: OperationNameToIdMapping;
   rootTypeName: string;
   typeNameToIdMappingData: TypeNameToIdMapping;
   workflowId: string;

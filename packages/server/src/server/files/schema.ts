@@ -53,8 +53,6 @@ export const all = async () => {
     );
   });
 
-  console.log('schemasFilenames', schemasFilenames);
-
   return Promise.all(
     schemasFilenames.map(async (filename) => {
       return JSON.parse(await fs.promises.readFile(filename, 'utf8'));
@@ -65,10 +63,12 @@ export const all = async () => {
 type CreateNewSchemaRecording = (params: {
   schemaUrl: string;
   schemaHash: string;
+  schemaName: string;
 }) => Promise<string>;
 const createNewSchemaRecording: CreateNewSchemaRecording = async ({
   schemaHash,
   schemaUrl,
+  schemaName,
 }) => {
   const tempSchemaRecordingsPath = await getTemporarySchemaRecordingFilename(
     schemaHash
@@ -91,7 +91,7 @@ const createNewSchemaRecording: CreateNewSchemaRecording = async ({
     const newSchemaRecording: SchemaRecording = {
       version: SCHEMA_FILE_VERSION,
       id: shortid.generate(),
-      name: 'tester schema', // TODO replace with user input
+      name: schemaName,
       hash: schemaHash,
       introspectionQuery: temporarySchemaRecordingFile.introspectionQuery,
     };
@@ -137,12 +137,20 @@ export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrU
         opsRecordingsSchemaHash,
         targetSchemaId,
         opsRecordingsSchemaUrl,
+        schemaName,
       }) => {
         // handle NEW case
         if (targetSchemaId === 'NEW') {
+          if (schemaName === null) {
+            throw new Error(
+              '"input.schemaMappings.schemaName" is required for new schema creation.'
+            );
+          }
+
           const newSchemaId = await createNewSchemaRecording({
             schemaUrl: opsRecordingsSchemaUrl,
             schemaHash: opsRecordingsSchemaHash,
+            schemaName,
           });
           return {
             schemaHash: opsRecordingsSchemaHash,

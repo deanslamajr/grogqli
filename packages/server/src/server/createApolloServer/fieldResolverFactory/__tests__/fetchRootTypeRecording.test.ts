@@ -5,6 +5,7 @@ import {
 } from '../fetchRootTypeRecording';
 import { getConfig } from '../../../files/getConfig';
 import { TypeNameToIdMappingVersion1 } from '../../../files/type';
+import { OperationNameToIdMapping } from '../../../files/operation';
 
 import operationsData from '../../../files/__tests__/grogqli/schemas/someSchemaId/operations.json';
 import typeNameToIdMappingData from '../../../files/__tests__/grogqli/schemas/someSchemaId/types.json';
@@ -29,7 +30,7 @@ describe('fetchRootTypeRecording', () => {
     const config: FetchRootTypeRecordingParams = {
       opName,
       workflowId: 'someWorkflowId',
-      operationsData,
+      operationsData: operationsData as OperationNameToIdMapping,
       rootTypeName,
       typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
     };

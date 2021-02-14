@@ -64,7 +64,10 @@ interface CreateWorkflowForm {
   schemasMappings: Array<SchemasMapping>;
 }
 
-type ValidationErrors = Partial<CreateWorkflowForm>;
+type SchemaMappingValidationErrors = Array<Partial<SchemasMapping>>;
+type ValidationErrors = Partial<
+  Pick<CreateWorkflowForm, 'workflowName' | 'workflowDescription'>
+> & { schemasMappings?: SchemaMappingValidationErrors };
 
 export const SaveDrawer: FC<SaveDrawerProps> = ({
   handleClose,
@@ -103,7 +106,10 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
               name: workflowName,
               description: workflowDescription,
             },
-            schemasMappings,
+            schemasMappings: schemasMappings.map((schemaMapping) => ({
+              ...schemaMapping,
+              schemaName: schemaMapping.schemaName || null,
+            })),
           },
         },
       });
@@ -113,12 +119,28 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     handleClose();
   };
 
-  // TODO
-  // * add an effect that reduces tempOpRecordingsToSave => uniqueTempSchemaRecordingIds
-  // * then makes a query for
-  //  * the schemaUrls associated with each tempSchemaRecordingId
-  //  * the list of schemaRecordings e.g. {id, name, schemaUrl}
-  // * Have <SchemaMappingField /> require the user to select a schemaRecording for each tempSchemaRecordingId
+  const validateSchemaMappings = (
+    schemaMappings: SchemasMapping[],
+    errors: ValidationErrors
+  ): ValidationErrors => {
+    // don't mutate original data
+    const copiedErrorData: ValidationErrors = {
+      ...errors,
+    };
+    const schemaMappingsErrors = [] as SchemaMappingValidationErrors;
+    schemaMappings.forEach((schemaMapping, index) => {
+      if (
+        schemaMapping.targetSchemaId === NEW_SCHEMA_ID &&
+        (!schemaMapping.schemaName || schemaMapping.schemaName === '')
+      ) {
+        schemaMappingsErrors[index] = { schemaName: 'Required' };
+      }
+    });
+
+    copiedErrorData.schemasMappings = schemaMappingsErrors;
+
+    return copiedErrorData;
+  };
 
   const validateForm = (values: CreateWorkflowForm): ValidationErrors => {
     const errors: ValidationErrors = {};
@@ -131,7 +153,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
       errors.workflowDescription = requiredError;
     }
 
-    return errors;
+    return validateSchemaMappings(values.schemasMappings, errors);
   };
 
   const initialValues = useMemo<CreateWorkflowForm>(() => {
@@ -162,6 +184,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
         opsRecordingsSchemaUrl: tempOpRecording.schemaUrl,
         opsRecordingsSchemaHash: tempOpRecording.schemaHash,
         targetSchemaId: matchedSchema ? matchedSchema.id : NEW_SCHEMA_ID,
+        schemaName: undefined,
       };
     });
 

@@ -3,7 +3,10 @@ import path from 'path';
 import { fieldResolverFactory, ResolveValueFactoryParams } from '..';
 import { Context } from '../..';
 import { getConfig } from '../../../files/getConfig';
-import { OperationRecordingsFileVersion1 } from '../../../files/operation';
+import {
+  OperationRecordingsFile,
+  OperationNameToIdMapping,
+} from '../../../files/operation';
 import { TypeNameToIdMappingVersion1 } from '../../../files/type';
 
 import schema from '../../../files/__tests__/grogqli/schemas/someSchemaId/schema.json';
@@ -18,7 +21,7 @@ describe('fieldResolverFactory', () => {
   let fieldResolverFactoryArgs: ResolveValueFactoryParams;
   let info: any;
   let context: Context;
-  let mockedOperationFile: jest.Mocked<OperationRecordingsFileVersion1>;
+  let mockedOperationFile: jest.Mocked<OperationRecordingsFile>;
 
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
@@ -29,9 +32,7 @@ describe('fieldResolverFactory', () => {
       return path.join(__dirname, relativePathToTestGrogqli);
     });
 
-    mockedOperationFile = (someOperationFile as OperationRecordingsFileVersion1) as jest.Mocked<
-      OperationRecordingsFileVersion1
-    >;
+    mockedOperationFile = (someOperationFile as OperationRecordingsFile) as jest.Mocked<OperationRecordingsFile>;
     const actualOperationFile = jest.requireActual(
       '../../../files/__tests__/grogqli/operations/someOpId.json'
     );
@@ -39,7 +40,7 @@ describe('fieldResolverFactory', () => {
 
     fieldResolverFactoryArgs = {
       schema: schema.introspectionQuery as any,
-      operationsData,
+      operationsData: operationsData as OperationNameToIdMapping,
       parentTypeName: schema.introspectionQuery.__schema.queryType.name,
       fieldName: 'getAccountFromSession',
       typeNameToIdMappingData: typeNameToIdMappingData as TypeNameToIdMappingVersion1,
@@ -145,7 +146,7 @@ describe('fieldResolverFactory', () => {
                   id: 'nonExistentOpId',
                 },
               },
-            },
+            } as OperationNameToIdMapping,
           };
 
           const resolveField = fieldResolverFactory(argsWithNonExistentOpId);

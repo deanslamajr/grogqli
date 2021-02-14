@@ -59,29 +59,13 @@ export const addNewRecordingToOperationRecordingsFile: AddNewRecordingToOperatio
     );
   }
 
-  let newIdIsNotUnique = true;
-  let newOpRecordingId: string;
-
-  const opRecordings: OperationRecordings = opRecordingsFile.get('recordings');
-
-  const opRecordingsAsArray = Object.values<
-    OperationRecordingsFileVersion1['recordings'][keyof OperationRecordingsFileVersion1['recordings']]
-  >(opRecordings);
-
-  // generate a new recordingId that is unique against the existing set of recordingId's
-  do {
-    newOpRecordingId = shortid.generate();
-    newIdIsNotUnique = opRecordingsAsArray.some(
-      // eslint-disable-next-line no-loop-func
-      ({ id }) => id === newOpRecordingId
-    );
-  } while (newIdIsNotUnique);
-
+  const newOpRecordingId: string = shortid.generate();
   const operationRecording: OperationRecording = {
     ...opRecordingWithoutId,
     id: newOpRecordingId,
   };
 
+  const opRecordings: OperationRecordings = opRecordingsFile.get('recordings');
   const opRecordingsWithNewRecording: OperationRecordings = {
     ...opRecordings,
     [newOpRecordingId]: operationRecording,
@@ -156,14 +140,16 @@ export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = as
   schemaId,
   opName,
 }) => {
-  const pathToOpNameToIdMappingFile = await getOpNameMappingFilePath(schemaId);
-  const opsMappingFile = await editJsonFile(pathToOpNameToIdMappingFile);
+  const pathToOpNameToIdMappingFilePath = await getOpNameMappingFilePath(
+    schemaId
+  );
+  const opsMappingFile = await editJsonFile(pathToOpNameToIdMappingFilePath);
 
-  let newOpId;
+  const newOpId = shortid.generate();
+
   // handle the case where mappings file does not exist
   if (!doesFileExist(opsMappingFile)) {
-    newOpId = shortid.generate();
-    const initializedOpMappingFileData: OperationNameToIdMappingVersion1 = {
+    const initializedOpMappingFileData: OperationNameToIdMapping = {
       version: OPERATIONS_NAME_TO_ID_MAPPING_VERSION,
       operations: {
         [opName]: {
@@ -174,24 +160,19 @@ export const addNewOperationToOpMappingFile: AddNewOperationToOpMappingFile = as
     };
     mapObjectToJsonFile(initializedOpMappingFileData, opsMappingFile);
   } else {
-    const opMappings = Object.values<
-      OperationNameToIdMappingVersion1['operations'][keyof OperationNameToIdMappingVersion1['operations']]
-    >(opsMappingFile.get('operations'));
+    const prevOpMappings = opsMappingFile.get(
+      'operations'
+    ) as OperationsMappingObject;
 
-    // generate a new typeId that is unique against the existing set of typeId's
-    let newIdIsNotUnique = true;
-    do {
-      newOpId = shortid.generate();
-      // eslint-disable-next-line no-loop-func
-      newIdIsNotUnique = opMappings.some(({ id }) => id === newOpId);
-    } while (newIdIsNotUnique);
-
-    opMappings[opName] = {
-      name: opName,
-      id: newOpId,
+    const newOpMappings = {
+      ...prevOpMappings,
+      [opName]: {
+        name: opName,
+        id: newOpId,
+      },
     };
 
-    opsMappingFile.set('operations', opMappings);
+    opsMappingFile.set('operations', newOpMappings);
   }
 
   opsMappingFile.save();
@@ -241,24 +222,26 @@ export const getOperationFile = async (
   return operationFile;
 };
 
+interface OperationsMappingObject {
+  [opName: string]: {
+    name: string;
+    id: string;
+  };
+}
+
 // allows versioning of this file structure
 export type OperationNameToIdMapping = OperationNameToIdMappingVersion1;
 
 export interface OperationNameToIdMappingVersion1 {
-  version: number;
-  operations: {
-    [opName: string]: {
-      name: string;
-      id: string;
-    };
-  };
+  version: 1;
+  operations: OperationsMappingObject;
 }
 
 export const loadOperationsMappingFile = async (
   schemaId: string
-): Promise<OperationNameToIdMappingVersion1 | null> => {
+): Promise<OperationNameToIdMapping | null> => {
   const pathToOperationsData = await getOpNameMappingFilePath(schemaId);
-  let operationsData: OperationNameToIdMappingVersion1;
+  let operationsData: OperationNameToIdMapping;
 
   try {
     operationsData = JSON.parse(

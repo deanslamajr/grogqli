@@ -13,6 +13,7 @@ input SchemasMappingsInput {
   opsRecordingsSchemaHash: ID!
   opsRecordingsSchemaUrl: String!
   targetSchemaId: ID!
+  schemaName: String
 }
 
 input NewWorkflowInput {

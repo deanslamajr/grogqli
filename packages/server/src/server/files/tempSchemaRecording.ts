@@ -49,8 +49,6 @@ export const persistTempSchemaRecording: PersistTempSchemaRecording = async (
   if (!doesFileExist(newTempSchemaRecordingFile)) {
     mapObjectToJsonFile(newTempSchemaRecording, newTempSchemaRecordingFile);
     newTempSchemaRecordingFile.save();
-  } else {
-    console.log(`Schema with hash:${schemaHash} has already been recorded!`);
   }
 
   return schemaHash;

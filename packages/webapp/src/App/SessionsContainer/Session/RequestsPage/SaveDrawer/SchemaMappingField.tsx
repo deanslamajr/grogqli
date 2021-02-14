@@ -30,6 +30,7 @@ export interface SchemasMapping {
   opsRecordingsSchemaUrl: string;
   opsRecordingsSchemaHash: string;
   targetSchemaId: string;
+  schemaName?: string;
 }
 
 interface Props {
@@ -49,59 +50,96 @@ export const SchemaMappingField: React.FC<Props> = ({
             <label>Schema Mappings</label>
             {input?.value
               ? input.value.map(
-                  ({
-                    opsRecordingsSchemaUrl,
-                    opsRecordingsSchemaHash,
-                    targetSchemaId,
-                  }) => (
+                  (
+                    {
+                      opsRecordingsSchemaUrl,
+                      opsRecordingsSchemaHash,
+                      targetSchemaId,
+                      schemaName,
+                    },
+                    index
+                  ) => (
                     <div key={opsRecordingsSchemaHash}>
                       <span>{opsRecordingsSchemaUrl}</span>
-                      <SchemasDropdown
-                        disabled={isGettingSchemas}
-                        value={targetSchemaId}
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          const listWithoutThisItem = input.value.filter(
-                            ({ targetSchemaId: thisTargetSchemaId }) =>
-                              targetSchemaId !== thisTargetSchemaId
-                          );
-                          input.onChange([
-                            ...listWithoutThisItem,
-                            {
-                              url: targetSchemaId,
-                              id: newValue,
-                            },
-                          ]);
-                        }}
-                      >
-                        {isGettingSchemas ? (
-                          <option key="loading" value={targetSchemaId}>
-                            Loading
-                          </option>
-                        ) : (
-                          <>
-                            <option key={NEW_SCHEMA_ID} value={NEW_SCHEMA_ID}>
-                              Create New Schema
+                      <div>
+                        <SchemasDropdown
+                          disabled={isGettingSchemas}
+                          value={targetSchemaId}
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            const listWithoutThisItem = input.value.filter(
+                              ({ targetSchemaId: thisTargetSchemaId }) =>
+                                targetSchemaId !== thisTargetSchemaId
+                            );
+                            input.onChange([
+                              ...listWithoutThisItem,
+                              {
+                                opsRecordingsSchemaUrl,
+                                opsRecordingsSchemaHash,
+                                schemaName,
+                                targetSchemaId: newValue,
+                              },
+                            ]);
+                          }}
+                        >
+                          {isGettingSchemas ? (
+                            <option key="loading" value={targetSchemaId}>
+                              Loading
                             </option>
-                            {Array.isArray(schemas)
-                              ? schemas.map(({ id, name, hash }) => (
-                                  <option key={hash} value={id}>
-                                    {opsRecordingsSchemaHash === hash
-                                      ? `${name} (schema match)`
-                                      : name}
-                                  </option>
-                                ))
-                              : null}
-                          </>
-                        )}
-                      </SchemasDropdown>
+                          ) : (
+                            <>
+                              <option key={NEW_SCHEMA_ID} value={NEW_SCHEMA_ID}>
+                                Create New Schema
+                              </option>
+                              {Array.isArray(schemas)
+                                ? schemas.map(({ id, name, hash }) => (
+                                    <option key={hash} value={id}>
+                                      {opsRecordingsSchemaHash === hash
+                                        ? `${name} (schema match)`
+                                        : name}
+                                    </option>
+                                  ))
+                                : null}
+                            </>
+                          )}
+                        </SchemasDropdown>
+                      </div>
+                      {targetSchemaId === NEW_SCHEMA_ID ? (
+                        <Field name={`schemasMappings[${index}].schemaName`}>
+                          {({
+                            input: newSchemaNameInput,
+                            meta: newSchemaNameInputMeta,
+                          }) => {
+                            console.log(
+                              'newSchemaNameInputMeta',
+                              newSchemaNameInputMeta
+                            );
+                            return (
+                              <>
+                                <div>
+                                  <input
+                                    {...newSchemaNameInput}
+                                    type="text"
+                                    placeholder="schema name"
+                                  />
+                                </div>
+                                <div>
+                                  <InvalidFieldMessage>
+                                    {newSchemaNameInputMeta.error &&
+                                    newSchemaNameInputMeta.touched
+                                      ? newSchemaNameInputMeta.error
+                                      : ''}
+                                  </InvalidFieldMessage>
+                                </div>
+                              </>
+                            );
+                          }}
+                        </Field>
+                      ) : null}
                     </div>
                   )
                 )
               : null}
-            <InvalidFieldMessage>
-              {meta.error && meta.touched ? meta.error : ''}
-            </InvalidFieldMessage>
           </>
         </FormFieldContainer>
       )}
