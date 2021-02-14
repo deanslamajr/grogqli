@@ -105,6 +105,7 @@ export const getSchemaIdFolderPath = async (
   return schemaIdFolderPath;
 };
 
+// e.g. /grogqli/schemas/<schemaId>/schema.json
 export const getSchemaRecordingFilePath = async (
   schemaId: string
 ): Promise<string> => {

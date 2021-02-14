@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field } from 'react-final-form';
 import styled from 'styled-components';
+import { SchemaRecording } from '@grogqli/schema';
 
 import { FormFieldContainer, InvalidFieldMessage } from './common';
 
@@ -31,7 +32,15 @@ export interface SchemasMapping {
   targetSchemaId: string;
 }
 
-export const SchemaMappingField: React.FC<{}> = () => {
+interface Props {
+  isGettingSchemas: boolean;
+  schemas?: SchemaRecording[];
+}
+
+export const SchemaMappingField: React.FC<Props> = ({
+  isGettingSchemas,
+  schemas,
+}) => {
   return (
     <Field<SchemasMapping[]> name="schemasMappings">
       {({ input, meta }) => (
@@ -48,6 +57,7 @@ export const SchemaMappingField: React.FC<{}> = () => {
                     <div key={opsRecordingsSchemaHash}>
                       <span>{opsRecordingsSchemaUrl}</span>
                       <SchemasDropdown
+                        disabled={isGettingSchemas}
                         value={targetSchemaId}
                         onChange={(e) => {
                           const newValue = e.target.value;
@@ -64,7 +74,26 @@ export const SchemaMappingField: React.FC<{}> = () => {
                           ]);
                         }}
                       >
-                        <option value={NEW_SCHEMA_ID}>Create New Schema</option>
+                        {isGettingSchemas ? (
+                          <option key="loading" value={targetSchemaId}>
+                            Loading
+                          </option>
+                        ) : (
+                          <>
+                            <option key={NEW_SCHEMA_ID} value={NEW_SCHEMA_ID}>
+                              Create New Schema
+                            </option>
+                            {Array.isArray(schemas)
+                              ? schemas.map(({ id, name, hash }) => (
+                                  <option key={hash} value={id}>
+                                    {opsRecordingsSchemaHash === hash
+                                      ? `${name} (schema match)`
+                                      : name}
+                                  </option>
+                                ))
+                              : null}
+                          </>
+                        )}
                       </SchemasDropdown>
                     </div>
                   )

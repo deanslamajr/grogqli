@@ -1,8 +1,4 @@
-import {
-  MutationResolvers,
-  CreateWorkflowResultCode,
-  SchemasMappingsInput,
-} from '@grogqli/schema';
+import { MutationResolvers, CreateWorkflowResultCode } from '@grogqli/schema';
 
 import { createOperationRecordingAssetsPlan } from '../../../../createOperationRecordingAssetsPlan';
 import { OperationRecordingPlan } from '../../../../createOperationRecordingAssetsPlan/createRecorderApolloServer';

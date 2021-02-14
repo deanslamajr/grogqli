@@ -1,5 +1,0 @@
-mutation CreateSchemaRecording($input: CreateSchemaRecordingInput!) {
-  createSchemaRecording(input: $input) {
-    schemaHash
-  }
-}

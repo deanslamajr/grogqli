@@ -3,7 +3,7 @@ import { IntrospectionQuery } from 'graphql';
 
 import { persistTempSchemaRecording } from '../../../../files/tempSchemaRecording';
 
-export const createSchemaRecordingResolver: MutationResolvers['createSchemaRecording'] = async (
+export const createTemporarySchemaRecording: MutationResolvers['createSchemaRecording'] = async (
   _parent,
   args,
   _context,

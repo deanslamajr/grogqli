@@ -3,7 +3,6 @@ import {
   TemporaryOperationRecording,
 } from '@grogqli/schema';
 
-import { persistTempSchemaRecording } from '../../../../files/schema';
 import { create as createTempOpRecording } from '../../../../files/tempOpRecording';
 import { pubSub } from '../pubSub';
 import {

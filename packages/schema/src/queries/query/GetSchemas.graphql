@@ -1,0 +1,9 @@
+query GetSchemas {
+  schemas {
+    id
+    hash
+    name
+    schemaUrls
+    introspectionQuery
+  }
+}

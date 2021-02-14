@@ -5,11 +5,12 @@ export * from './generated/src/schema/schema.graphql';
 // operations
 //// queries
 export * as GetHandlers from './generated/src/queries/query/GetHandlers.graphql';
+export * as GetSchemas from './generated/src/queries/query/GetSchemas.graphql';
 export * as GetTempOpRecordings from './generated/src/queries/query/GetTempOpRecordings.graphql';
 export * as GetWorkflows from './generated/src/queries/query/GetWorkflows.graphql';
 //// mutations
 export * as CreateHandlerSession from './generated/src/queries/mutation/CreateHandlerSession.graphql';
-export * as CreateSchemaRecording from './generated/src/queries/mutation/CreateSchemaRecording.graphql';
+export * as CreateTemporarySchemaRecording from './generated/src/queries/mutation/CreateTemporarySchemaRecording.graphql';
 export * as CreateTemporaryOperationRecording from './generated/src/queries/mutation/CreateTemporaryOperationRecording.graphql';
 export * as CreateWorkflow from './generated/src/queries/mutation/CreateWorkflow.graphql';
 export * as PlaybackRecording from './generated/src/queries/mutation/PlaybackRecording.graphql';

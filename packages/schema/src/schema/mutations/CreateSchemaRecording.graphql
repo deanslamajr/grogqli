@@ -1,7 +1,0 @@
-input CreateSchemaRecordingInput {
-  schemaIntrospectionResult: JSONObject!
-}
-
-type CreateSchemaRecordingResponse {
-  schemaHash: ID!
-}

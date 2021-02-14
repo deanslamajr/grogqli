@@ -3,6 +3,7 @@ import editJsonFile from 'edit-json-file';
 import { IntrospectionQuery } from 'graphql';
 import { SchemasMappingsInput } from '@grogqli/schema';
 import fs from 'fs';
+import glob from 'glob';
 
 import { add as createSchemaMapping } from './schemaMapping';
 import { TemporarySchemaRecording } from './tempSchemaRecording';
@@ -13,6 +14,7 @@ import {
   mapObjectToJsonFile,
   SCHEMA_FILE_VERSION,
   getSchemaRecordingFilePath,
+  getSchemasFolderPath,
 } from './';
 
 export type SchemaRecording = SchemaRecordingVersion1;
@@ -31,6 +33,32 @@ export const getSchemaRecordingFile = async (
 
   return JSON.parse(
     await fs.promises.readFile(schemaRecordingFilePath, 'utf8')
+  );
+};
+
+export const all = async () => {
+  const schemasFolderPath = await getSchemasFolderPath();
+
+  const schemasFilenames = await new Promise<string[]>((resolve, reject) => {
+    // glob path should always use forward slash, even in windows
+    glob(
+      `${schemasFolderPath}/*/schema.json`,
+      { nonull: false },
+      (error, files) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(files);
+      }
+    );
+  });
+
+  console.log('schemasFilenames', schemasFilenames);
+
+  return Promise.all(
+    schemasFilenames.map(async (filename) => {
+      return JSON.parse(await fs.promises.readFile(filename, 'utf8'));
+    })
   );
 };
 

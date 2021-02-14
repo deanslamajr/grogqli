@@ -1,7 +1,7 @@
 import { GraphQLMockedContext, GraphQLMockedRequest } from 'msw';
 import { getIntrospectionQuery } from 'graphql';
 import memoize from 'memoizee';
-import { CreateSchemaRecording } from '@grogqli/schema';
+import { CreateTemporarySchemaRecording } from '@grogqli/schema';
 
 import { get as getApolloClient } from '../../apolloClient';
 
@@ -30,7 +30,8 @@ const memoizedFetchAndRecordSchema = memoize(
 
     const apolloClient = getApolloClient();
     const { data, errors } = await apolloClient.mutate({
-      mutation: CreateSchemaRecording.CreateSchemaRecordingDocument,
+      mutation:
+        CreateTemporarySchemaRecording.CreateTemporarySchemaRecordingDocument,
       variables: {
         input: {
           schemaIntrospectionResult: introspectionRequestResultJson.data,
@@ -48,7 +49,7 @@ const memoizedFetchAndRecordSchema = memoize(
     }
 
     const {
-      createSchemaRecording: { schemaHash },
+      createTemporarySchemaRecording: { schemaHash },
     } = data;
 
     return {

@@ -1,0 +1,7 @@
+type SchemaRecording {
+  id: String!
+  hash: String!
+  name: String!
+  schemaUrls: [String!]
+  introspectionQuery: JSONObject!
+}

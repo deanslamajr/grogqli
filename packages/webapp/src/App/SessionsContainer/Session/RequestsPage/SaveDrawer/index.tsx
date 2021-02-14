@@ -1,10 +1,15 @@
 import React, { FC, useMemo } from 'react';
 import { Form, Field } from 'react-final-form';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { format } from 'graphql-formatter';
-import { GetTempOpRecordings, CreateWorkflow } from '@grogqli/schema';
+import {
+  GetSchemas,
+  GetTempOpRecordings,
+  CreateWorkflow,
+  SchemaRecording,
+} from '@grogqli/schema';
 import useKey from '@rooks/use-key';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
 import { SaveRecordingsButton } from '../SaveRecordingsButton';
 
@@ -71,6 +76,14 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     CreateWorkflowDocument
   );
 
+  const { data: schemasData, loading: isGettingSchemas } = useQuery(
+    GetSchemas.GetSchemasDocument,
+    {
+      fetchPolicy: 'network-only',
+      skip: !show,
+    }
+  );
+
   const _createWorkflow = async ({
     workflowName,
     workflowDescription,
@@ -126,6 +139,8 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     const setOfSchemaUrls = new Set(schemaUrls);
     const uniqueSchemaUrls = Array.from(setOfSchemaUrls);
 
+    const schemas = schemasData?.schemas;
+
     const schemasMappings = uniqueSchemaUrls.map((uniqueSchemaUrl) => {
       const tempOpRecording = tempOpRecordingsToSave.find(
         ({ schemaUrl }) => schemaUrl === uniqueSchemaUrl
@@ -135,10 +150,18 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
             tempOpRecordingsToSave: ${JSON.stringify(tempOpRecordingsToSave)}
           `);
       }
+
+      let matchedSchema: SchemaRecording | undefined;
+      if (Array.isArray(schemas)) {
+        matchedSchema = schemas.find(
+          (schema) => tempOpRecording.schemaHash === schema.hash
+        );
+      }
+
       return {
         opsRecordingsSchemaUrl: tempOpRecording.schemaUrl,
         opsRecordingsSchemaHash: tempOpRecording.schemaHash,
-        targetSchemaId: NEW_SCHEMA_ID,
+        targetSchemaId: matchedSchema ? matchedSchema.id : NEW_SCHEMA_ID,
       };
     });
 
@@ -147,7 +170,7 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
       workflowDescription: '',
       schemasMappings,
     };
-  }, [tempOpRecordingsToSave]);
+  }, [tempOpRecordingsToSave, schemasData]);
 
   return (
     <SaveDrawerContainer show={show}>
@@ -182,7 +205,10 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
                 )}
               </Field>
 
-              <SchemaMappingField />
+              <SchemaMappingField
+                isGettingSchemas={isGettingSchemas}
+                schemas={schemasData?.schemas || undefined}
+              />
 
               {tempOpRecordingsToSave.map((recording) => (
                 <OperationContainer key={recording.id}>

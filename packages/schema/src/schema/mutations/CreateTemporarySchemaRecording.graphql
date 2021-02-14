@@ -1,0 +1,7 @@
+input CreateTemporarySchemaRecordingInput {
+  schemaIntrospectionResult: JSONObject!
+}
+
+type CreateTemporarySchemaRecordingResponse {
+  schemaHash: ID!
+}

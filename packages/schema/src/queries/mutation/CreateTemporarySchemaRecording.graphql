@@ -1,0 +1,7 @@
+mutation CreateTemporarySchemaRecording(
+  $input: CreateTemporarySchemaRecordingInput!
+) {
+  createTemporarySchemaRecording(input: $input) {
+    schemaHash
+  }
+}
