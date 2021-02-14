@@ -26,6 +26,14 @@ interface SchemaRecordingVersion1 {
   introspectionQuery: IntrospectionQuery;
 }
 
+const compareHashes = async (
+  schemaId: string,
+  hash: string
+): Promise<boolean> => {
+  const schemaRecordingFile = await getSchemaRecordingFile(schemaId);
+  return schemaRecordingFile.hash === hash;
+};
+
 export const getSchemaRecordingFile = async (
   schemaId: string
 ): Promise<SchemaRecording> => {
@@ -157,6 +165,15 @@ export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrU
             schemaId: newSchemaId,
           };
         } else {
+          const doSchemaHashesMatch = await compareHashes(
+            targetSchemaId,
+            opsRecordingsSchemaHash
+          );
+
+          if (!doSchemaHashesMatch) {
+            throw new Error('TODO: Schema hashes dont match');
+          }
+
           // TODO
           // handle conditionally adding any new opsRecordingsSchemaUrl's to the mapped targetSchemaId
           return {

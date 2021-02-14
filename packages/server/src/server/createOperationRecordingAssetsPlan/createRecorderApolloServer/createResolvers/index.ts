@@ -1,4 +1,4 @@
-import { IObjectTypeResolver } from 'graphql-tools';
+import { IObjectTypeResolver } from '@graphql-tools/utils';
 import { Config } from 'apollo-server-core';
 
 import { SchemaRecording } from '../../../files/schema';
