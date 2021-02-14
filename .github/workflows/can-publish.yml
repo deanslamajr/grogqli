@@ -12,4 +12,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
-      - run: npm run publish:dry
+      - name: Install Lerna
+        run: npm i
+      - name: Run "publish:dry"
+        run: npm run publish:dry
