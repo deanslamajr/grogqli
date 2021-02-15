@@ -112,14 +112,14 @@ export const SchemaMappingField: React.FC<Props> = ({
                           }) => {
                             return (
                               <>
-                                <div>
+                                <div key="1">
                                   <input
                                     {...newSchemaNameInput}
                                     type="text"
                                     placeholder="schema name"
                                   />
                                 </div>
-                                <div>
+                                <div key="2">
                                   <InvalidFieldMessage>
                                     {newSchemaNameInputMeta.error &&
                                     newSchemaNameInputMeta.touched

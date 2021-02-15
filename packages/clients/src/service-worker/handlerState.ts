@@ -2,7 +2,7 @@ import { HandlerState as Modes } from '@grogqli/schema';
 
 interface State {
   mode: Modes;
-  sessionId: string;
+  sessionId: string | null;
   workflowId: string | null;
 }
 
@@ -26,12 +26,12 @@ export const setMode = (newMode: Modes): void => {
 };
 
 // sessionId
-export const getSessionId = (): string => {
+export const getSessionId = (): string | null => {
   throwIfNotInitialized();
   return state.sessionId;
 };
 
-export const setSessionId = (sessionId: string): void => {
+export const setSessionId = (sessionId: string | null): void => {
   throwIfNotInitialized();
   state.sessionId = sessionId;
 };
@@ -48,18 +48,14 @@ export const setWorkflowId = (newWorkflowId: string | null): void => {
 };
 
 type Initialize = (params: {
-  mode?: Modes;
-  sessionId: string;
+  mode: Modes;
+  sessionId?: string;
   workflowId?: string;
 }) => void;
-export const initialize: Initialize = ({
-  mode = Modes.Recording,
-  sessionId,
-  workflowId = null,
-}) => {
+export const initialize: Initialize = ({ mode, sessionId, workflowId }) => {
   state = {} as State;
 
-  setSessionId(sessionId);
   setMode(mode);
-  setWorkflowId(workflowId);
+  setSessionId(sessionId || null);
+  setWorkflowId(workflowId || null);
 };

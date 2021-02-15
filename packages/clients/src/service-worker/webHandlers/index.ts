@@ -1,4 +1,5 @@
 import { graphql } from 'msw';
+import { HandlerState as Modes } from '@grogqli/schema';
 
 import recordHandler from './recordHandler';
 import playbackHandler from './playbackHandler';
@@ -10,17 +11,26 @@ type Handlers = [
   ReturnType<typeof graphql.mutation>
 ];
 
-const getHandlers = (handler): Handlers => [
+const createHandlers = (handler): Handlers => [
   graphql.query(anyAlphaNumericStringReqExp, handler),
   graphql.mutation(anyAlphaNumericStringReqExp, handler),
 ];
 
-export const getRecordingHandlers = () => {
-  console.log('setting recording handlers');
-  return getHandlers(recordHandler);
+const getRecordingHandlers = () => {
+  return createHandlers(recordHandler);
 };
 
-export const getPlaybackHandlers = () => {
-  console.log('setting playback handlers');
-  return getHandlers(playbackHandler);
+const getPlaybackHandlers = () => {
+  return createHandlers(playbackHandler);
+};
+
+type GetHandlers = (mode: Modes) => Handlers;
+export const getHandlers: GetHandlers = (mode) => {
+  if (mode === Modes.Recording) {
+    return getRecordingHandlers();
+  }
+  if (mode === Modes.Playback) {
+    return getPlaybackHandlers();
+  }
+  throw new Error(`The given mode:${mode} is not supported at this time.`);
 };

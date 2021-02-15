@@ -19,3 +19,7 @@ This assumes the grogqli server has a previously saved workflow:
   - `"storybook": "start-storybook -p 6006 -s public"`
 
 - run grogqli server instance at the same port referenced in `.storybook/preview.js`
+
+Newly added:
+
+- Moved initialization of handler to a loader and used a singleton pattern to only initialize this once per hard refresh (e.g. dont reinitialize listener each time a story loads)

@@ -10,26 +10,51 @@ import {
   initialize as initializeState,
   getMode,
   setMode,
+  setSessionId,
   getWorkflowId,
   setWorkflowId,
 } from './handlerState';
 
-type StartServiceWorker = (params: {
-  name?: string;
-  port: number;
-}) => Promise<string>;
+type StartServiceWorkerParams =
+  | {
+      initialMode: undefined;
+      initialWorkflowId?: string;
+      name?: string;
+      port: number;
+    }
+  | {
+      initialMode: Modes.Recording;
+      initialWorkflowId?: string;
+      name?: string;
+      port: number;
+    }
+  | {
+      initialMode: Modes.Playback;
+      initialWorkflowId: string;
+      name?: string;
+      port: number;
+    };
+
+type StartServiceWorker = (params: StartServiceWorkerParams) => Promise<string>;
 
 export const startServiceWorker: StartServiceWorker = async ({
+  initialMode = Modes.Recording as Modes.Recording,
+  initialWorkflowId,
   name = window.document.URL.toString(),
   port,
 }) => {
   const apolloClient = createApolloClient({ port });
 
-  const { getPlaybackHandlers, getRecordingHandlers } = await import(
-    './webHandlers'
-  );
-  const worker = setupWorker(...getRecordingHandlers());
+  const { getHandlers } = await import('./webHandlers');
+
+  const handlers = getHandlers(initialMode);
+  const worker = setupWorker(...handlers);
   worker.start();
+
+  initializeState({
+    mode: initialMode,
+    workflowId: initialWorkflowId,
+  });
 
   const { data, errors } = await apolloClient.mutate({
     mutation: CreateHandlerSession.CreateHandlerSessionDocument,
@@ -49,7 +74,7 @@ export const startServiceWorker: StartServiceWorker = async ({
   }
 
   const handlerSessionId = data.createHandlerSession.newHandler.id;
-  initializeState({ sessionId: handlerSessionId });
+  setSessionId(handlerSessionId);
 
   apolloClient
     .subscribe({
@@ -80,19 +105,8 @@ export const startServiceWorker: StartServiceWorker = async ({
         // Update mode?
         if (getMode() !== newMode) {
           setMode(newMode);
-
-          if (newMode === Modes.Recording) {
-            worker.resetHandlers(...getRecordingHandlers());
-          }
-
-          if (newMode === Modes.Playback) {
-            worker.resetHandlers(...getPlaybackHandlers());
-          }
-
-          // if (newState === 'PASSTHROUGH') {
-          //   const passthroughHandlers = getPassthroughHandlers()
-          //   worker.resetHandlers(...passthroughHandlers)
-          // }
+          const handlers = getHandlers(newMode);
+          worker.resetHandlers(...handlers);
         }
 
         // Update workflowId?

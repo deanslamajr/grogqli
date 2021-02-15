@@ -53,16 +53,15 @@ const WorkflowsDropdown = styled.select`
 const noValueOptionValue = 'NONE_SELECTED';
 
 export const MockingPage: React.FC<{}> = ({}) => {
-  const {
-    data: workflowData,
-    loading: isGettingWorkflows,
-  } = useQuery(GetWorkflows.GetWorkflowsDocument, {
-    fetchPolicy: 'network-only',
-  });
-  const [
-    updateHandlerSession,
-    { data: updateHandlerSessionResponse, loading: isUpdatingHandlerSession },
-  ] = useMutation(UpdateHandlerSession.UpdateHandlerSessionDocument);
+  const { data: workflowData, loading: isGettingWorkflows } = useQuery(
+    GetWorkflows.GetWorkflowsDocument,
+    {
+      fetchPolicy: 'network-only',
+    }
+  );
+  const [updateHandlerSession] = useMutation(
+    UpdateHandlerSession.UpdateHandlerSessionDocument
+  );
   const { mode, setMode, sessionId } = useSessionState();
   const [workflowId, setWorkflowId] = React.useState<string>(
     noValueOptionValue
