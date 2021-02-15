@@ -1,4 +1,7 @@
 const path = require('path');
+const util = require('util');
+
+const enableDebugLogs = false;
 
 // https://razzle-git-canary.jared.vercel.app/docs/customization#extending-webpack
 // the sauce -> https://github.com/jaredpalmer/razzle/blob/e3cfbe568e4c8ae202603cb8a41ab19c2d65b963/packages/razzle/config/createConfig.js
@@ -42,14 +45,18 @@ module.exports = {
     }
 
     // remove default bundle size plugin
-    if (appConfig.performance) {
-      appConfig.performance = Object.assign(
-        {},
-        {
-          maxAssetSize: 100000,
-          maxEntrypointSize: 300000,
-          hints: false,
-        }
+    appConfig.performance = Object.assign(
+      {},
+      {
+        maxAssetSize: 100000,
+        maxEntrypointSize: 300000,
+        hints: false,
+      }
+    );
+
+    if (enableDebugLogs) {
+      console.log(
+        util.inspect(appConfig, false, null, true /* enable colors */)
       );
     }
 

@@ -8,10 +8,13 @@
   },
   "scripts": {
     "watch:tsc": "tsc -b -w --preserveWatchOutput",
-    "watch:razzle": "wait-on file:./node_modules/@grogqli/webapp/dist/success.txt && razzle start",
-    "start:watchers": "concurrently --raw --default-input-target 1 npm:watch:tsc npm:watch:razzle",
+    "watch:razzle": "razzle start",
+    "await:razzle": "wait-on file:./node_modules/@grogqli/webapp/dist/success.txt && npm run watch:razzle",
+    "start:watchers": "concurrently --raw --default-input-target 1 npm:watch:tsc npm:await:razzle",
     "start:dev": "npm run start:watchers",
+    "start": "concurrently --raw --default-input-target 1 npm:watch:tsc npm:watch:razzle",
     "build:publish": "tsc -b && razzle build",
+    "build:ci": "CI=true razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
     "lint": "eslint --fix --ext 'js,jsx,ts,tsx' ."
@@ -52,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
     "babel-preset-razzle": "^3.3.11",
+    "concurrently": "^5.3.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react-hooks": "^4.2.0",
