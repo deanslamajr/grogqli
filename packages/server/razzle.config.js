@@ -41,6 +41,11 @@ module.exports = {
       };
     }
 
+    // remove default bundle size plugin
+    if (appConfig.performance) {
+      appConfig.performance = undefined;
+    }
+
     return appConfig;
   },
   options: {
