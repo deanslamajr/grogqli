@@ -12,7 +12,7 @@ import { onError } from '@apollo/client/link/error';
 import { port } from '../grogqli.json';
 
 const grogqliPath = `http://localhost:${port}/grogqli`;
-const grogqliWsPath = `ws://localhost:${port}/graphql`;
+const grogqliWsPath = `ws://localhost:${port}/grogqli`;
 
 const httpLink = new HttpLink({
   uri: grogqliPath,

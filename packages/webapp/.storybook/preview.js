@@ -24,3 +24,24 @@ export const decorators = [
     </MemoryRouter>
   ),
 ];
+
+// Storybook executes this module in both bootstap phase (Node)
+// and a story's runtime (browser). However, we cannot call `setupWorker`
+// in Node environment, so need to check if we're in a browser.
+if (typeof window !== 'undefined') {
+  // from dev server running in @grogqli/server
+  // TODO replace use of dev server
+  const { port } = require('../grogqli.json');
+
+  const { mountClient, startServiceWorker } = require('@grogqli/clients');
+  startServiceWorker({ port }).then((sessionId) => {
+    console.log(
+      '@grogqli/webapp > new grogqli handler session created, id:',
+      sessionId
+    );
+    mountClient({
+      initialSessionId: sessionId,
+      port,
+    });
+  });
+}

@@ -29,6 +29,10 @@ if (process.env.NODE_ENV === 'development') {
     if (currentPagesPort !== gqlServerPort) {
       const { mountClient, startServiceWorker } = require('@grogqli/clients');
       startServiceWorker({ port: gqlServerPort }).then((sessionId) => {
+        console.log(
+          '@grogqli/server > new grogqli handler session created, id:',
+          sessionId
+        );
         mountClient({
           initialSessionId: sessionId,
           port: gqlServerPort,

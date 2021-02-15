@@ -1,4 +1,5 @@
 {
   "recordingsSaveDirectory": "grogqli",
-  "port": 5678
+  "port": 5678,
+  "shouldDogFood": false
 }

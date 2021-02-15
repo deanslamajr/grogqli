@@ -110,10 +110,6 @@ export const SchemaMappingField: React.FC<Props> = ({
                             input: newSchemaNameInput,
                             meta: newSchemaNameInputMeta,
                           }) => {
-                            console.log(
-                              'newSchemaNameInputMeta',
-                              newSchemaNameInputMeta
-                            );
                             return (
                               <>
                                 <div>

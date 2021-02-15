@@ -15,14 +15,14 @@
     "node": ">=10"
   },
   "scripts": {
+    "start": "tsdx watch --verbose",
     "start:dev": "tsdx watch --verbose --onSuccess \"touch ./dist/success.txt\"",
     "build:publish": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint --fix",
     "prepare": "tsdx build",
-    "grogqli": "grogqli",
     "lint:output": "tsdx lint --write-file",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook",
     "size": "size-limit",
     "analyze": "size-limit --why"
@@ -61,7 +61,6 @@
   },
   "peerDependencies": {
     "@apollo/client": "^3.3.7",
-    "@grogqli/schema": "^0.4.0",
     "graphql": "^15.4.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -70,6 +69,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@grogqli/clients": "^0.9.0",
     "@storybook/addon-essentials": "^6.1.15",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.15",
@@ -78,10 +78,10 @@
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "babel-loader": "^8.2.2",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "babel-loader": "^8.2.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "graphql": "^15.4.0",
     "react-is": "^17.0.1",
     "react-router-dom": "^5.2.0",

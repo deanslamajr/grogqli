@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "types": {
+    "Query": {
+      "name": "Query",
+      "id": "d9aNcta_Osa"
+    },
+    "Workflow": {
+      "name": "Workflow",
+      "id": "IMiTXAtmsIn"
+    },
+    "TemporaryOperationRecording": {
+      "name": "TemporaryOperationRecording",
+      "id": "T2sBMq7GWe7"
+    },
+    "SchemaRecording": {
+      "name": "SchemaRecording",
+      "id": "MQoVao187r9"
+    },
+    "Mutation": {
+      "name": "Mutation",
+      "id": "l-gIAke35Gq"
+    },
+    "CreateWorkflowResponse": {
+      "name": "CreateWorkflowResponse",
+      "id": "EUz9-2ETSL8"
+    }
+  }
+}

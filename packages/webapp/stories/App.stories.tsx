@@ -7,7 +7,7 @@ const meta: Meta = {
   title: 'SessionsContainer',
   component: SessionsContainer,
   args: {
-    url: '/?s=taco',
+    url: '/?s=2WQUdOU4S',
   },
 };
 

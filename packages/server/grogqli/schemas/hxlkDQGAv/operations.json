@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "operations": {
+    "GetWorkflows": {
+      "name": "GetWorkflows",
+      "id": "nVHStz7PDTf"
+    },
+    "GetTempOpRecordings": {
+      "name": "GetTempOpRecordings",
+      "id": "yr91CTTaz0L"
+    },
+    "GetSchemas": {
+      "name": "GetSchemas",
+      "id": "wuziaW2fINC"
+    },
+    "CreateWorkflow": {
+      "name": "CreateWorkflow",
+      "id": "npJrPVCP2gf"
+    }
+  }
+}
