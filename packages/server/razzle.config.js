@@ -43,7 +43,14 @@ module.exports = {
 
     // remove default bundle size plugin
     if (appConfig.performance) {
-      appConfig.performance = undefined;
+      appConfig.performance = Object.assign(
+        {},
+        {
+          maxAssetSize: 100000,
+          maxEntrypointSize: 300000,
+          hints: false,
+        }
+      );
     }
 
     return appConfig;
