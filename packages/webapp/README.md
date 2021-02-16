@@ -8,6 +8,8 @@ This assumes the grogqli server has a previously saved workflow:
 
 - added use of `@grogqli/clients` in `.storybook/preview.js`
 
+  - use the storybook Loader pattern (so that story is blocked until handler is initialized) and use a singleton pattern to only initialize this once per hard refresh (e.g. dont reinitialize listener each time a story loads)
+
   - include the port value of the grogqli server (see below)
 
 - added msw service worker to the next.js public subdirectory
@@ -20,6 +22,4 @@ This assumes the grogqli server has a previously saved workflow:
 
 - run grogqli server instance at the same port referenced in `.storybook/preview.js`
 
-Newly added:
-
-- Moved initialization of handler to a loader and used a singleton pattern to only initialize this once per hard refresh (e.g. dont reinitialize listener each time a story loads)
+- set the links in apollo-client.ts to the same schemaUrl of the given schema recording

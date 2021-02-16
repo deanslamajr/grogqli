@@ -1,10 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { SessionProvider } from '../src/App/SessionsContainer/SessionContext';
-import { RequestsPage } from '../src/App/SessionsContainer/Session/RequestsPage';
+import { sessionId } from './constants.json';
 
-const sessionId = 'someSessionId';
+import { RequestsPage } from '../src/App/SessionsContainer/Session/RequestsPage';
 
 const meta: Meta = {
   title: 'RequestsPage',
@@ -12,13 +11,6 @@ const meta: Meta = {
   args: {
     url: `/session/${sessionId}/requests`,
   },
-  decorators: [
-    (Story) => (
-      <SessionProvider sessionId={sessionId}>
-        <Story />
-      </SessionProvider>
-    ),
-  ],
 };
 
 export default meta;

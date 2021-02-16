@@ -2,6 +2,9 @@ import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import { createApolloClient } from '../stories/apollo-client';
+import { sessionId } from '../stories/constants.json';
+
+import { SessionProvider } from '../src/App/SessionsContainer/SessionContext';
 
 import { Providers } from '../src/App/Providers';
 import { cssTheme } from '../src/App/constants';
@@ -16,7 +19,9 @@ export const decorators = [
           <>
             <div>{`${location.pathname}${location.search}`}</div>
             <Providers apolloClient={apolloClient} cssTheme={cssTheme}>
-              <Story />
+              <SessionProvider sessionId={sessionId}>
+                <Story />
+              </SessionProvider>
             </Providers>
           </>
         )}
@@ -25,18 +30,18 @@ export const decorators = [
   ),
 ];
 
-let sessionId;
+let handlerSessionId;
 
 export const loaders = [
   async () => {
-    if (!sessionId) {
+    if (!handlerSessionId) {
       const { HandlerState: Modes } = require('@grogqli/schema');
       const { mountClient, startServiceWorker } = require('@grogqli/clients');
 
       // port that @grogqli/server's dev server is normally set to
       const port = 1234;
 
-      sessionId = await startServiceWorker({
+      handlerSessionId = await startServiceWorker({
         initialMode: Modes.Playback,
         initialWorkflowId: 'fETBrnUgT6D',
         port,
@@ -44,7 +49,7 @@ export const loaders = [
 
       console.log(
         '@grogqli/webapp > new grogqli handler session created, id:',
-        sessionId
+        handlerSessionId
       );
 
       // mountClient({

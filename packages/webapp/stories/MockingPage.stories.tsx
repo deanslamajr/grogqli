@@ -1,10 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { SessionProvider } from '../src/App/SessionsContainer/SessionContext';
-import { MockingPage } from '../src/App/SessionsContainer/Session/MockingPage';
+import { sessionId } from './constants.json';
 
-const sessionId = 'someSessionId';
+import { MockingPage } from '../src/App/SessionsContainer/Session/MockingPage';
 
 const meta: Meta = {
   title: 'MockingPage',
@@ -12,13 +11,6 @@ const meta: Meta = {
   args: {
     url: `/session/${sessionId}/mocking`,
   },
-  decorators: [
-    (Story) => (
-      <SessionProvider sessionId={sessionId}>
-        <Story />
-      </SessionProvider>
-    ),
-  ],
 };
 
 export default meta;

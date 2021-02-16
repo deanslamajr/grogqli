@@ -20,7 +20,9 @@ const recordOperation: DoWork = async (req, _res, ctx) => {
   const sessionId = getSessionId();
   let tempOpRecordingId;
 
-  console.log('sessionId', sessionId);
+  if (sessionId === null) {
+    throw new Error('sessionId must be set before recording an operation.');
+  }
 
   const {
     schemaHash,

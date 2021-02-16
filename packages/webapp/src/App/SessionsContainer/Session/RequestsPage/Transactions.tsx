@@ -98,7 +98,7 @@ const Transactions: React.FC<TransactionsProps> = ({
               isChecked={allAreChecked}
               onClick={toggleAllChecked}
             />
-            <StyledHeader>op name</StyledHeader>
+            <StyledHeader>operation</StyledHeader>
           </tr>
         </thead>
         <tbody>
