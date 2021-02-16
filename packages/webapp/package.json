@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/webapp",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -51,7 +51,7 @@
     }
   ],
   "dependencies": {
-    "@grogqli/schema": "^0.9.0",
+    "@grogqli/schema": "^0.10.0",
     "@rooks/use-key": "^3.6.0",
     "final-form": "^4.20.1",
     "graphql-formatter": "^1.0.3",
@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@grogqli/clients": "^0.9.0",
+    "@grogqli/clients": "^0.10.0",
     "@storybook/addon-essentials": "^6.1.15",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.15",
