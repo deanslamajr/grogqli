@@ -17,7 +17,7 @@ const StyledTable = styled.table`
   width: 100%;
 `;
 
-const StyledHeader = styled.th`
+const StyledHeader = styled.th<{ width?: string }>`
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
   height: ${({ theme }) => theme.sizes.menuBarHeight};
@@ -26,10 +26,12 @@ const StyledHeader = styled.th`
   line-height: 1.9;
   font-size: 15px;
   text-align: left;
-  font-weight: 400;
+  font-weight: bold;
   color: ${({ theme }) => theme.colors.selectedMenuItemText};
   padding: 0 15px 0;
   cursor: pointer;
+  width: ${({ width }) => width || 'inherit'};
+  z-index: ${({ theme }) => theme.zIndex.highest};
 `;
 
 const CheckAllHeader = styled(StyledHeader)<{
@@ -98,16 +100,19 @@ const Transactions: React.FC<TransactionsProps> = ({
               isChecked={allAreChecked}
               onClick={toggleAllChecked}
             />
-            <StyledHeader>operation</StyledHeader>
+            <StyledHeader width={'20%;'}>operation</StyledHeader>
+            <StyledHeader width={'24%;'}>variables</StyledHeader>
+            <StyledHeader width={'30%;'}>data</StyledHeader>
+            <StyledHeader width={'25%;'}>errors</StyledHeader>
           </tr>
         </thead>
         <tbody>
-          {temporaryOperationRecordings.map(({ id, operationName }, index) => (
-            <StyledRow key={id} isOdd={index % 2 === 1}>
+          {temporaryOperationRecordings.map((tempOpRecording, index) => (
+            <StyledRow key={tempOpRecording.id} isOdd={index % 2 === 1}>
               <Transaction
-                opName={operationName}
-                isChecked={checkedState[id]}
-                toggleCheck={() => toggleCheck(id)}
+                tempOpRecording={tempOpRecording}
+                isChecked={checkedState[tempOpRecording.id]}
+                toggleCheck={() => toggleCheck(tempOpRecording.id)}
               />
             </StyledRow>
           ))}
