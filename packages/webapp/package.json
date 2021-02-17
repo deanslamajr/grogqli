@@ -25,7 +25,8 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "grogqli": "grogqli"
   },
   "husky": {
     "hooks": {
@@ -71,6 +72,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@grogqli/clients": "^0.10.0",
+    "@grogqli/server": "^0.10.0",
     "@storybook/addon-essentials": "^6.1.15",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.15",

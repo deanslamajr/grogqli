@@ -41,6 +41,7 @@ export const getConfig = async (): Promise<GetGrogqliConfigValue> => {
 
   if (configLocation) {
     const configFileAbsolutePath = path.join(configLocation, CONFIG_FILE_NAME);
+    console.log('configFileAbsolutePath', configFileAbsolutePath);
     configFromFile = editJsonFile(configFileAbsolutePath);
   }
 

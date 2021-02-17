@@ -39,7 +39,7 @@ export const loaders = [
       const { mountClient, startServiceWorker } = require('@grogqli/clients');
 
       // port that @grogqli/server's dev server is normally set to
-      const port = 1234;
+      const { port } = require('../grogqli.json');
 
       handlerSessionId = await startServiceWorker({
         initialMode: Modes.Playback,
