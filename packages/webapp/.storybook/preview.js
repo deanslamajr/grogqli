@@ -43,7 +43,7 @@ export const loaders = [
 
       handlerSessionId = await startServiceWorker({
         initialMode: Modes.Playback,
-        initialWorkflowId: 'fETBrnUgT6D',
+        initialWorkflowId: '8h9kLygAkmQ',
         port,
       });
 
