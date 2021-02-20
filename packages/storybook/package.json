@@ -24,13 +24,17 @@
     "clean": "rimraf ./dist",
     "build": "babel ./src --out-dir ./dist",
     "prepublish": "npm run clean && npm run build",
+    "build:pub": "build-storybook -o ./publish-build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "start": "concurrently \"npm run storybook -- --no-manager-cache --quiet\" \"npm run build -- --watch\"",
     "build-storybook": "build-storybook",
     "release": "npm run build && auto shipit --base-branch=main"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@grogqli/clients": "^0.10.0",
+    "@grogqli/schema": "^0.10.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",

@@ -13,49 +13,41 @@ export const RequestDataButton = styled(Button)({
  */
 export const PanelContent = ({ results, fetchData, clearData }) => (
   <TabsState
-    initial="overview"
+    initial="workflow"
     backgroundColor={convert(themes.normal).background.hoverable}
   >
     <div
-      id="overview"
-      title="Overview"
+      id="workflow"
+      title="Workflow"
       color={convert(themes.normal).color.positive}
     >
       <Placeholder>
         <Fragment>
-          Addons can gather details about how a story is rendered. This is panel
-          uses a tab pattern. Click the button below to fetch data for the other
-          two tabs.
-        </Fragment>
-        <Fragment>
-          <RequestDataButton
-            secondary
-            small
-            onClick={fetchData}
-            style={{ marginRight: 16 }}
-          >
-            Request data
-          </RequestDataButton>
-
-          <RequestDataButton outline small onClick={clearData}>
-            Clear data
-          </RequestDataButton>
+          TODO - add Select with workflow options
         </Fragment>
       </Placeholder>
     </div>
     <div
-      id="danger"
-      title={`${results.danger.length} Danger`}
-      color={convert(themes.normal).color.negative}
+      id="mocks"
+      title="Mocks"
+      color={convert(themes.normal).color.seafoam}
     >
-      <List items={results.danger} />
+      <Placeholder>
+        <Fragment>
+          TODO - add Mock data view here
+        </Fragment>
+      </Placeholder>
     </div>
     <div
-      id="warning"
-      title={`${results.warning.length} Warning`}
-      color={convert(themes.normal).color.warning}
+      id="console"
+      title="Console"
+      color={convert(themes.normal).color.purple}
     >
-      <List items={results.warning} />
+      <Placeholder>
+        <Fragment>
+          TODO - add Console data view here
+        </Fragment>
+      </Placeholder>
     </div>
   </TabsState>
 );

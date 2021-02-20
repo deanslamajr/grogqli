@@ -12,3 +12,35 @@ import { withGlobals } from "../withGlobals";
 import { withRoundTrip } from "../withRoundTrip";
 
 export const decorators = [withGlobals, withRoundTrip];
+
+let handlerSessionId;
+
+export const loaders = [
+  async () => {
+    if (!handlerSessionId) {
+      const { HandlerState: Modes } = require('@grogqli/schema');
+      const { mountClient, startServiceWorker } = require('@grogqli/clients');
+
+      // TODO allow this to be set by storybook config??
+      // port that @grogqli/server's dev server is normally set to
+      const port = 1234;
+
+      handlerSessionId = await startServiceWorker({
+        initialMode: Modes.Playback,
+        // TODO make dynamic
+        initialWorkflowId: '8h9kLygAkmQ',
+        port,
+      });
+
+      console.log(
+        '@grogqli/webapp > new grogqli handler session created, id:',
+        handlerSessionId
+      );
+
+      // mountClient({
+      //   initialSessionId: sessionId,
+      //   port,
+      // });
+    }
+  },
+];
