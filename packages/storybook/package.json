@@ -24,7 +24,7 @@
     "clean": "rimraf ./dist",
     "build": "babel ./src --out-dir ./dist",
     "prepublish": "npm run clean && npm run build",
-    "build-storybook": "build-storybook -o ./docs-build",
+    "build-storybook": "build-storybook -o ./docs-build -s ./public",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006 -s public",
     "start": "concurrently \"npm run storybook -- --no-manager-cache --quiet\" \"npm run build -- --watch\""
