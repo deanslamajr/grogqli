@@ -9,7 +9,8 @@
     "publish:dry": "npm run init && npm run build:publish",
     "publish": "npm run init && npm run build:publish && lerna publish",
     "lint": "lerna run lint --stream",
-    "test": "lerna run test --stream"
+    "test": "lerna run test --stream",
+    "build:storybook": "lerna run --scope @grogqli/storybook build-storybook"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.9.1",
