@@ -11,18 +11,9 @@ export const Panel = (props) => {
     warning: [],
   });
 
-  // https://storybook.js.org/docs/react/addons/addons-api#usechannel
-  const emit = useChannel({
-    [EVENTS.RESULT]: (newResults) => setState(newResults),
-  });
-
   return (
     <AddonPanel {...props}>
-      <PanelContent
-        results={results}
-        fetchData={() => emit(EVENTS.REQUEST)}
-        clearData={() => emit(EVENTS.CLEAR)}
-      />
+      <PanelContent />
     </AddonPanel>
   );
 };

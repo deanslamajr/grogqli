@@ -1,46 +1,26 @@
-/**
- * A decorator is a way to wrap a story in extra “rendering” functionality. Many addons define decorators
- * in order to augment stories:
- * - with extra rendering
- * - gather details about how a story is rendered
- *
- * When writing stories, decorators are typically used to wrap stories with extra markup or context mocking.
- *
- * https://storybook.js.org/docs/react/writing-stories/decorators#gatsby-focus-wrapper
- */
-import { withGlobals } from "../withGlobals";
-import { withRoundTrip } from "../withRoundTrip";
+import { withServiceWorkerUpdates } from '../withServiceWorkerUpdates';
 
-export const decorators = [withGlobals, withRoundTrip];
+export const decorators = [withServiceWorkerUpdates];
 
-let handlerSessionId;
+const sw = {
+  isInit: false
+};
 
 export const loaders = [
   async () => {
-    if (!handlerSessionId) {
-      const { HandlerState: Modes } = require('@grogqli/schema');
-      const { mountClient, startServiceWorker } = require('@grogqli/clients');
+    if (sw.isInit === false) {
+      const { startServiceWorker } = require('../handler');
 
-      // TODO allow this to be set by storybook config??
-      // port that @grogqli/server's dev server is normally set to
-      const port = 1234;
+      // TODO make the Grogqli Addon consumer provide this
+      const schemaMappings = {
+        'someUrl.com/graphql': 'someSchemaId'
+      }
 
-      handlerSessionId = await startServiceWorker({
-        initialMode: Modes.Playback,
-        // TODO make dynamic
-        initialWorkflowId: '8h9kLygAkmQ',
-        port,
+      await startServiceWorker({
+        schemaMappings
       });
 
-      console.log(
-        '@grogqli/webapp > new grogqli handler session created, id:',
-        handlerSessionId
-      );
-
-      // mountClient({
-      //   initialSessionId: sessionId,
-      //   port,
-      // });
+      sw.isInit = true;
     }
   },
 ];

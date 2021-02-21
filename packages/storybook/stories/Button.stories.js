@@ -1,17 +1,29 @@
 import React from "react";
+import { ApolloProvider } from '@apollo/client';
+
+import {client} from './apolloClient';
 import { Button } from "./Button";
 
 export default {
   title: "Example/Button",
   component: Button,
   parameters: {
-    myAddonParameter: `
-<MyComponent boolProp scalarProp={1} complexProp={{ foo: 1, bar: '2' }}>
-  <SomeOtherComponent funcProp={(a) => a.id} />
-</MyComponent>
-`,
+    grogqli: {
+      workflowIds: [
+        'one',
+        'two',
+        'three'
+      ],
+      defaultWorkflowId: 'one'
+    }
   },
+  decorators: [
+    (Story) => (<ApolloProvider client={client}>
+      <Story />
+    </ApolloProvider>)
+  ]
 };
+
 
 const Template = (args) => <Button {...args}>Label</Button>;
 
