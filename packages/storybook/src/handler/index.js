@@ -16,7 +16,8 @@ export const startServiceWorker = async ({
   ]);
   const swRegistration = await worker.start({
     serviceWorker: {
-      url: '/storybook/mockServiceWorker.js',
+      // TODO have this be set by plugin consumer
+      url: '/grogqli/mockServiceWorker.js',
     },
   });
 
