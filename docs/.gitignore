@@ -1,7 +1,0 @@
-# this file is just for getting the containing folder into git
-# This file should be removed by the github action on the first run
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
