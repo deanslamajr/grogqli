@@ -14,7 +14,11 @@ export const startServiceWorker = async ({
     graphql.query(anyAlphaNumericStringReqExp, playbackHandler),
     graphql.mutation(anyAlphaNumericStringReqExp, playbackHandler),
   ]);
-  const swRegistration = await worker.start();
+  const swRegistration = await worker.start({
+    serviceWorker: {
+      url: '/storybook/mockServiceWorker.js',
+    },
+  });
 
   return swRegistration;
 }
