@@ -1,27 +1,12 @@
-const resolveRecording = async ({
-  query,
-  variables,
-  schemaId,
-  workflowId
-}) => {
-  console.log({
-    query,
-    variables,
-    schemaId,
-    workflowId
-  });
-
+// TODO implement this
+const resolveRecording = async ({ query, variables, schemaId, workflowId }) => {
   return {
     data: null,
-    errors: null
+    errors: null,
   };
 };
 
-export const playbackHandler = async (
-  req,
-  res,
-  ctx
-) => {
+export const playbackHandler = async (req, res, ctx) => {
   if (req.body === undefined) {
     throw new Error('Request body is undefined but this is invalid!');
   }
@@ -29,11 +14,10 @@ export const playbackHandler = async (
     throw new Error('Request does not include a query!');
   }
 
-  const {getSchemaId, getWorkflowId} = require('./state');
+  const { getSchemaId, getWorkflowId } = require('./state');
 
   const workflowId = getWorkflowId();
   const schemaUrl = `${req.url.host}${req.url.pathname}`;
-  console.log('schemaUrl', schemaUrl);
   const schemaId = getSchemaId(schemaUrl);
 
   if (workflowId === null) {
@@ -45,9 +29,7 @@ export const playbackHandler = async (
     `);
   }
 
-  const {
-    data, errors
-  } = await resolveRecording({
+  const { data, errors } = await resolveRecording({
     query: req.body.query,
     variables: req.body.variables || {},
     schemaId,
@@ -62,4 +44,4 @@ export const playbackHandler = async (
     : ctx.data(null);
 
   return res(response);
-}
+};

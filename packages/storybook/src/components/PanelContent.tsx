@@ -1,11 +1,16 @@
 import React, { Fragment } from "react";
-import { styled, themes, convert } from "@storybook/theming";
+import { themes, convert } from "@storybook/theming";
 import { TabsState, Placeholder, Button } from "@storybook/components";
 import { useParameter } from "@storybook/api";
 
 import { PARAM_KEY } from "../constants";
 
-import {WorkflowConfigurationView} from './WorkflowConfigurationView';
+import { WorkflowConfigurationView } from "./WorkflowConfigurationView";
+
+interface GrogqliParameters {
+  defaultWorkflowId: string;
+  workflowIds: string[];
+}
 
 /**
  * Checkout https://github.com/storybookjs/storybook/blob/next/addons/jest/src/components/Panel.tsx
@@ -13,12 +18,12 @@ import {WorkflowConfigurationView} from './WorkflowConfigurationView';
  */
 export const PanelContent = () => {
   // https://storybook.js.org/docs/react/addons/addons-api#useparameter
-  const {
-    defaultWorkflowId,
-    workflowIds
-  } = useParameter(PARAM_KEY, []);
+  const { defaultWorkflowId, workflowIds } = useParameter<GrogqliParameters>(
+    PARAM_KEY,
+    {} as GrogqliParameters
+  );
 
-  const workflowsExist = workflowIds && workflowIds.length;
+  const workflowsExist = Array.isArray(workflowIds) && workflowIds.length;
 
   return (
     <TabsState
@@ -30,12 +35,12 @@ export const PanelContent = () => {
         title="Workflow"
         color={convert(themes.normal).color.seafoam}
       >
-        {workflowsExist
-          ? <WorkflowConfigurationView
+        {workflowsExist ? (
+          <WorkflowConfigurationView
             defaultWorkflowId={defaultWorkflowId}
             workflowIds={workflowIds}
           />
-          : null}
+        ) : null}
       </div>
       <div
         id="console"
@@ -43,11 +48,9 @@ export const PanelContent = () => {
         color={convert(themes.normal).color.positive}
       >
         <Placeholder>
-          <Fragment>
-            TODO - add Console data view here
-          </Fragment>
+          <Fragment>TODO - add Console data view here</Fragment>
         </Placeholder>
       </div>
     </TabsState>
-  )
+  );
 };

@@ -1,4 +1,11 @@
-let state;
+type SchemaMappings = { [schemaUrl: string]: string };
+
+interface State {
+  schemaMappings: SchemaMappings;
+  workflowId: string | null;
+}
+
+let state: State;
 
 const throwIfNotInitialized = () => {
   if (!state) {
@@ -9,7 +16,7 @@ const throwIfNotInitialized = () => {
 export const getSchemaId = (schemaUrl) => {
   throwIfNotInitialized();
   return state.schemaMappings[schemaUrl];
-}
+};
 
 export const getWorkflowId = () => {
   throwIfNotInitialized();
@@ -17,16 +24,15 @@ export const getWorkflowId = () => {
 };
 
 export const setWorkflowId = (newWorkflowId) => {
-  console.log('taco')
   throwIfNotInitialized();
   state.workflowId = newWorkflowId;
 };
 
-export const initialize = ({
-  schemaMappings
-}) => {
+type Initialize = (params: { schemaMappings: SchemaMappings }) => void;
+
+export const initialize: Initialize = ({ schemaMappings }) => {
   state = {
     schemaMappings,
-    workflowId: null
+    workflowId: null,
   };
 };

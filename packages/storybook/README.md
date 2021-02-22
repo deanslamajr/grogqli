@@ -1,12 +1,17 @@
 # Grogqli Storybook Addon
 
-## handler
+## To setup development environment
 
-- building out storybook-specific handler in this project as poc
-  - src/handler
-  - TODO move this to grogqli monorepo
+- In monorepo root: `npm start`
+  - installs dependencies
+  - builds and links all packages of monorepo
+  - starts this project's type checker and babel transpiler in watcher modes
+- In this package: `npm start`
+  - runs the local storybook example that consumes this project's addon code
+  - if type checker and transpilation are successful, storybook will be available at `http://localhost:6006`
 
 ## setup for consumer of this addon
+
 - added msw service worker to the next.js public subdirectory
 
   - `mkdir public && npx msw init ./public`
@@ -15,4 +20,5 @@
 
   - `"storybook": "start-storybook -p 6006 -s public"`
 
-- TODO need to verify the service worker is being included in the published build assets 
+- set the public assets path on line20 src/handler/index.ts
+  - TODO have consumer set this outside of the addon code

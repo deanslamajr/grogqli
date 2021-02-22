@@ -1,29 +1,26 @@
-import React from "react";
+import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 
-import {client} from './apolloClient';
-import { Button } from "./Button";
+import { client } from './apolloClient';
+import { Button } from './Button';
 
 export default {
-  title: "Example/Button",
+  title: 'Example/Button',
   component: Button,
   parameters: {
     grogqli: {
-      workflowIds: [
-        'one',
-        'two',
-        'three'
-      ],
-      defaultWorkflowId: 'one'
-    }
+      workflowIds: ['one', 'two', 'three'],
+      defaultWorkflowId: 'one',
+    },
   },
   decorators: [
-    (Story) => (<ApolloProvider client={client}>
-      <Story />
-    </ApolloProvider>)
-  ]
+    (Story) => (
+      <ApolloProvider client={client}>
+        <Story />
+      </ApolloProvider>
+    ),
+  ],
 };
-
 
 const Template = (args) => <Button {...args}>Label</Button>;
 

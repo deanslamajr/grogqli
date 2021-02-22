@@ -60,6 +60,7 @@ export const ListItem = ({ item }) => {
         <HeaderBar onClick={() => onToggle(!open)} role="button">
           <Icon
             icon="chevrondown"
+            // @ts-ignore: from js template code, not sure if this prop exists or not
             size={10}
             color={convert(themes.normal).appBorderColor}
             style={{
