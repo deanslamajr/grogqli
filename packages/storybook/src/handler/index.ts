@@ -14,6 +14,7 @@ export const startServiceWorker = async ({ schemaMappings }) => {
       graphql.mutation(anyAlphaNumericStringReqExp, playbackHandler),
     ]
   );
+  console.log('worker', worker);
   const swRegistration = await worker.start({
     serviceWorker: {
       // TODO have this be set by plugin consumer
@@ -23,6 +24,8 @@ export const startServiceWorker = async ({ schemaMappings }) => {
       url: '/grogqli/mockServiceWorker.js',
     },
   });
+
+  console.log('swRegistration', swRegistration);
 
   return swRegistration;
 };
