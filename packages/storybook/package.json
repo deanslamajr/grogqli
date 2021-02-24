@@ -1,6 +1,6 @@
 {
   "name": "@grogqli/storybook",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "A storybook addon that consumes grogqli data",
   "license": "MIT",
   "main": "dist/preset.js",
