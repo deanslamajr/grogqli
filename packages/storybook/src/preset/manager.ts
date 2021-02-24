@@ -8,7 +8,7 @@ addons.register(ADDON_ID, () => {
   // Register the panel
   addons.add(PANEL_ID, {
     type: types.PANEL,
-    title: 'Grogqli',
+    title: 'grogqli',
     match: ({ viewMode }) => viewMode === 'story',
     render: Panel,
   });

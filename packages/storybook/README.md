@@ -21,4 +21,16 @@
   - `"storybook": "start-storybook -p 6006 -s public"`
 
 - set the public assets path on line20 src/handler/index.ts
+
   - TODO have consumer set this outside of the addon code
+
+- set env vars
+  - publicPath
+    - set the `STORYBOOK_GROGQLI_PUBLIC_PATH` env var either 1) inline storybook execution OR 2) in a .env file
+  - schemaMappings
+    - pass a string to string:string object that maps the schemaUrl(s) that are queried to the appropriate schemaId(s) found in the respective grogqli data
+    ```typescript
+    type SchemaMappings = {
+      [schemaUrl: string]: string;
+    };
+    ```

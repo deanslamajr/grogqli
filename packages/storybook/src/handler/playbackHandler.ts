@@ -1,5 +1,7 @@
 // TODO implement this
 const resolveRecording = async ({ query, variables, schemaId, workflowId }) => {
+  console.log({ schemaId, workflowId, query, variables });
+
   return {
     data: null,
     errors: null,

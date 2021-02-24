@@ -2,15 +2,29 @@
 
 The react webapp that provides a UI for interacting with grogqli features.
 
+## Development via Storybook
+
+- in monorepo root: `npm start`
+
+- in this package: `npm run storybook`
+
 ## What was done to add Grogqli to this project's Storybook workflow?
 
 This assumes the grogqli server has a previously saved workflow:
 
-- added use of `@grogqli/clients` in `.storybook/preview.js`
+- install grogqli addon
 
-  - use the storybook Loader pattern (so that story is blocked until handler is initialized) and use a singleton pattern to only initialize this once per hard refresh (e.g. dont reinitialize listener each time a story loads)
+  - `npm i -D @grogqli/storybook`
 
-  - include the port value of the grogqli server (see below)
+- add reference to grogqli addon in `.storybook/main.js`
+
+  ```es6
+  // .storybook/main.js
+  module.exports = {
+    addons: ['@grogqli/storybook'],
+    // ...other configs
+  };
+  ```
 
 - added msw service worker to the next.js public subdirectory
 
@@ -20,6 +34,19 @@ This assumes the grogqli server has a previously saved workflow:
 
   - `"storybook": "start-storybook -p 6006 -s public"`
 
-- run grogqli server instance at the same port referenced in `.storybook/preview.js`
-
 - set the links in apollo-client.ts to the same schemaUrl of the given schema recording
+
+- setup params
+
+  - TODO show this
+
+- set env vars
+  - publicPath
+    - set the `STORYBOOK_GROGQLI_PUBLIC_PATH` env var either 1) inline storybook execution OR 2) in a .env file
+  - schemaMappings
+    - pass a string to string:string object that maps the schemaUrl(s) that are queried to the appropriate schemaId(s) found in the respective grogqli data
+    ```typescript
+    type SchemaMappings = {
+      [schemaUrl: string]: string;
+    };
+    ```

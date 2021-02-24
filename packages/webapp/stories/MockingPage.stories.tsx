@@ -11,6 +11,16 @@ const meta: Meta = {
   args: {
     url: `/session/${sessionId}/mocking`,
   },
+  parameters: {
+    grogqli: {
+      workflowIds: [
+        'mockingPage:someWorkflowId',
+        'mockingPage:anotherWorkflowId',
+        'three',
+      ],
+      defaultWorkflowId: 'mockingPage:someWorkflowId',
+    },
+  },
 };
 
 export default meta;

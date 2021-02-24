@@ -5,7 +5,16 @@ import { initialize as initializeState } from './state';
 
 const anyAlphaNumericStringReqExp = /^[a-z0-9]+$/i;
 
-export const startServiceWorker = async ({ schemaMappings }) => {
+type StartServiceWorker = (params: {
+  publicPath?: string;
+  schemaMappings?: { [actualSchemaUrl: string]: string };
+}) => Promise<any>;
+export const startServiceWorker: StartServiceWorker = async ({
+  publicPath,
+  schemaMappings,
+}) => {
+  schemaMappings = schemaMappings || {};
+
   initializeState({ schemaMappings });
 
   const worker = setupWorker(
@@ -15,13 +24,12 @@ export const startServiceWorker = async ({ schemaMappings }) => {
     ]
   );
   console.log('worker', worker);
+
+  const publicPathWithSlash =
+    publicPath && publicPath !== '' ? `${publicPath}/` : '';
   const swRegistration = await worker.start({
     serviceWorker: {
-      // TODO have this be set by plugin consumer
-      // local env
-      // url: '/mockServiceWorker.js',
-      // github pages env
-      url: '/grogqli/mockServiceWorker.js',
+      url: `/${publicPathWithSlash}mockServiceWorker.js`,
     },
   });
 

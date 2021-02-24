@@ -6,17 +6,19 @@ const sw: { isInit: boolean } = {
   isInit: false,
 };
 
+const publicPathFromEnvVar = process.env.STORYBOOK_GROGQLI_PUBLIC_PATH;
+
 export const loaders = [
-  async () => {
+  async ({ parameters }) => {
     if (sw.isInit === false) {
       const { startServiceWorker } = require('../handler');
 
-      // TODO make the Grogqli Addon consumer provide this
-      const schemaMappings = {
-        'someUrl.com/graphql': 'someSchemaId',
-      };
+      const publicPath =
+        parameters?.grogqli?.publicPath || publicPathFromEnvVar;
+      const schemaMappings = parameters?.grogqli?.schemaMappings;
 
       await startServiceWorker({
+        publicPath,
         schemaMappings,
       });
 

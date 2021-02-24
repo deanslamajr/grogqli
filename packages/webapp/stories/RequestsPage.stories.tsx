@@ -11,6 +11,12 @@ const meta: Meta = {
   args: {
     url: `/session/${sessionId}/requests`,
   },
+  parameters: {
+    grogqli: {
+      workflowIds: ['requestPage:one', 'requestPage:two', 'requestPage:three'],
+      defaultWorkflowId: 'requestPage:two',
+    },
+  },
 };
 
 export default meta;
