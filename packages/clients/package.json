@@ -26,11 +26,11 @@
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@grogqli/schema": "^0.10.0",
-    "graphql": "^15.3.0",
+    "graphql": "^15.4.0",
     "memoizee": "^0.4.15",
-    "msw": "^0.21.2",
+    "msw": "^0.26.2",
     "react": "^17.0.1",
-    "shortid": "^2.2.15",
+    "shortid": "^2.2.16",
     "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
