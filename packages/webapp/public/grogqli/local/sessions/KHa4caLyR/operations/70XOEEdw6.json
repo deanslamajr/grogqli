@@ -1,0 +1,776 @@
+{
+  "version": 1,
+  "id": "70XOEEdw6",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "v_2PmJCky"
+    }
+  },
+  "response": {
+    "data": {
+      "temporaryOperationRecordings": [
+        {
+          "id": "53CPiU0Js",
+          "operationName": "SearchForArtist",
+          "sessionId": "v_2PmJCky",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "hello"
+          },
+          "response": {
+            "data": {
+              "search": {
+                "artists": {
+                  "nodes": [
+                    {
+                      "id": "1c7bc30f-2c52-4753-9a64-0ddd4818ab47",
+                      "name": "Hello",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1971",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "8b30b21c-987b-41e3-871f-8c2cc62768a7",
+                      "name": "Hello",
+                      "area": {
+                        "name": "Indiana",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "b1fee4cd-31d4-4e12-944c-5eac20f68da8",
+                      "name": "Hello",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "f835c755-d70b-42d8-a979-01f67c3c47e8",
+                      "name": "Hello Meteor",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "670fda82-b7cf-47fd-b94d-9b4bab4bd9b7",
+                      "name": "ハロー！プロジェクト",
+                      "area": {
+                        "name": "Japan",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1997",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "765774a0-2060-469b-8b7d-612eea48579b",
+                      "name": "Helloween",
+                      "area": {
+                        "name": "Germany",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1984",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "57233aae-d23e-4f8b-8e5a-231d159afa1c",
+                      "name": "Hello Seahorse!",
+                      "area": {
+                        "name": "Mexico",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2005",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "b616019a-810c-4b05-a558-ad8406f225ff",
+                      "name": "Hello Saferide",
+                      "area": {
+                        "name": "Sweden",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1977-11-22",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "253e0f1e-df91-47da-8e0a-1979c343b485",
+                      "name": "Hello Sailor",
+                      "area": {
+                        "name": "New Zealand",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1975",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "9365b23a-8d8e-48cd-8706-c861479dbaa8",
+                      "name": "Hello Sleepwalkers",
+                      "area": {
+                        "name": "Okinawa",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2008",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "bea476c8-29ce-4042-8a6a-68149744e6c9",
+                      "name": "Big Hello",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "fcb7ba0e-a0c6-43ff-b5e5-3f07de53a372",
+                      "name": "Ceramic Hello",
+                      "area": {
+                        "name": "Canada",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1980",
+                        "end": "1983",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "9681f101-783a-487d-bd95-b4c92b078e40",
+                      "name": "Hello Dave",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "780dc4ba-f74c-4ca1-8f37-f94fa4f14392",
+                      "name": "Howard Hello",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2001",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "866956fd-21f5-4124-bc9f-d62edf3cb781",
+                      "name": "Hello World",
+                      "area": {
+                        "name": "Gothenburg",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "bb0e21e1-7e19-4edd-a898-9aa6daac5fba",
+                      "name": "Hello Shark",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "392ff502-3d7a-491d-a1fd-eb287a6652ad",
+                      "name": "Hey! Hello!",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2012",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "23fe1b5d-d6ff-436c-a51f-c2cc769e331f",
+                      "name": "Hello Heartland",
+                      "area": {
+                        "name": "Sweden",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "86ee85ed-73dd-4357-9ca3-b28a0d9530fc",
+                      "name": "Hello Skinny",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "6ada0670-75f5-471e-b0c3-39cd0b5a04fe",
+                      "name": "Hello Goodbye",
+                      "area": {
+                        "name": "Norway",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "6453dc03-9946-4ea8-88db-8f721de7ddef",
+                      "name": "Hello Operator",
+                      "area": {
+                        "name": "North Yorkshire",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2015-09-30",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a923b576-016f-431f-a69f-e902ae3493a8",
+                      "name": "Olle Helander",
+                      "area": {
+                        "name": "Sweden",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1919-08-02",
+                        "end": "1976-04-15",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "4ae9bf33-d172-4f9b-be9a-f09db0e2c9fe",
+                      "name": "Hello Echo",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "2008",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "df67e9a1-f381-4153-a4ab-c20167d2876e",
+                      "name": "Sweet Hello",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "2004",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3b522e5f-e6c3-418a-9ba7-6157ea851caa",
+                      "name": "Hello Whirled",
+                      "area": {
+                        "name": "New Jersey",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2016-10-04",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    }
+                  ],
+                  "__typename": "ArtistConnection"
+                },
+                "__typename": "SearchQuery"
+              }
+            }
+          },
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        },
+        {
+          "id": "uxx7QSVtQ",
+          "operationName": "SearchForArtist",
+          "sessionId": "v_2PmJCky",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "dog"
+          },
+          "response": {
+            "data": {
+              "search": {
+                "artists": {
+                  "nodes": [
+                    {
+                      "id": "4a092f42-0cb5-4ebd-a78e-e6204776233d",
+                      "name": "Dog Dog Dog",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "2d91fff5-460c-431b-a44c-21d345129a91",
+                      "name": "Dog Eat Dog",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1990",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "1af89786-df38-4783-b3db-b2a5eaf4f81d",
+                      "name": "Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "0a0dcdf4-86d5-4436-9c09-67fd02550efb",
+                      "name": "Salty Dog",
+                      "area": {
+                        "name": "Japan",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2011-09",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "c3d171f0-e6a1-4e6f-9d8f-7b79facdff8d",
+                      "name": "Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "507d2890-2202-4065-bd60-552554f1093f",
+                      "name": "+DOG+",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "1caa31d6-2c8a-4624-98df-a38f9d5f603d",
+                      "name": "DJ Kohlensäure",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "1983-08-15",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "c4ec54d4-782b-485f-bb15-418244f91087",
+                      "name": "Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "bab0e1e7-f1ec-46ea-bd13-28da689d1cf5",
+                      "name": "D.O.G.",
+                      "area": {
+                        "name": "Los Angeles",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a78d2a35-c083-4179-a5d8-49f84e5ec863",
+                      "name": "The Black Dog",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1989-05-23",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "0b35b0ab-cebe-4b32-9688-c6b52ea052c1",
+                      "name": "D.O.G.",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a57b9fe5-6cd0-460d-b329-d4eeb0aa5865",
+                      "name": "D.O.G.",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "6046bdf0-d5d3-45b6-af63-b4dc5637732f",
+                      "name": "Dog",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "1c55b82b-5da5-4a3e-b18d-523da262e4e3",
+                      "name": "DOG",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "84fd6a91-6df5-4cfd-89e4-bbd10e182955",
+                      "name": "Dog Eat Dog",
+                      "area": {
+                        "name": "Finland",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3b669b03-4275-49d3-8f8a-b1572a3dbd49",
+                      "name": "Hey Dog Dog",
+                      "area": {
+                        "name": "San Francisco",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "59fdbf90-2178-4cb5-a36e-c3e39fecb06d",
+                      "name": "Dog a Dog",
+                      "area": {
+                        "name": "Italy",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "ed73740e-4360-474b-8bdd-875a9fe28dac",
+                      "name": "Dog Eat Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "e9aed5e5-ed35-4244-872e-194862290295",
+                      "name": "Dr. Dog",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1999",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "921c509c-ec6d-4d0c-8c3f-3ade91a2c56e",
+                      "name": "Dog Eat Dog Eat Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "bd21b7a2-c6b5-45d6-bdb7-18e5de8bfa75",
+                      "name": "HOUND DOG",
+                      "area": {
+                        "name": "Japan",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1976",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "17db8438-f314-46ea-98e3-8a116c38d504",
+                      "name": "Pavlov’s Dog",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1972",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "e3660b01-dd9f-48f3-90f4-5158f2b8917f",
+                      "name": "that dog.",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1991",
+                        "end": "1997",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "1403fbec-11e3-4ccb-af25-d26c9a05bc9d",
+                      "name": "Swamp Dogg",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1942-07-12",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "4cddb593-0bcc-4d7c-99f1-be6da76b3714",
+                      "name": "American Dog",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    }
+                  ],
+                  "__typename": "ArtistConnection"
+                },
+                "__typename": "SearchQuery"
+              }
+            }
+          },
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/v_2PmJCky/requests",
+  "sessionId": "KHa4caLyR",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "id": "someSchemaId",
+  "name": "some contrived test schema",
+  "hash": "booBopImASchemaHaSh",
+  "introspectionQuery": {}
+}

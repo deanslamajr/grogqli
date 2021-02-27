@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "id": "F1GxkGF55",
+  "operationName": "GetWorkflows",
+  "query": "query GetWorkflows {\n  workflows {\n    id\n    name\n    __typename\n  }\n}\n",
+  "variables": {},
+  "response": {
+    "data": {
+      "workflows": [
+        {
+          "id": "SFnJnsuvhk",
+          "name": "sandwich",
+          "__typename": "Workflow"
+        },
+        {
+          "id": "bdtIXujHi45",
+          "name": "taco",
+          "__typename": "Workflow"
+        },
+        {
+          "id": "0dP1u5cGJLE",
+          "name": "big dog -> tweezer",
+          "__typename": "Workflow"
+        },
+        {
+          "id": "K0n630UyEST",
+          "name": "some workflow",
+          "__typename": "Workflow"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/fEYfGwFwB/mocking",
+  "sessionId": "bh2kZO6aS",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

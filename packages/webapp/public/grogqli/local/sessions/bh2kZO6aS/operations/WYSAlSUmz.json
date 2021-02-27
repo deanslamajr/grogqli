@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "id": "WYSAlSUmz",
+  "operationName": "CreateWorkflow",
+  "query": "mutation CreateWorkflow($input: CreateWorkflowInput!) {\n  createWorkflow(input: $input) {\n    resultCode\n    __typename\n  }\n}\n",
+  "variables": {
+    "input": {
+      "operations": [
+        {
+          "sessionId": "fEYfGwFwB",
+          "tempRecordingId": "CjX8SM0x4"
+        },
+        {
+          "sessionId": "fEYfGwFwB",
+          "tempRecordingId": "rlREoOrpj"
+        }
+      ],
+      "workflow": {
+        "name": "Roswell",
+        "description": "search term \"roswell\""
+      },
+      "schemasMappings": [
+        {
+          "opsRecordingsSchemaUrl": "graphbrainz.herokuapp.com/",
+          "opsRecordingsSchemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "targetSchemaId": "4l0GfSjFC",
+          "schemaName": null
+        }
+      ]
+    }
+  },
+  "response": {
+    "data": {
+      "createWorkflow": {
+        "resultCode": "SUCCESS",
+        "__typename": "CreateWorkflowResponse"
+      }
+    }
+  },
+  "referrer": "http://localhost:5678/session/fEYfGwFwB/requests",
+  "sessionId": "bh2kZO6aS",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

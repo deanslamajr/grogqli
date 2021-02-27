@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "id": "ilSkTKwMh",
+  "operationName": "CreateWorkflow",
+  "query": "mutation CreateWorkflow($input: CreateWorkflowInput!) {\n  createWorkflow(input: $input) {\n    resultCode\n    __typename\n  }\n}\n",
+  "variables": {
+    "input": {
+      "operations": [
+        {
+          "sessionId": "XR1WO5uhM",
+          "tempRecordingId": "dcu5l6JG_"
+        },
+        {
+          "sessionId": "XR1WO5uhM",
+          "tempRecordingId": "IFkOTT1NQ"
+        }
+      ],
+      "workflow": {
+        "name": "some workflow",
+        "description": "some description"
+      },
+      "schemasMappings": [
+        {
+          "opsRecordingsSchemaUrl": "graphbrainz.herokuapp.com/",
+          "opsRecordingsSchemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "schemaName": "GraphBrainz",
+          "targetSchemaId": "NEW"
+        }
+      ]
+    }
+  },
+  "response": {
+    "data": {
+      "createWorkflow": {
+        "resultCode": "SUCCESS",
+        "__typename": "CreateWorkflowResponse"
+      }
+    }
+  },
+  "referrer": "http://localhost:5678/session/XR1WO5uhM/requests",
+  "sessionId": "2WQUdOU4S",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "ZlxJipcP2",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {}
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "Variable \"$input\" got invalid value {}; Field \"sessionId\" of required type \"String!\" was not provided.",
+        "locations": [
+          {
+            "line": 1,
+            "column": 27
+          }
+        ],
+        "extensions": {
+          "code": "INTERNAL_SERVER_ERROR",
+          "exception": {
+            "stacktrace": [
+              "",
+              "Variable \"$input\" got invalid value {}; Field \"sessionId\" of required type \"String!\" was not provided.",
+              "",
+              "\u001b[0m \u001b[90m 88434 | \u001b[39m      }\u001b[0m",
+              "\u001b[0m \u001b[90m 88435 | \u001b[39m\u001b[0m",
+              "\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 88436 | \u001b[39m      onError(\u001b[36mnew\u001b[39m _error_GraphQLError_mjs__WEBPACK_IMPORTED_MODULE_4__[\u001b[32m\"GraphQLError\"\u001b[39m](prefix \u001b[33m+\u001b[39m \u001b[32m'; '\u001b[39m \u001b[33m+\u001b[39m error\u001b[33m.\u001b[39mmessage\u001b[33m,\u001b[39m varDefNode\u001b[33m,\u001b[39m undefined\u001b[33m,\u001b[39m undefined\u001b[33m,\u001b[39m undefined\u001b[33m,\u001b[39m error\u001b[33m.\u001b[39moriginalError))\u001b[33m;\u001b[39m\u001b[0m",
+              "\u001b[0m \u001b[90m 88437 | \u001b[39m    })\u001b[33m;\u001b[39m\u001b[0m",
+              "\u001b[0m \u001b[90m 88438 | \u001b[39m  }\u001b[33m;\u001b[39m\u001b[0m",
+              "\u001b[0m \u001b[90m 88439 | \u001b[39m\u001b[0m",
+              "GraphQLError: Variable \"$input\" got invalid value {}; Field \"sessionId\" of required type \"String!\" was not provided.",
+              "    at /home/dhan/codes/grogqli/packages/server/build/server.js:88436:15",
+              "    at coerceInputValueImpl (/home/dhan/codes/grogqli/packages/server/build/server.js:99106:11)",
+              "    at coerceInputValueImpl (/home/dhan/codes/grogqli/packages/server/build/server.js:99061:14)",
+              "    at coerceInputValue (/home/dhan/codes/grogqli/packages/server/build/server.js:99044:10)",
+              "    at _loop (/home/dhan/codes/grogqli/packages/server/build/server.js:88429:119)",
+              "    at coerceVariableValues (/home/dhan/codes/grogqli/packages/server/build/server.js:88441:16)",
+              "    at getVariableValues (/home/dhan/codes/grogqli/packages/server/build/server.js:88370:19)",
+              "    at buildExecutionContext (/home/dhan/codes/grogqli/packages/server/build/server.js:87628:101)",
+              "    at executeImpl (/home/dhan/codes/grogqli/packages/server/build/server.js:87527:20)",
+              "    at Module.execute (/home/dhan/codes/grogqli/packages/server/build/server.js:87487:35)",
+              ""
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "referrer": "http://localhost:5678/session/fEYfGwFwB/requests",
+  "sessionId": "XcY0vOAgG",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

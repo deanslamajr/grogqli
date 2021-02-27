@@ -1,0 +1,396 @@
+{
+  "version": 1,
+  "id": "Tzcr-Ylfr",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "fEYfGwFwB"
+    }
+  },
+  "response": {
+    "data": {
+      "temporaryOperationRecordings": [
+        {
+          "id": "CjX8SM0x4",
+          "operationName": "SearchForArtist",
+          "sessionId": "fEYfGwFwB",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "roswell"
+          },
+          "response": {
+            "data": {
+              "search": {
+                "artists": {
+                  "nodes": [
+                    {
+                      "id": "332cd868-f002-46fa-8a21-3b36b75d0463",
+                      "name": "Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "d18f5b23-df62-4dd9-ad62-f88fa988917c",
+                      "name": "Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3588538c-955f-4ee0-9ee0-f5addffc1357",
+                      "name": "Roswell",
+                      "area": {
+                        "name": "Canada",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1992",
+                        "end": null,
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "c1ac5a41-5aaf-4f8e-9b65-85822a77292c",
+                      "name": "Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "2018",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "d040dc26-f38f-47f6-a3df-0e22326dbc72",
+                      "name": "Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a9decd90-5896-4c5d-bce7-c9703abfb10f",
+                      "name": "Roswell",
+                      "area": {
+                        "name": "Guadalajara",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "52f469ef-3992-4b0f-9560-c9982d98c146",
+                      "name": "Roswell Rudd",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1935-11-17",
+                        "end": "2017-12-21",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "e6537f96-7620-4f8d-8810-0d96e89ee89f",
+                      "name": "Roswell Return",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "c7b95f1a-3cdb-4597-a338-d00487477059",
+                      "name": "Roswell Six",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "9610de01-0e28-4ab2-8d12-766bb9885843",
+                      "name": "Roswell Invaders",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "533d3667-8f4f-40b1-ba97-0fa02cf8ba5b",
+                      "name": "Sterling Roswell",
+                      "area": {
+                        "name": "United Kingdom",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "66b1f790-b501-48fa-bbe6-6d6ced2fb1ee",
+                      "name": "Pearce Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "7e9c7303-a94b-4532-8613-bb9399647a7b",
+                      "name": "Dave Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "6232634e-e412-4251-8514-cc965a7c5d80",
+                      "name": "Roswell-A",
+                      "area": {
+                        "name": "France",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2008-01-04",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "361e572e-7f96-4692-a224-b861e2a0f589",
+                      "name": "The Roswell's",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "9d5c91d9-118a-4af8-b9db-ea0b053141a0",
+                      "name": "Roswell Santiago",
+                      "area": {
+                        "name": "Philippines",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "85dda922-ff05-4411-ba22-424fde90afd2",
+                      "name": "Roswell Kings",
+                      "area": {
+                        "name": "South Africa",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2000",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "f2edb4c4-18b2-4dfa-b74d-95b9dc0fe8dc",
+                      "name": "Roswell Project",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "d8c3f478-623c-4ff0-ba43-390f49b8ae32",
+                      "name": "Illien Roswell",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "55d02272-b456-49e3-8c06-ebe9536c680c",
+                      "name": "Roswell Conspiracy",
+                      "area": {
+                        "name": "France",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "0f078141-3816-4eee-973b-1a1d7c97f04c",
+                      "name": "Roswell Angier",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "f0550306-9381-486c-82c7-db79208a3910",
+                      "name": "Angelika Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "0ebf237e-47b7-4eaa-8129-c9453ae859c9",
+                      "name": "Ann Roswell",
+                      "area": {
+                        "name": "Belgium",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1931-03-12",
+                        "end": "2002-09-24",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3d8f4956-f69b-4567-acf2-06f114220ba2",
+                      "name": "Trevor Roswell",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "fd278131-274a-4390-8099-46c5c65692f1",
+                      "name": "Ron Roswell",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    }
+                  ],
+                  "__typename": "ArtistConnection"
+                },
+                "__typename": "SearchQuery"
+              }
+            }
+          },
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        },
+        {
+          "id": "rlREoOrpj",
+          "operationName": "ArtistLookup",
+          "sessionId": "fEYfGwFwB",
+          "query": "query ArtistLookup($artistId: MBID!) {\n  lookup {\n    artist(mbid: $artistId) {\n      name\n      releaseGroups(type: ALBUM) {\n        nodes {\n          title\n          firstReleaseDate\n          coverArtArchive {\n            hasArtwork: artwork\n            images {\n              image\n              thumbnails {\n                small\n                large\n                __typename\n              }\n              front\n              back\n              __typename\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "artistId": "533d3667-8f4f-40b1-ba97-0fa02cf8ba5b"
+          },
+          "response": null,
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/fEYfGwFwB/requests",
+  "sessionId": "bh2kZO6aS",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

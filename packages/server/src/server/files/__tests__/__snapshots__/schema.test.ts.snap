@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`schema conditionallyCreateOrUpdateSchemaRecordings if a given schemaMapping.targetSchemaId === 'NEW' if schemaMapping.schemaName === null should throw 1`] = `"\\"input.schemaMappings.schemaName\\" is required for new schema creation."`;
+
+exports[`schema if a given schemaMapping.targetSchemaId !== 'NEW' if the given schemaMapping.opsRecordingsSchemaHash does not match the hash associated with the given schemaMapping.targetSchemaId should throw 1`] = `"TODO: Schema hashes dont match"`;
+
+exports[`schema if a given schemaMapping.targetSchemaId !== 'NEW' if the given schemaMapping.opsRecordingsSchemaHash matches the hash associated with the given schemaMapping.targetSchemaId should resolve the expected data 1`] = `
+Array [
+  Object {
+    "schemaHash": "booBopImASchemaHaSh",
+    "schemaId": "someSchemaId",
+  },
+]
+`;

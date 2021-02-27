@@ -1,14 +1,14 @@
 import { IObjectTypeResolver } from '@graphql-tools/utils';
 import { Config } from 'apollo-server-core';
 
-import { SchemaRecording } from '../../../files/schema';
+import { SchemaRecordingFile } from '../../../files/schema';
 import { fieldResolverFactory } from './fieldResolverFactory';
 
 type Resolvers = NonNullable<Config['resolvers']>;
 
 export const createResolvers = async ({
   introspectionQuery: schema,
-}: SchemaRecording): Promise<Resolvers> => {
+}: SchemaRecordingFile): Promise<Resolvers> => {
   return schema.__schema.types
     .filter(({ name }) => !name.includes('__'))
     .reduce<Resolvers>((resolvers, CurrentType) => {

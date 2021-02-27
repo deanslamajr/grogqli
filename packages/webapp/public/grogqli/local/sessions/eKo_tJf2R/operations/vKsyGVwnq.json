@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "vKsyGVwnq",
+  "operationName": "UpdateHandlerSession",
+  "query": "mutation UpdateHandlerSession($input: UpdateHandlerSessionInput!) {\n  updateHandlerSession(input: $input) {\n    updatedHandler {\n      ...HandlerSessionFragment\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment HandlerSessionFragment on Handler {\n  id\n  name\n  currentState\n  workflowId\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "v_2PmJCky",
+      "name": null,
+      "currentState": "RECORDING",
+      "workflowId": "SFnJnsuvhk"
+    }
+  },
+  "response": {
+    "data": {
+      "updateHandlerSession": {
+        "updatedHandler": {
+          "id": "v_2PmJCky",
+          "name": "http://localhost:3000/",
+          "currentState": "RECORDING",
+          "workflowId": "SFnJnsuvhk",
+          "__typename": "Handler"
+        },
+        "__typename": "UpdateHandlerSessionResponse"
+      }
+    }
+  },
+  "referrer": "http://localhost:5678/session/v_2PmJCky/mocking",
+  "sessionId": "eKo_tJf2R",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

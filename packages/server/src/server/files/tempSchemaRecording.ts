@@ -1,15 +1,17 @@
-import shortid from 'shortid';
 import {
   buildSchema,
   IntrospectionQuery,
   lexicographicSortSchema,
+  GraphQLSchema,
   printSchema,
   stripIgnoredCharacters,
 } from 'graphql';
 import editJsonFile from 'edit-json-file';
 import crypto from 'crypto';
+import fs from 'fs';
 
-import { createSchemaSDL } from '../createSchemaSDL';
+import { buildGraphQLSchemaFromIntrospectionQuery } from '../utils/buildGraphQLSchemaFromIntrospectionQuery';
+import { createSchemaSDL } from '../utils/createSchemaSDL';
 
 import {
   doesFileExist,
@@ -24,6 +26,43 @@ interface TemporarySchemaRecordingVersion1 {
   hash: string;
   introspectionQuery: IntrospectionQuery;
 }
+
+type Get = (schemaHash) => Promise<TemporarySchemaRecording | null>;
+export const get: Get = async (schemaHash) => {
+  const tempSchemaRecordingsPath = await getTemporarySchemaRecordingFilename(
+    schemaHash
+  );
+
+  let temporarySchemaRecordingFile: TemporarySchemaRecording | null;
+  try {
+    temporarySchemaRecordingFile = JSON.parse(
+      await fs.promises.readFile(tempSchemaRecordingsPath, 'utf8')
+    );
+  } catch (error) {
+    console.error(
+      `could not open temporarySchemaRecordingFile with schemaHash:${schemaHash}`,
+      { error }
+    );
+    temporarySchemaRecordingFile = null;
+  }
+
+  return temporarySchemaRecordingFile;
+};
+
+type BuildGraphQLSchema = (schemaHash: string) => Promise<GraphQLSchema>;
+export const buildGraphQLSchema: BuildGraphQLSchema = async (schemaHash) => {
+  const temporarySchemaRecordingFile = await get(schemaHash);
+  if (temporarySchemaRecordingFile === null) {
+    throw new Error(`
+      Error while building a graphql schema:
+      Cannot find a file for the given temporary schema recording hash:${schemaHash}
+    `);
+  }
+
+  return buildGraphQLSchemaFromIntrospectionQuery(
+    temporarySchemaRecordingFile.introspectionQuery
+  );
+};
 
 type PersistTempSchemaRecording = (
   schemaIntrospectionResult: IntrospectionQuery

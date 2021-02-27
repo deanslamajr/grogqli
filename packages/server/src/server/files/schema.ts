@@ -1,24 +1,35 @@
 import shortid from 'shortid';
 import editJsonFile from 'edit-json-file';
-import { IntrospectionQuery } from 'graphql';
+import {
+  IntrospectionQuery,
+  findBreakingChanges,
+  findDangerousChanges,
+  GraphQLSchema,
+} from 'graphql';
 import { SchemasMappingsInput } from '@grogqli/schema';
 import fs from 'fs';
 import glob from 'glob';
 
+import { buildGraphQLSchemaFromIntrospectionQuery } from '../utils/buildGraphQLSchemaFromIntrospectionQuery';
+
 import { add as createSchemaMapping } from './schemaMapping';
-import { TemporarySchemaRecording } from './tempSchemaRecording';
+import {
+  buildGraphQLSchema as buildGraphQLSchemaFromTemporarySchemaRecording,
+  get as getTemporarySchemaRecordingFile,
+} from './tempSchemaRecording';
 
 import {
   doesFileExist,
-  getTemporarySchemaRecordingFilename,
   mapObjectToJsonFile,
   SCHEMA_FILE_VERSION,
   getSchemaRecordingFilePath,
   getSchemasFolderPath,
 } from './';
 
-export type SchemaRecording = SchemaRecordingVersion1;
-interface SchemaRecordingVersion1 {
+export const NEW_SCHEMA_NAME = 'NEW';
+
+export type SchemaRecordingFile = SchemaRecordingFileVersion1;
+interface SchemaRecordingFileVersion1 {
   version: 1;
   id: string;
   name: string;
@@ -31,17 +42,35 @@ const compareHashes = async (
   hash: string
 ): Promise<boolean> => {
   const schemaRecordingFile = await getSchemaRecordingFile(schemaId);
+  if (schemaRecordingFile === null) {
+    throw new Error(`
+      Error while comparing schema hashes:
+      Cannot find a file for a schema recording associated with the following schemaId:${schemaId}
+    `);
+  }
+
   return schemaRecordingFile.hash === hash;
 };
 
 export const getSchemaRecordingFile = async (
   schemaId: string
-): Promise<SchemaRecording> => {
+): Promise<SchemaRecordingFile | null> => {
   const schemaRecordingFilePath = await getSchemaRecordingFilePath(schemaId);
 
-  return JSON.parse(
-    await fs.promises.readFile(schemaRecordingFilePath, 'utf8')
-  );
+  let schemaRecordingFile: SchemaRecordingFile | null;
+  try {
+    schemaRecordingFile = JSON.parse(
+      await fs.promises.readFile(schemaRecordingFilePath, 'utf8')
+    );
+  } catch (error) {
+    console.error(
+      `Could not open schemaRecordingFile with schemaId:${schemaId}`,
+      { error }
+    );
+    schemaRecordingFile = null;
+  }
+
+  return schemaRecordingFile;
 };
 
 export const all = async () => {
@@ -80,25 +109,18 @@ const createNewSchemaRecording: CreateNewSchemaRecording = async ({
   schemaUrl,
   schemaName,
 }) => {
-  const tempSchemaRecordingsPath = await getTemporarySchemaRecordingFilename(
+  const temporarySchemaRecordingFile = await getTemporarySchemaRecordingFile(
     schemaHash
   );
-
-  let temporarySchemaRecordingFile: TemporarySchemaRecording;
-  try {
-    temporarySchemaRecordingFile = JSON.parse(
-      await fs.promises.readFile(tempSchemaRecordingsPath, 'utf8')
-    );
-  } catch (error) {
-    console.error(error);
+  if (temporarySchemaRecordingFile === null) {
     throw new Error(`
       Error while creating new schema recording from temporary schema recording:
       Cannot find a file for the given temporary schema recording hash:${schemaHash}
     `);
   }
 
-  const generateUniqueSchemaIdAndCreateSchemaRecordingFile = async (): Promise<SchemaRecording> => {
-    const newSchemaRecording: SchemaRecording = {
+  const generateUniqueSchemaIdAndCreateSchemaRecordingFile = async (): Promise<SchemaRecordingFile> => {
+    const newSchemaRecording: SchemaRecordingFile = {
       version: SCHEMA_FILE_VERSION,
       id: shortid.generate(),
       name: schemaName,
@@ -130,6 +152,48 @@ const createNewSchemaRecording: CreateNewSchemaRecording = async ({
   return schemaId;
 };
 
+type BuildGraphqlSchema = (schemaId: string) => Promise<GraphQLSchema>;
+const buildGraphQLSchema: BuildGraphqlSchema = async (schemaId) => {
+  const schemaRecordingFile = await getSchemaRecordingFile(schemaId);
+  if (schemaRecordingFile === null) {
+    throw new Error(`
+      Error while building graphql schema:
+      Cannot find a file for a schema recording associated with the following schemaId:${schemaId}
+    `);
+  }
+
+  return buildGraphQLSchemaFromIntrospectionQuery(
+    schemaRecordingFile.introspectionQuery
+  );
+};
+
+interface SchemaDifferences {
+  breakingChanges: ReturnType<typeof findBreakingChanges>;
+  dangerousChanges: ReturnType<typeof findDangerousChanges>;
+}
+
+type DeriveSchemaDifferences = (params: {
+  oldSchemaId: string;
+  newSchemaHash: string;
+}) => Promise<SchemaDifferences>;
+const deriveSchemaDifferences: DeriveSchemaDifferences = async ({
+  oldSchemaId,
+  newSchemaHash,
+}) => {
+  const [oldSchema, newSchema] = await Promise.all([
+    buildGraphQLSchema(oldSchemaId),
+    buildGraphQLSchemaFromTemporarySchemaRecording(newSchemaHash),
+  ]);
+
+  const breakingChanges = findBreakingChanges(oldSchema, newSchema);
+  const dangerousChanges = findDangerousChanges(oldSchema, newSchema);
+
+  return {
+    breakingChanges,
+    dangerousChanges,
+  };
+};
+
 export interface UpdatedSchemasMapping {
   schemaHash: string;
   schemaId: string;
@@ -150,7 +214,7 @@ export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrU
         schemaName,
       }) => {
         // handle NEW case
-        if (targetSchemaId === 'NEW') {
+        if (targetSchemaId === NEW_SCHEMA_NAME) {
           if (schemaName === null) {
             throw new Error(
               '"input.schemaMappings.schemaName" is required for new schema creation.'
@@ -172,7 +236,11 @@ export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrU
             opsRecordingsSchemaHash
           );
 
-          if (!doSchemaHashesMatch) {
+          if (doSchemaHashesMatch === false) {
+            const schemaDifferences = await deriveSchemaDifferences({
+              oldSchemaId: targetSchemaId,
+              newSchemaHash: opsRecordingsSchemaHash,
+            });
             throw new Error('TODO: Schema hashes dont match');
           }
 

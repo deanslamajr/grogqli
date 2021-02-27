@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "id": "dIXLXwhmR",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "XR1WO5uhM"
+    }
+  },
+  "response": {
+    "data": {
+      "temporaryOperationRecordings": [
+        {
+          "id": "dcu5l6JG_",
+          "operationName": "SearchForArtist",
+          "sessionId": "XR1WO5uhM",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "device"
+          },
+          "response": {
+            "data": {
+              "search": {
+                "artists": {
+                  "nodes": [
+                    {
+                      "id": "b50e0f61-541f-4352-a346-61f23df981a9",
+                      "name": "Device",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2012",
+                        "end": "2015",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "ca554b30-d1e0-4cfc-8e81-8301906f4899",
+                      "name": "Device",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1986",
+                        "end": "1987",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "6cc2771a-bfb7-4fac-9f25-ab293366f442",
+                      "name": "Device",
+                      "area": {
+                        "name": "Canada",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2009",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "95417f18-2e0c-451b-a268-a350247ed72b",
+                      "name": "Device",
+                      "area": {
+                        "name": "Latvia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1998",
+                        "end": "2009",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "dcb37d45-cb1b-45b8-9c82-7b8e34c4f50a",
+                      "name": "Device",
+                      "area": {
+                        "name": "Brazil",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2004",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "8176b0ba-9c1b-476e-a3e2-37e1380ccffc",
+                      "name": "Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "9c9c29b8-7275-4e7a-a116-9f74b8c82ea9",
+                      "name": "Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "ca648ceb-ef29-4e4b-9ed9-cb89586d86a6",
+                      "name": "Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "4cb2d637-7172-4532-9589-e208aa60b986",
+                      "name": "Device",
+                      "area": {
+                        "name": "Argentina",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "83aee7f5-ac60-4803-9fc9-86d81f9f77cb",
+                      "name": "Device",
+                      "area": {
+                        "name": "New Zealand",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "e235ffd4-94c6-4800-b86a-66bf6d4f854d",
+                      "name": "Device",
+                      "area": {
+                        "name": "Netherlands",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1999",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "91504096-a19c-42d7-a33a-2947f01b9977",
+                      "name": "Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "8e830da9-a122-46e4-8587-033bfa8ada11",
+                      "name": "Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "eb558587-e7a1-4f2b-9fda-b6ff5e137ed1",
+                      "name": "Device",
+                      "area": {
+                        "name": "Estonia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "326c1c22-207a-4ff0-9a6f-1ae12dcb6f48",
+                      "name": "Sound Devise",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a5a38385-5120-4ff8-a2fd-16639da732f6",
+                      "name": "Null Device",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1996",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "ab882582-bf01-4587-a184-4eaf5b7e0748",
+                      "name": "Device Noize",
+                      "area": {
+                        "name": "Mexico",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "667d5854-ad33-4345-9536-82149d71ce29",
+                      "name": "Arcane Device",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1949-02-24",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "d09bdcbd-0345-47a1-b4f3-b5f85c6fddab",
+                      "name": "Nuclear Device",
+                      "area": {
+                        "name": "France",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1983",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3ae80545-8328-4c4e-a49b-3f6b91f12a4f",
+                      "name": "Nice Device",
+                      "area": {
+                        "name": "Denmark",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1992",
+                        "end": "1996",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "75230a54-50f2-44c9-8064-0454d5cd270b",
+                      "name": "Vee Device",
+                      "area": {
+                        "name": "Fort Collins",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "8c6060b2-fee6-4a05-8fbd-88e0b4ec7521",
+                      "name": "Aimless Device",
+                      "area": {
+                        "name": "Belgium",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1985",
+                        "end": "1989",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "e71c3dc7-346d-4bcb-a8ae-7ce8046f36bb",
+                      "name": "Cynical Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "988caa59-071a-4041-ab46-2204bfe4b32f",
+                      "name": "Pascal Device",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "0c37a35e-01d9-447c-8b34-dbe96c7a99a5",
+                      "name": "Stereotaxic Device",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    }
+                  ],
+                  "__typename": "ArtistConnection"
+                },
+                "__typename": "SearchQuery"
+              }
+            }
+          },
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/XR1WO5uhM/requests",
+  "sessionId": "2WQUdOU4S",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

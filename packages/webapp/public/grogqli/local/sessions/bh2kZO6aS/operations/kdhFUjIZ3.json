@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "id": "kdhFUjIZ3",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "fEYfGwFwB"
+    }
+  },
+  "response": {
+    "data": {
+      "temporaryOperationRecordings": [
+        {
+          "id": "CjX8SM0x4",
+          "operationName": "SearchForArtist",
+          "sessionId": "fEYfGwFwB",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "roswell"
+          },
+          "response": null,
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/fEYfGwFwB/requests",
+  "sessionId": "bh2kZO6aS",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

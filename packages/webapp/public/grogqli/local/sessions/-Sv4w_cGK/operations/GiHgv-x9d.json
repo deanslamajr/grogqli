@@ -1,0 +1,388 @@
+{
+  "version": 1,
+  "id": "GiHgv-x9d",
+  "operationName": "GetTempOpRecordings",
+  "query": "query GetTempOpRecordings($input: TemporaryOperationRecordingsInput!) {\n  temporaryOperationRecordings(input: $input) {\n    ...TempOpRecordingFragment\n    __typename\n  }\n}\n\nfragment TempOpRecordingFragment on TemporaryOperationRecording {\n  id\n  operationName\n  sessionId\n  query\n  variables\n  response\n  schemaUrl\n  schemaHash\n  referrer\n  __typename\n}\n",
+  "variables": {
+    "input": {
+      "sessionId": "rRSHWh6aj"
+    }
+  },
+  "response": {
+    "data": {
+      "temporaryOperationRecordings": [
+        {
+          "id": "DjuNwT2FA",
+          "operationName": "SearchForArtist",
+          "sessionId": "rRSHWh6aj",
+          "query": "query SearchForArtist($query: String!) {\n  search {\n    artists(query: $query) {\n      nodes {\n        id: mbid\n        name\n        area {\n          name\n          __typename\n        }\n        lifeSpan {\n          begin\n          end\n          ended\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+          "variables": {
+            "query": "nonsense"
+          },
+          "response": {
+            "data": {
+              "search": {
+                "artists": {
+                  "nodes": [
+                    {
+                      "id": "3ae750dd-8fab-4e5c-9b38-5f190c3caf41",
+                      "name": "Nonsense",
+                      "area": {
+                        "name": "Sélestat",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1997",
+                        "end": "2009",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "800aea0c-51f8-4493-bf14-9464687358b5",
+                      "name": "NONSENSE",
+                      "area": {
+                        "name": "Czech Republic",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1995",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "fcca662d-f5e0-4a7d-90d2-3f8c40637cc2",
+                      "name": "Nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "fe47d55c-ced6-468b-b8b7-3d46a4a614bc",
+                      "name": "Nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "2010",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "db686b37-2159-4a54-a355-5f578d33e979",
+                      "name": "Nonsense",
+                      "area": {
+                        "name": "Estonia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": "1995",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "85026965-a07c-4b01-a5c4-fe4260e9a377",
+                      "name": "Nonsense",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "839891bd-1b13-4b65-ac52-d50443c83d2c",
+                      "name": "Nonsense",
+                      "area": {
+                        "name": "Greece",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "01733be2-fb75-4802-8fd2-d9e22a932681",
+                      "name": "Nonsense",
+                      "area": {
+                        "name": "Croatia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "2a620397-7d31-4f64-ac22-daed22b228ae",
+                      "name": "NonSense",
+                      "area": {
+                        "name": "Spain",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "b6895c73-dcfa-4505-967e-1e13ee1b598d",
+                      "name": "nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "642dc927-a9fd-40ae-9124-905357d05e9e",
+                      "name": "Logical Nonsense",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "1989",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "3e79f003-7db4-4194-bebb-18ec4fdd7f1b",
+                      "name": "G.G Nonsense",
+                      "area": {
+                        "name": "Russia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2008",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "117201dd-c17b-45cc-9c82-d6225928394c",
+                      "name": "Stylish Nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "2f11678f-78ab-4ec8-b601-00d94d9e1bd3",
+                      "name": "Nonsense Lyrics",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "8187d3b7-b646-41b7-adff-edfd078d444d",
+                      "name": "No Nonsense",
+                      "area": {
+                        "name": "Australia",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "b541a4b8-cb65-4376-91f0-39d4252fa36e",
+                      "name": "Le Nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "2fd596ab-e30f-4f4b-98bd-584074c0779d",
+                      "name": "Nonsense Club",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "2004-08",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "946b2acb-e0eb-43b1-ba7f-43a7284d56d0",
+                      "name": "Trivial Nonsense",
+                      "area": {
+                        "name": "United States",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": "2015-08-15",
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "ee6889af-eb69-4e69-8c17-3c81b2885520",
+                      "name": "No Nonsense",
+                      "area": {
+                        "name": "Belgium",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "cc19fdd7-0816-4b40-bd98-1bc154339ae1",
+                      "name": "Meaning of Nonsense",
+                      "area": {
+                        "name": "Japan",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "7f806f4d-70c3-4a40-a30c-16a98956d372",
+                      "name": "Nonsense-Mediated Decay",
+                      "area": {
+                        "name": "Sunderland",
+                        "__typename": "Area"
+                      },
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "fd17f215-4506-444e-88b4-5e7c1915d2d8",
+                      "name": "Quite Ridiculous Nonsense",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "d92649de-6b41-4b82-8134-05f257f546ff",
+                      "name": "Baron Titus and The Nonsense of Rock",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": "1990",
+                        "end": "1994",
+                        "ended": true,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "54a571c3-1539-4d94-bc3c-c7bad03cc4a4",
+                      "name": "Swing Kids",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    },
+                    {
+                      "id": "a26daaf0-609d-426c-9ebe-a5385dab6d0c",
+                      "name": "Critical Mass",
+                      "area": null,
+                      "lifeSpan": {
+                        "begin": null,
+                        "end": null,
+                        "ended": null,
+                        "__typename": "LifeSpan"
+                      },
+                      "__typename": "Artist"
+                    }
+                  ],
+                  "__typename": "ArtistConnection"
+                },
+                "__typename": "SearchQuery"
+              }
+            }
+          },
+          "schemaUrl": "graphbrainz.herokuapp.com/",
+          "schemaHash": "V0Z0wTSShrt6w5QbRFA7KBpLmVI=",
+          "referrer": "http://localhost:3000/",
+          "__typename": "TemporaryOperationRecording"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:5678/session/rRSHWh6aj/requests",
+  "sessionId": "-Sv4w_cGK",
+  "schemaUrl": "localhost:5678/grogqli/",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}

@@ -1,7 +1,7 @@
 import { ApolloServerBase } from 'apollo-server-core';
 
-import { getSchemaRecordingFile, SchemaRecording } from '../files/schema';
-import { createSchemaSDL } from '../createSchemaSDL';
+import { getSchemaRecordingFile, SchemaRecordingFile } from '../files/schema';
+import { createSchemaSDL } from '../utils/createSchemaSDL';
 import { createResolvers } from './createResolvers';
 
 interface CreateApolloServerParams {
@@ -22,11 +22,17 @@ export interface Context {
 export const createApolloServer = async ({
   schemaId,
 }: CreateApolloServerParams): Promise<ApolloServerBase> => {
-  const schemaFile: SchemaRecording = await getSchemaRecordingFile(schemaId);
+  const schemaRecordingFile = await getSchemaRecordingFile(schemaId);
+  if (schemaRecordingFile === null) {
+    throw new Error(`
+      Error while creating apollo server:
+      Cannot find a file for a schema recording associated with the following schemaId:${schemaId}
+    `);
+  }
 
   const [schemaSDL, resolvers] = await Promise.all([
-    createSchemaSDL(schemaFile.introspectionQuery),
-    createResolvers(schemaFile),
+    createSchemaSDL(schemaRecordingFile.introspectionQuery),
+    createResolvers(schemaRecordingFile),
   ]);
 
   const runTimeVariables = {} as RuntimeVariablesContainer;

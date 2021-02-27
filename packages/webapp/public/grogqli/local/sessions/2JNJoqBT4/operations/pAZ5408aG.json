@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "id": "pAZ5408aG",
+  "operationName": "GetWorkflows",
+  "query": "query GetWorkflows {\n  workflows {\n    id\n    name\n    __typename\n  }\n}\n",
+  "variables": {},
+  "response": {
+    "data": {
+      "workflows": [
+        {
+          "id": "fETBrnUgT6D",
+          "name": "e2e - roswell",
+          "__typename": "Workflow"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:6006/",
+  "sessionId": "2JNJoqBT4",
+  "schemaUrl": "localhost:1234/grogqli",
+  "schemaHash": "uODzu8exLbVtKBHO0zXBzqhgJBE="
+}
