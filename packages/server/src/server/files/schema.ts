@@ -167,7 +167,7 @@ const buildGraphQLSchema: BuildGraphqlSchema = async (schemaId) => {
   );
 };
 
-interface SchemaDifferences {
+export interface SchemaDifferences {
   breakingChanges: ReturnType<typeof findBreakingChanges>;
   dangerousChanges: ReturnType<typeof findDangerousChanges>;
 }
@@ -199,21 +199,23 @@ export interface UpdatedSchemasMapping {
   schemaId: string;
 }
 
+type SchemaUpdateResponse = UpdatedSchemasMapping | SchemaDifferences;
+
 type ConditionallyCreateOrUpdateSchemaRecordings = (
   schemaMappings: SchemasMappingsInput[]
-) => Promise<UpdatedSchemasMapping[]>;
+) => Promise<SchemaUpdateResponse[]>;
 export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrUpdateSchemaRecordings = async (
   schemaMappings
 ) => {
   return Promise.all(
-    schemaMappings.map<Promise<UpdatedSchemasMapping>>(
+    schemaMappings.map<Promise<SchemaUpdateResponse>>(
       async ({
         opsRecordingsSchemaHash,
         targetSchemaId,
         opsRecordingsSchemaUrl,
         schemaName,
       }) => {
-        // handle NEW case
+        // handle NEW schema case
         if (targetSchemaId === NEW_SCHEMA_NAME) {
           if (schemaName === null) {
             throw new Error(
@@ -230,22 +232,38 @@ export const conditionallyCreateOrUpdateSchemaRecordings: ConditionallyCreateOrU
             schemaHash: opsRecordingsSchemaHash,
             schemaId: newSchemaId,
           };
-        } else {
+        }
+        // handle existing schema case
+        else {
           const doSchemaHashesMatch = await compareHashes(
             targetSchemaId,
             opsRecordingsSchemaHash
           );
+
+          // let shouldUpdateSchemaHash = false;
 
           if (doSchemaHashesMatch === false) {
             const schemaDifferences = await deriveSchemaDifferences({
               oldSchemaId: targetSchemaId,
               newSchemaHash: opsRecordingsSchemaHash,
             });
-            throw new Error('TODO: Schema hashes dont match');
+            if (schemaDifferences.breakingChanges.length) {
+              return schemaDifferences;
+            }
+            // shouldUpdateSchemaHash = true;
           }
 
           // TODO
-          // handle conditionally adding any new opsRecordingsSchemaUrl's to the mapped targetSchemaId
+          // if
+          //    schemaUrl is not yet associated with the existing schema recording
+          //    OR shouldUpdateSchemaHash
+          // then:
+          //
+          // updateSchema({
+          //   shouldUpdateHash: shouldUpdateSchemaHash,
+          //   newSchemaUrl: opsRecordingsSchemaUrl
+          // });
+
           return {
             schemaHash: opsRecordingsSchemaHash,
             schemaId: targetSchemaId,
