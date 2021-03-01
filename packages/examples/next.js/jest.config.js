@@ -10,4 +10,4 @@ module.exports = {
       { subsequentTransformer: 'babel-jest' },
     ],
   },
-}
+};

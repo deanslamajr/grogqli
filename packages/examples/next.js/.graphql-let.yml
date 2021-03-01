@@ -1,6 +1,7 @@
 schema:
   - https://graphbrainz.herokuapp.com/
-documents: "**/*.graphql"
+  - '**/*.graphqls'
+documents: '**/*.graphql'
 plugins:
   - typescript
   - typescript-operations

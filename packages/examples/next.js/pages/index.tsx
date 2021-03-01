@@ -1,25 +1,25 @@
-import { FC, useState } from "react";
-import Link from "next/link";
+import { FC, useState } from 'react';
+import Link from 'next/link';
 
 import {
   useSearchForArtistLazyQuery,
   SearchForArtistQuery,
-  SearchForArtistDocument,
-} from "../lib/SearchForArtist.graphql";
-import { initializeApollo } from "../lib/apollo";
+} from '../lib/SearchForArtist.graphql';
+import { useGetThingLazyQuery } from '../lib/GetThing.graphql';
+import { initializeApollo, LOCAL_GQL_KEY } from '../lib/apollo';
 
-import styles from "../components/index.module.css";
+import styles from '../components/index.module.css';
 
 type Artist = NonNullable<
   NonNullable<
-    NonNullable<NonNullable<SearchForArtistQuery["search"]>["artists"]>["nodes"]
+    NonNullable<NonNullable<SearchForArtistQuery['search']>['artists']>['nodes']
   >[number]
 >;
 
 const ArtistSearchResult: FC<{ artist: Artist }> = ({ artist }) => {
   return (
     <Link href={`/artist/${artist.id}`}>
-      <div className={styles["artist"]}>
+      <div className={styles['artist']}>
         <h2>{artist.name}</h2>
         {artist.area ? <div>{artist.area.name}</div> : null}
         <div>
@@ -35,16 +35,32 @@ const ArtistSearchResult: FC<{ artist: Artist }> = ({ artist }) => {
 
 const Index = () => {
   const [invokeQuery, { data, loading }] = useSearchForArtistLazyQuery();
-  const [inputValue, setInputValue] = useState("");
+  const [
+    getThing,
+    { data: thingData, loading: isThingLoading },
+  ] = useGetThingLazyQuery({
+    fetchPolicy: 'network-only',
+    context: {
+      clientName: LOCAL_GQL_KEY,
+    },
+  });
+  const [inputValue, setInputValue] = useState('');
 
   return (
-    <div className={styles["flex-container"]}>
+    <div className={styles['flex-container']}>
+      <div className={styles['form']}>
+        <div>
+          <input value="Get thing!" type="button" onClick={() => getThing()} />
+        </div>
+        <div>{thingData ? JSON.stringify(thingData) : null}</div>
+        <div>{isThingLoading ? 'loading thing' : null}</div>
+      </div>
       {loading ? (
         <>'Loading...'</>
       ) : (
         <>
           <form
-            className={styles["form"]}
+            className={styles['form']}
             onSubmit={(e) => {
               e.preventDefault();
               invokeQuery({ variables: { query: inputValue } });

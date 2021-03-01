@@ -1,7 +1,7 @@
-import {FC} from 'react';
-import { useRouter } from 'next/router'
+import { FC } from 'react';
+import { useRouter } from 'next/router';
 
-import { initializeApollo } from "../../lib/apollo";
+import { initializeApollo } from '../../lib/apollo';
 import {
   useArtistLookupQuery,
   ArtistLookupQuery,
@@ -10,65 +10,82 @@ import {
 import styles from '../../components/artist.module.css';
 
 type ReleaseProp = Pick<
-  NonNullable<NonNullable<NonNullable<NonNullable<NonNullable<ArtistLookupQuery["lookup"]>["artist"]>["releaseGroups"]>["nodes"]>[number]>,
-  "title" | "firstReleaseDate" | "coverArtArchive" 
+  NonNullable<
+    NonNullable<
+      NonNullable<
+        NonNullable<
+          NonNullable<ArtistLookupQuery['lookup']>['artist']
+        >['releaseGroups']
+      >['nodes']
+    >[number]
+  >,
+  'title' | 'firstReleaseDate' | 'coverArtArchive'
 >;
 
-const Release: FC<{release: ReleaseProp}> = ({release}) => {
-  const images = release.coverArtArchive?.images && release.coverArtArchive.images.map(
-    image => image?.thumbnails.small
-      ? image.thumbnails.small
-      : image?.thumbnails.large
-        ? image.thumbnails.large
-        : image?.image
-          ? <img src={image.image} />
-          : null
-  );
+const Release: FC<{ release: ReleaseProp }> = ({ release }) => {
+  const images =
+    release.coverArtArchive?.images &&
+    release.coverArtArchive.images.map((image) =>
+      image?.thumbnails.small ? (
+        image.thumbnails.small
+      ) : image?.thumbnails.large ? (
+        image.thumbnails.large
+      ) : image?.image ? (
+        <img src={image.image} />
+      ) : null
+    );
   const imageUrl = images?.find(Boolean);
 
-  return (<div className={styles['release']}>
-    <div>{release.title}</div>
-    <div>{release.firstReleaseDate}</div>
-    {imageUrl
-      ? <img src={imageUrl} />
-      : null
-    }
-  </div>)
-}
+  return (
+    <div className={styles['release']}>
+      <div>{release.title}</div>
+      <div>{release.firstReleaseDate}</div>
+      {imageUrl ? <img src={imageUrl} /> : null}
+    </div>
+  );
+};
 
 const Artist = () => {
-  const router = useRouter()
-  const { artistId } = router.query
-  const {data, loading, error} = useArtistLookupQuery({variables: {artistId}});
+  const router = useRouter();
+  const { artistId } = router.query;
+  const { data, loading, error } = useArtistLookupQuery({
+    variables: { artistId },
+  });
 
   if (loading) {
-    return (<div className={styles['outer-container']}>Loading...</div>);
+    return <div className={styles['outer-container']}>Loading...</div>;
   }
 
   if (error) {
     console.error(error);
-    return (<div className={styles['outer-container']}>error</div>);
+    return <div className={styles['outer-container']}>error</div>;
   }
 
   if (data?.lookup?.artist === null || data?.lookup?.artist === undefined) {
-    return (<div className={styles['outer-container']}>Artist not found</div>)
+    return <div className={styles['outer-container']}>Artist not found</div>;
   }
 
-  const {lookup: {artist: {
-    name,
-    releaseGroups
-  }}} = data;
+  const {
+    lookup: {
+      artist: { name, releaseGroups },
+    },
+  } = data;
 
-  return (<div className={styles['outer-container']}>
-    <h1>{name || ''}</h1>
-    {(releaseGroups?.nodes !== null && releaseGroups?.nodes !== undefined)
-      ? releaseGroups.nodes
-        .filter(release => (release !== undefined && release !== null))
-        .map(release => <Release key={release?.title || 'no-title'} release={release!} />)
-      : <div className={styles['release']}>No known releases</div>
-    }
-  </div>);
-}
+  return (
+    <div className={styles['outer-container']}>
+      <h1>{name || ''}</h1>
+      {releaseGroups?.nodes !== null && releaseGroups?.nodes !== undefined ? (
+        releaseGroups.nodes
+          .filter((release) => release !== undefined && release !== null)
+          .map((release) => (
+            <Release key={release?.title || 'no-title'} release={release!} />
+          ))
+      ) : (
+        <div className={styles['release']}>No known releases</div>
+      )}
+    </div>
+  );
+};
 
 export async function getServerSideProps() {
   const apolloClient = initializeApollo();
@@ -85,4 +102,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Artist
+export default Artist;
