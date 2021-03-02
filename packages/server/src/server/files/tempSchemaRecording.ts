@@ -9,6 +9,7 @@ import {
 import editJsonFile from 'edit-json-file';
 import crypto from 'crypto';
 import fs from 'fs';
+import sanitize from 'sanitize-filename';
 
 import { buildGraphQLSchemaFromIntrospectionQuery } from '../utils/buildGraphQLSchemaFromIntrospectionQuery';
 import { createSchemaSDL } from '../utils/createSchemaSDL';
@@ -100,7 +101,13 @@ const sortSDL = (sdl: string): string => {
 };
 
 const generateHash = (stringToHash: string): string => {
-  return crypto.createHash('sha1').update(stringToHash).digest('base64');
+  const rawHash = crypto
+    .createHash('sha1')
+    .update(stringToHash)
+    .digest('base64');
+  // need to remove reserved filesystem path characters
+  // in order to make the hash safe for use as file/folder names
+  return sanitize(rawHash);
 };
 
 export const generateHashFromSchema = async (
