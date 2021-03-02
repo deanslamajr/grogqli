@@ -2,5 +2,6 @@ query GetThing {
   thing {
     id
     name
+    streetName
   }
 }

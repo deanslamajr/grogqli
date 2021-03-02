@@ -8,7 +8,7 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { version } from '../package.json';
+import { version } from '../../package.json';
 
 export const LOCAL_GQL_KEY = 'LOCAL_GQL_KEY';
 

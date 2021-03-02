@@ -1,4 +1,5 @@
 type Thing {
   id: ID!
   name: String!
+  streetName: String!
 }

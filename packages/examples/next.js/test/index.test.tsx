@@ -1,6 +1,6 @@
 import { InMemoryCache, gql } from '@apollo/client';
 import React from 'react';
-import Index from '../pages';
+import Index from '../src/pages';
 import renderer from 'react-test-renderer';
 import { MockedProvider } from '@apollo/client/testing';
 

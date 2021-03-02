@@ -5,5 +5,6 @@ export const thingResolver = async (_parent, _args, _context, _info) => {
   return {
     id: shortid.generate(),
     name: faker.name.findName(),
+    streetName: faker.address.streetName(),
   };
 };
