@@ -4,8 +4,8 @@ import Link from 'next/link';
 import {
   useSearchForArtistLazyQuery,
   SearchForArtistQuery,
-} from '../lib/SearchForArtist.graphql';
-import { useGetThingLazyQuery } from '../lib/GetThing.graphql';
+} from '../generated/graphbrainz';
+import { useGetThingLazyQuery } from '../generated/schema';
 import { initializeApollo, LOCAL_GQL_KEY } from '../lib/apollo';
 
 import styles from '../components/index.module.css';

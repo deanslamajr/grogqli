@@ -5,7 +5,7 @@ import { initializeApollo } from '../../lib/apollo';
 import {
   useArtistLookupQuery,
   ArtistLookupQuery,
-} from '../../lib/ArtistLookup.graphql';
+} from '../../generated/graphbrainz';
 
 import styles from '../../components/artist.module.css';
 

@@ -6,12 +6,14 @@
   "license": "MIT",
   "scripts": {
     "grogqli": "grogqli",
-    "codegen": "graphql-let",
-    "dev": "npm run codegen && next",
+    "dev": "SCHEMA_PATH=base concurrently --raw npm:codegen:watch next",
+    "dev:tr": "SCHEMA_PATH=typeRemoved concurrently --raw npm:codegen:watch next",
     "build": "npm run codegen && next build",
     "test": "npm run codegen && jest",
     "start": "next start",
-    "lint": "eslint --fix --ext 'js,jsx,ts,tsx' ."
+    "lint": "eslint --fix --ext 'js,jsx,ts,tsx' .",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen:watch": "npm run codegen -- -w"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
@@ -27,11 +29,11 @@
     "shortid": "^2.2.16"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.17.8",
+    "@graphql-codegen/cli": "1.21.1",
     "@graphql-codegen/plugin-helpers": "^1.17.8",
-    "@graphql-codegen/typescript": "^1.17.8",
-    "@graphql-codegen/typescript-operations": "^1.17.8",
-    "@graphql-codegen/typescript-react-apollo": "^2.0.6",
+    "@graphql-codegen/typescript": "1.21.0",
+    "@graphql-codegen/typescript-operations": "1.17.14",
+    "@graphql-codegen/typescript-react-apollo": "2.2.1",
     "@graphql-codegen/typescript-resolvers": "^1.17.8",
     "@grogqli/clients": "^0.11.0",
     "@grogqli/server": "^0.11.0",
@@ -42,11 +44,11 @@
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
     "babel-jest": "26.3.0",
+    "concurrently": "^5.3.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "jest": "26.4.0",
     "react-test-renderer": "16.13.1",

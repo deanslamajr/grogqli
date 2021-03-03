@@ -25,18 +25,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# nextjs
+.next
 
-# vercel
-.vercel
-
-# graphql-let
-__generated__
-*.graphql.d.ts
-*.graphqls.d.ts
+# graphql code generator
+generated
 
 # grogqli
-grogqli
+grogqli/local

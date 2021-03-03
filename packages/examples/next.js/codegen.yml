@@ -1,0 +1,18 @@
+overwrite: true
+generates:
+  src/generated/graphbrainz.tsx:
+    schema: https://graphbrainz.herokuapp.com/
+    documents: 'src/graphql/graphbrainz/operations/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+  src/generated/schema.tsx:
+    schema: 'src/graphql/${SCHEMA_PATH}/types/**/*.graphqls'
+    documents: 'src/graphql/${SCHEMA_PATH}/operations/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+config:
+  apolloReactHooksImportFrom: '@apollo/client'

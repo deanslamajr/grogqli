@@ -1,7 +1,12 @@
 import { ApolloServer } from 'apollo-server-micro';
-import schema from '../../graphql/baseSchema/schema';
 
-const apolloServer = new ApolloServer({ schema });
+const {
+  default: schema,
+} = require(`../../graphql/${process.env.SCHEMA_PATH}/schema`);
+
+const apolloServer = new ApolloServer({
+  schema,
+});
 
 export const config = {
   api: {
