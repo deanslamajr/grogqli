@@ -1,29 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`conditionallyCreateOrUpdateSchemaRecordings if a given schemaMapping.targetSchemaId !== 'NEW' if the given schemaMapping.opsRecordingsSchemaHash does not match the hash associated with the given schemaMapping.targetSchemaId if there is a breaking change: TYPE_REMOVED should return info about the breaking change 1`] = `
+exports[`conditionallyCreateOrUpdateSchemaRecordings if a given schemaMapping.targetSchemaId !== 'NEW' if the given schemaMapping.opsRecordingsSchemaHash does not match the hash associated with the given schemaMapping.targetSchemaId testing particular schema changes if a type\`s field is changed to target a different type should detect FIELD_CHANGED_KIND 1`] = `
 Array [
   Object {
-    "breakingChanges": Array [
-      Object {
-        "description": "ATypeThatShallBeRemoved was removed.",
-        "type": "TYPE_REMOVED",
-      },
-    ],
-    "dangerousChanges": Array [],
-  },
-]
-`;
-
-exports[`conditionallyCreateOrUpdateSchemaRecordings if a given schemaMapping.targetSchemaId !== 'NEW' if the given schemaMapping.opsRecordingsSchemaHash does not match the hash associated with the given schemaMapping.targetSchemaId if there is a breaking change: TYPE_REMOVED_FROM_UNION should return info about the breaking change 1`] = `
-Array [
-  Object {
-    "breakingChanges": Array [
-      Object {
-        "description": "ATypeThatShallBeRemoved was removed.",
-        "type": "TYPE_REMOVED",
-      },
-    ],
-    "dangerousChanges": Array [],
+    "description": "Query.anotherThing changed type from AnotherThing to YetAnotherThing.",
+    "type": "FIELD_CHANGED_KIND",
   },
 ]
 `;

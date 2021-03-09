@@ -22,6 +22,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@graphql-tools/schema": "^7.1.3",
+    "@graphql-tools/utils": "^7.5.0",
     "@grogqli/schema": "^0.11.0",
     "@grogqli/webapp": "^0.11.0",
     "apollo-link-schema": "^1.2.5",
