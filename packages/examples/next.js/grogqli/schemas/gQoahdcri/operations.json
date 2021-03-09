@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "operations": {
+    "GetThing": {
+      "name": "GetThing",
+      "id": "mO8jEjZ6b0"
+    }
+  }
+}

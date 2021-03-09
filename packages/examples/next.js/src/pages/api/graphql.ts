@@ -1,5 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro';
 
+console.log(`Starting graphql server with schema:${process.env.SCHEMA_PATH}`);
+
 const {
   default: schema,
 } = require(`../../graphql/${process.env.SCHEMA_PATH}/schema`);

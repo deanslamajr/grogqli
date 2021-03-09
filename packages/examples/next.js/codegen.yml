@@ -8,7 +8,7 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
   src/generated/schema.tsx:
-    schema: 'src/graphql/${SCHEMA_PATH}/types/**/*.graphqls'
+    schema: 'src/graphql/${SCHEMA_PATH}/types/index.js'
     documents: 'src/graphql/${SCHEMA_PATH}/operations/**/*.graphql'
     plugins:
       - 'typescript'

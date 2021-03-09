@@ -9,4 +9,22 @@ query GetThing {
     name
     product
   }
+  someUnion {
+    __typename
+    ... on Thing {
+      id
+      name
+      streetName
+    }
+    ... on AnotherThing {
+      id
+      name
+      product
+    }
+    ... on HeresAnotherThing {
+      id
+      accountName
+      currencySymbol
+    }
+  }
 }

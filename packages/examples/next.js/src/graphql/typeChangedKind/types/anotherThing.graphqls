@@ -1,0 +1,5 @@
+enum AnotherThing {
+  TACO
+  BURRITO
+  FUN
+}
