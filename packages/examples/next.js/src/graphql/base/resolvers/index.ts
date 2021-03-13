@@ -10,10 +10,6 @@ const Query = {
 
 const SomeUnion = {
   __resolveType(obj, context, info) {
-    if (obj.streetName) {
-      return 'Thing';
-    }
-
     if (obj.product) {
       return 'AnotherThing';
     }

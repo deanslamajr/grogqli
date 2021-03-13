@@ -1,4 +1,0 @@
-type Query {
-  thing: Thing
-  anotherThing: AnotherThing
-}

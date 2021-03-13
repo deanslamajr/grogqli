@@ -1,5 +1,5 @@
 const SomeUnion = `
-  union SomeUnion = Thing | AnotherThing | HeresAnotherThing
+  union SomeUnion = AnotherThing | HeresAnotherThing
 `;
 
 module.exports = {

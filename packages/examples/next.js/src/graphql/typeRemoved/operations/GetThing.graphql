@@ -1,7 +1,20 @@
 query GetThing {
-  thing {
+  anotherThing {
     id
     name
-    streetName
+    product
+  }
+  someUnion {
+    __typename
+    ... on AnotherThing {
+      id
+      name
+      product
+    }
+    ... on HeresAnotherThing {
+      id
+      accountName
+      currencySymbol
+    }
   }
 }
