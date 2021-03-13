@@ -1,5 +1,3 @@
-const gql = require('graphql-tag');
-
 const HeresAnotherThing = `
   type HeresAnotherThing {
     id: ID!

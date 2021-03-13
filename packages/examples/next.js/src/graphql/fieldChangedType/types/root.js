@@ -1,7 +1,7 @@
 const Query = `
   type Query {
     thing: Thing
-    anotherThing: AnotherThing
+    anotherThing: YetAnotherThing
     someUnion: SomeUnion
   }
 `;

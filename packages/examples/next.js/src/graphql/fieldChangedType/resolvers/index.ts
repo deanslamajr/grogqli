@@ -1,9 +1,11 @@
-import { thingResolver } from './thing';
+import baseResolvers from '../../base/resolvers';
+
 import { yetAnotherThingResolver } from './yetAnotherThing';
 
-const Query = {
-  anotherThing: yetAnotherThingResolver,
-  thing: thingResolver,
+export default {
+  ...baseResolvers,
+  Query: {
+    ...baseResolvers.Query,
+    anotherThing: yetAnotherThingResolver,
+  },
 };
-
-export default { Query };
