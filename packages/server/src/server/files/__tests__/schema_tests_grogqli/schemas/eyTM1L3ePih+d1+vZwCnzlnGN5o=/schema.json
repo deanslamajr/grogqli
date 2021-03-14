@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "hash": "uxaL8sBB8AfRNgo6SLDhf052dvs=",
+  "hash": "eyTM1L3ePih+d1+vZwCnzlnGN5o=",
   "introspectionQuery": {
     "__schema": {
       "queryType": {
@@ -32,7 +32,19 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "YetAnotherThing",
+                "name": "AnotherThing",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "someUnion",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "SomeUnion",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -184,7 +196,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "YetAnotherThing",
+          "name": "HeresAnotherThing",
           "description": null,
           "fields": [
             {
@@ -204,7 +216,7 @@
               "deprecationReason": null
             },
             {
-              "name": "isFruit",
+              "name": "accountName",
               "description": null,
               "args": [],
               "type": {
@@ -212,7 +224,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
-                  "name": "Boolean",
+                  "name": "String",
                   "ofType": null
                 }
               },
@@ -220,7 +232,7 @@
               "deprecationReason": null
             },
             {
-              "name": "description",
+              "name": "currencySymbol",
               "description": null,
               "args": [],
               "type": {
@@ -240,6 +252,27 @@
           "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "SomeUnion",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "AnotherThing",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "HeresAnotherThing",
+              "ofType": null
+            }
+          ]
         },
         {
           "kind": "SCALAR",

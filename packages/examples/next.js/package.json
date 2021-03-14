@@ -11,6 +11,7 @@
     "dev:2": "SCHEMA_PATH=typeChangedKind concurrently --raw npm:codegen:watch next",
     "dev:3": "SCHEMA_PATH=fieldChangedKind concurrently --raw npm:codegen:watch next",
     "dev:4": "SCHEMA_PATH=fieldChangedType concurrently --raw npm:codegen:watch next",
+    "dev:5": "SCHEMA_PATH=typeRemovedFromUnion concurrently --raw npm:codegen:watch next",
     "build": "npm run codegen && next build",
     "test": "npm run codegen && jest",
     "start": "next start",

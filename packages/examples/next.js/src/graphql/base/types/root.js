@@ -3,6 +3,10 @@ const Query = `
     thing: Thing
     anotherThing: AnotherThing
     someUnion: SomeUnion
+    inputThings (
+      input: InputThingInput!
+      optionalInput: InputThingOptionalInput
+    ): [InputThing]
   }
 `;
 

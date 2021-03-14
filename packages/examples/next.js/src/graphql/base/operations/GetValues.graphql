@@ -1,0 +1,10 @@
+query GetValues(
+  $input: InputThingInput!
+  $optionalInput: InputThingOptionalInput
+) {
+  inputThings(input: $input, optionalInput: $optionalInput) {
+    id
+    type
+    value
+  }
+}

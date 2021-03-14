@@ -1,11 +1,13 @@
 import { thingResolver } from './thing';
 import { anotherThingResolver } from './anotherThing';
 import { someUnionResolver } from './someUnion';
+import { inputThingResolver } from './inputThing';
 
 const Query = {
   anotherThing: anotherThingResolver,
   thing: thingResolver,
   someUnion: someUnionResolver,
+  inputThings: inputThingResolver,
 };
 
 const SomeUnion = {

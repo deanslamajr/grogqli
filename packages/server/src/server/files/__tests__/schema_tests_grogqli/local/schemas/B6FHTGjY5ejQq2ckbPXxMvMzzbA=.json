@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "hash": "zvSSFn5pRuwYggaWFliVi1Z7niY=",
+  "hash": "B6FHTGjY5ejQq2ckbPXxMvMzzbA=",
   "introspectionQuery": {
     "__schema": {
       "queryType": {
@@ -25,10 +25,44 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "anotherThing",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "someUnion",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "SomeUnion",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
           "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "String",
+          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
@@ -102,14 +136,143 @@
           "possibleTypes": null
         },
         {
-          "kind": "SCALAR",
-          "name": "String",
-          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "kind": "OBJECT",
+          "name": "AnotherThing",
+          "description": null,
+          "fields": [
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "product",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "HeresAnotherThing",
+          "description": null,
+          "fields": [
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "accountName",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "currencySymbol",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "SomeUnion",
+          "description": null,
           "fields": null,
           "inputFields": null,
           "interfaces": null,
           "enumValues": null,
-          "possibleTypes": null
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "AnotherThing",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "HeresAnotherThing",
+              "ofType": null
+            }
+          ]
         },
         {
           "kind": "SCALAR",
@@ -1012,7 +1175,11 @@
         {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -1033,7 +1200,11 @@
         {
           "name": "skip",
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -1076,7 +1247,9 @@
         {
           "name": "specifiedBy",
           "description": "Exposes a URL that specifies the behaviour of this scalar.",
-          "locations": ["SCALAR"],
+          "locations": [
+            "SCALAR"
+          ],
           "args": [
             {
               "name": "url",
