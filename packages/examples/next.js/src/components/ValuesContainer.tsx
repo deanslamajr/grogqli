@@ -34,7 +34,7 @@ export const ValuesContainer: React.FC<{}> = ({}) => {
   return (
     <div className={styles['form']}>
       {/* TYPE DROPDOWN */}
-      <label for="type">Which type?</label>
+      <label htmlFor="type">Which type?</label>
       <select
         name="type"
         id="type-dropdown"

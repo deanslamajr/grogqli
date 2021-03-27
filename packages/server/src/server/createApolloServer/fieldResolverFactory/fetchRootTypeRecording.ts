@@ -171,9 +171,8 @@ export const fetchRootTypeRecording = async ({
     );
   }
 
-  const typeRecording = await getTypeRecording({
+  return await getTypeRecording({
     typeId: rootTypeId,
     recordingId: rootTypeRecordingId,
   });
-  return typeRecording.value;
 };

@@ -1,9 +1,6 @@
 import { ApolloServerBase } from 'apollo-server-core';
 
-import {
-  getSchemaRecordingFile,
-  SchemaRecordingFile,
-} from '../../files/schema';
+import { getSchemaRecordingFile } from '../../files/schema';
 import { createSchemaSDL } from '../../utils/createSchemaSDL';
 
 import { createResolvers } from './createResolvers';

@@ -2,7 +2,7 @@ import editJsonFile from 'edit-json-file';
 import shortid from 'shortid';
 import fs from 'fs';
 
-import { TypeRecordingPlan } from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+import { TypeRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
 import {
   doesFileExist,
   getTypeFilePath,
@@ -10,26 +10,14 @@ import {
   mapObjectToJsonFile,
   TYPES_FILE_VERSION,
   TYPES_NAME_TO_ID_MAPPING_VERSION,
-} from './';
+} from '..';
 
-interface TypeRecordings {
-  [recordingId: string]: TypeRecording;
-}
-
-// pattern to support versioning this file structure
-export type TypeRecordingsFile = TypeRecordingsFileVersion1;
-export interface TypeRecordingsFileVersion1 {
-  id: string;
-  version: 1;
-  recordings: TypeRecordings;
-}
-
-interface TypeRecording {
-  id: string;
-  value: TypeRecordingValue;
-}
-
-export type TypeRecordingValue = { [fieldName: string]: any };
+import { getValueFromTypeRecording } from './getValueFromTypeRecording';
+import {
+  TypeRecordingInstance,
+  TypeRecordingInstances,
+  TypeRecordingsFile,
+} from './types';
 
 type AddNewRecordingToTypeFile = (params: {
   typeId: string;
@@ -49,7 +37,7 @@ export const addNewRecordingToTypeFile: AddNewRecordingToTypeFile = async ({
     throw new Error(`File for typeId:${typeId} does not exist!`);
   }
 
-  const recordings = typeFile.get('recordings') as TypeRecordings;
+  const recordings = typeFile.get('recordings') as TypeRecordingInstances;
 
   recordings[typeRecordingPlan.typeRecordingId] = {
     id: typeRecordingPlan.typeRecordingId,
@@ -212,7 +200,7 @@ export const getTypeIdFromTypeNameAndSchemaId: GetTypeIdFromTypeNameAndSchemaId 
 type GetTypeRecording = (params: {
   typeId: string;
   recordingId: string;
-}) => Promise<TypeRecording>;
+}) => Promise<TypeRecordingInstance>;
 
 export const getTypeRecording: GetTypeRecording = async ({
   typeId,
@@ -233,7 +221,7 @@ export const getTypeRecording: GetTypeRecording = async ({
     );
   }
 
-  const typeRecording: TypeRecording | undefined =
+  const typeRecording: TypeRecordingInstance | undefined =
     typeRecordings.recordings[recordingId];
 
   if (typeRecording === undefined) {
@@ -243,5 +231,9 @@ export const getTypeRecording: GetTypeRecording = async ({
     );
   }
 
-  return typeRecording;
+  const typeRecordingValue = getValueFromTypeRecording({
+    typeRecording: typeRecording,
+  });
+
+  return typeRecordingValue;
 };

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation an unnamed operation should throw 1`] = `"TODO handle unnamed query case"`;
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation if an unnamed operation is resolved should throw 1`] = `"TODO handle unnamed query case"`;
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if a type file cannot be found for the given root type should throw 1`] = `
 "
@@ -23,3 +23,18 @@ exports[`fieldResolverFactory a resolver function created from a fieldResolverFa
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case if the workflow file does not have an entry for the given operation id should throw 1`] = `"TODO handle case where the workflow file does not have a recording for the given opId. opId:nonExistentOpId"`;
 
 exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case should return the value associated with the given fieldName 1`] = `"someAccountRecordingId"`;
+
+exports[`fieldResolverFactory a resolver function created from a fieldResolverFactory invocation root type case variables resolving a field that has associated arg(s) for playback using MATCH_OR_ERROR strategy if the given variables match a variable recording should resolve the recording associated with the matched variables recording 1`] = `
+Array [
+  "92gGfleoXJ",
+  "ccJBAicioA",
+  "twkCcrImXy",
+  "nYsDKRgx94",
+  "txPmta9CXW",
+  "EJEPkJdh4g",
+  "NhDTNsmtYl",
+  "hUXCIV8PmO",
+  "esFHu5FLdz",
+  "IV6EFY7HTf",
+]
+`;
