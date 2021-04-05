@@ -1,15 +1,15 @@
 import path from 'path';
 
-import { openTypeNameToIdMapping, getTypeRecording } from '../type';
-import { getConfig } from '../getConfig';
+import { openTypeNameToIdMapping, getTypeRecording } from '..';
+import { getConfig } from '../../getConfig';
 
-jest.mock('../getConfig');
+jest.mock('../../getConfig');
 
 describe('type', () => {
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
     mockedGetConfig.mockImplementation(async () => () => {
-      return path.join(__dirname, 'grogqli');
+      return path.join(__dirname, '..', '..', '__tests__', 'grogqli');
     });
   });
 

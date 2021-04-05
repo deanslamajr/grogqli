@@ -13,8 +13,19 @@ export interface TypeRecordingInstances {
   [recordingId: string]: TypeRecordingInstance;
 }
 
+type TypeRecordingValueDetail =
+  | {
+      type: 'reference';
+      typeId: string;
+      recordingId: string;
+    }
+  | {
+      type: 'value';
+      value: any;
+    };
+
 interface TypeRecordingValue {
-  [fieldName: string]: RecordingValue;
+  [fieldName: string]: TypeRecordingValueDetail;
 }
 
 interface TypeRecordingValues {
@@ -36,16 +47,18 @@ export type MissStrategies =
   | 'MATCH_OR_DEFAULT'
   | 'ALWAYS_DEFAULT';
 
-export type LiveVariables = any;
+export type Args = { [argName: string]: any };
 
-export type GetValueFromTypeRecording = (params: {
+export type ResolveValueFromTypeRecording = (params: {
   missStrategyFromClient: MissStrategies;
   typeRecording: TypeRecordingInstance;
-  liveVariables: LiveVariables;
+  args: Args;
   variablesRecordings: VariablesRecordings;
 }) => Promise<any>;
 
-type RecordingValue =
+export type MatchStrategyValue = 'SKIP' | 'EXACT';
+
+export type VariableRecordingValue =
   | {
       type: 'reference';
       typeId: string;
@@ -54,22 +67,48 @@ type RecordingValue =
   | {
       type: 'value';
       value: any;
+      matchStrategy: MatchStrategyValue;
     };
 
 export interface VariablesRecording {
-  [argName: string]: RecordingValue;
+  [argName: string]: VariableRecordingValue;
 }
 
-export interface HydratedVariables {
-  [argName: string]: any;
-}
+// export type HydratedVariable =
+//   | {
+//       fieldName: string;
+//       isNested: true;
+//       matchStrategy: MatchStrategy;
+//       value: HydratedVariable;
+//     }
+//   | {
+//       fieldName: string;
+//       isNested: false;
+//       matchStrategy: MatchStrategy;
+//       value: any;
+//     };
+
+// export type HydratedVariables = Array<HydratedVariable>;
+export type HydratedVariables<T extends { [key in keyof T]: any }> = {
+  [U in keyof T]: T[U];
+};
+
+export type MatchStrategy<T> = T extends { [key: string]: any }
+  ? 'SKIP' | { [U in keyof T]: MatchStrategy<T[U]> }
+  : MatchStrategyValue;
+
+export type HydratedMatchStrategies<T> = {
+  [U in keyof T]: T[U] extends { [key: string]: any }
+    ? MatchStrategy<T[U]>
+    : MatchStrategyValue;
+};
 
 interface VariablesRecordings {
   [variableRecordingId: string]: VariablesRecording;
 }
 
 export type GetValuesInstanceId = (params: {
-  liveVariables: LiveVariables;
+  args: Args;
   missStrategyFromClient: MissStrategies;
   typeRecording: TypeRecordingInstance;
   variablesRecordings: VariablesRecordings;

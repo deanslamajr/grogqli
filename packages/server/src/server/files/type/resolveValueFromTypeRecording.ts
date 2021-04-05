@@ -1,30 +1,46 @@
 import {
-  GetValueFromTypeRecording,
+  ResolveValueFromTypeRecording,
   GetValuesInstanceId,
   HydratedVariables,
+  VariableRecordingValue,
   VariablesRecording,
+  Args,
+  HydratedVariable,
 } from './types';
+import { determineIfArgsMatch } from './determineIfArgsMatch';
+
+export const hydrateRecordedVariable = (
+  recordedValue: VariableRecordingValue
+): any => {
+  if (recordedValue.type === 'value') {
+    return {
+      value: recordedValue.value,
+      matchStrategy: recordedValue.matchStrategy,
+    };
+  }
+};
 
 type HydrateRecordedVariables = (
   variables: VariablesRecording
 ) => Promise<HydratedVariables>;
 
-const hydrateRecordedVariables: HydrateRecordedVariables = async (
+export const hydrateRecordedVariables: HydrateRecordedVariables = async (
   variables
 ) => {
   const hydratedVariables: HydratedVariables = {};
-  const variableNames = Object.keys(variables);
   await Promise.all(
-    variableNames.map(async (variableName) => {
-      const hydratedVariableRecording = await hydrateRecordedVariable();
-      hydratedVariables[variableName] = hydratedVariableRecording;
+    Object.entries(variables).map(async ([argName, recordedValue]) => {
+      const hydratedVariableRecording = await hydrateRecordedVariable(
+        recordedValue
+      );
+      hydratedVariables[argName] = hydratedVariableRecording;
     })
   );
   return hydratedVariables;
 };
 
-const getValuesInstanceId: GetValuesInstanceId = async ({
-  liveVariables,
+export const getValuesInstanceId: GetValuesInstanceId = async ({
+  args,
   missStrategyFromClient,
   typeRecording,
   variablesRecordings,
@@ -49,12 +65,12 @@ const getValuesInstanceId: GetValuesInstanceId = async ({
       const variablesHydratedFromRecording = await hydrateRecordedVariables(
         variablesRecording
       );
-      const doesMatch = compareVarsForMatch({
-        recordedVariables: variablesHydratedFromRecording,
-        liveVariables,
+      const doArgsMatch = determineIfArgsMatch({
+        variableRecordings: variablesHydratedFromRecording,
+        args,
       });
 
-      if (doesMatch) {
+      if (doArgsMatch) {
         matchedTypeRecordingValueId = typeRecordingValueId;
         break;
       }
@@ -64,16 +80,16 @@ const getValuesInstanceId: GetValuesInstanceId = async ({
   return matchedTypeRecordingValueId;
 };
 
-export const getValueFromTypeRecording: GetValueFromTypeRecording = async ({
-  liveVariables,
+export const resolveValueFromTypeRecording: ResolveValueFromTypeRecording = async ({
+  args,
   missStrategyFromClient,
   typeRecording,
   variablesRecordings,
 }) => {
   const valuesInstanceId = getValuesInstanceId({
-    liveVariables,
+    args,
     missStrategyFromClient,
-    typeRecording: typeRecording,
+    typeRecording,
     variablesRecordings,
   });
 
@@ -83,11 +99,11 @@ export const getValueFromTypeRecording: GetValueFromTypeRecording = async ({
       // return error
     }
     if (missStrategyFromClient === 'MATCH_OR_DEFAULT') {
-      // return the value associated with the default typeRecordingValueId
+      // return the value associated with typeRecording.default
     }
   }
   // match
   else {
-    // return the value associated with the given typeRecordingValueId
+    // return the value associated with valuesInstanceId
   }
 };

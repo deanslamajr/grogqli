@@ -26,6 +26,7 @@ export const fieldResolverFactory = ({
   return async (parent, args, context, info) => {
     let fieldValueFromRecording;
 
+    console.log('fieldName', fieldName);
     console.log('args', args);
 
     const isRootField = isRootType({ schema, typeName: parentTypeName });

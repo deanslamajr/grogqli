@@ -12,7 +12,7 @@ import {
   TYPES_NAME_TO_ID_MAPPING_VERSION,
 } from '..';
 
-import { getValueFromTypeRecording } from './getValueFromTypeRecording';
+import { resolveValueFromTypeRecording } from './resolveValueFromTypeRecording';
 import {
   TypeRecordingInstance,
   TypeRecordingInstances,
@@ -198,11 +198,13 @@ export const getTypeIdFromTypeNameAndSchemaId: GetTypeIdFromTypeNameAndSchemaId 
 };
 
 type GetTypeRecording = (params: {
+  args: { [argName: string]: any };
   typeId: string;
   recordingId: string;
 }) => Promise<TypeRecordingInstance>;
 
 export const getTypeRecording: GetTypeRecording = async ({
+  args,
   typeId,
   recordingId,
 }) => {
@@ -231,8 +233,12 @@ export const getTypeRecording: GetTypeRecording = async ({
     );
   }
 
-  const typeRecordingValue = getValueFromTypeRecording({
+  // return typeRecording;
+
+  const typeRecordingValue = resolveValueFromTypeRecording({
+    args,
     typeRecording: typeRecording,
+    variablesRecordings: typeRecordings.variables,
   });
 
   return typeRecordingValue;
