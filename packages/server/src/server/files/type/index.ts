@@ -239,6 +239,8 @@ export const getTypeRecording: GetTypeRecording = async ({
     args,
     typeRecording: typeRecording,
     variablesRecordings: typeRecordings.variables,
+    // TODO replace hardcoded-value with one from client
+    missStrategyFromClient: 'MATCH_OR_ERROR',
   });
 
   return typeRecordingValue;

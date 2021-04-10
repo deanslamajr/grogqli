@@ -74,21 +74,6 @@ export interface VariablesRecording {
   [argName: string]: VariableRecordingValue;
 }
 
-// export type HydratedVariable =
-//   | {
-//       fieldName: string;
-//       isNested: true;
-//       matchStrategy: MatchStrategy;
-//       value: HydratedVariable;
-//     }
-//   | {
-//       fieldName: string;
-//       isNested: false;
-//       matchStrategy: MatchStrategy;
-//       value: any;
-//     };
-
-// export type HydratedVariables = Array<HydratedVariable>;
 export type HydratedVariables<T extends { [key in keyof T]: any }> = {
   [U in keyof T]: T[U];
 };

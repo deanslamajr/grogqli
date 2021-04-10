@@ -43,28 +43,63 @@ describe('resolveValueFromTypeRecording.ts', () => {
     });
   });
 
-  describe('hydrateRecordedVariables', () => {
+  describe.only('hydrateRecordedVariables', () => {
     describe('a single arg', () => {
       it('should resolve the value of the variable recording', async () => {
         const variables: VariablesRecording = {
           someArg: {
             type: 'value',
             value: 1234,
+            matchStrategy: 'EXACT',
           },
         };
         const actual = await hydrateRecordedVariables(variables);
         expect(actual).toEqual({
-          someArg: 1234,
-          strategy: 'EXACT',
+          variablesRecording: {
+            someArg: 1234,
+          },
+          matchStrategies: {
+            someArg: 'EXACT',
+          },
         });
       });
 
-      describe('if a failure occurs', () => {
-        xit('should return undefined', () => {});
+      describe('nested variables', () => {
+        xit('should resolve the value of the variable recording', async () => {});
       });
     });
 
-    describe('multiple args', () => {});
+    describe('multiple args', () => {
+      it('should resolve the value of the variable recording', async () => {
+        const variables: VariablesRecording = {
+          someArg: {
+            type: 'value',
+            value: 1234,
+            matchStrategy: 'EXACT',
+          },
+          anotherArg: {
+            type: 'value',
+            value: 'some string',
+            matchStrategy: 'SKIP',
+          },
+        };
+        const actual = await hydrateRecordedVariables(variables);
+        expect(actual).toEqual({
+          variablesRecording: {
+            someArg: 1234,
+            anotherArg: 'some string',
+          },
+          matchStrategies: {
+            someArg: 'EXACT',
+            anotherArg: 'SKIP',
+          },
+        });
+      });
+
+      describe('nested variables', () => {
+        xit('should resolve the value of the variable recording', async () => {});
+      });
+    });
   });
 
   describe('getValuesInstanceId', () => {

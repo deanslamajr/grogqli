@@ -22,21 +22,28 @@ export const hydrateRecordedVariable = (
 
 type HydrateRecordedVariables = (
   variables: VariablesRecording
-) => Promise<HydratedVariables>;
+) => Promise<{
+  variablesRecording: object;
+  matchStrategies: object;
+}>;
 
 export const hydrateRecordedVariables: HydrateRecordedVariables = async (
   variables
 ) => {
-  const hydratedVariables: HydratedVariables = {};
+  const variablesRecording: object = {};
+  const matchStrategies: object = {};
+
   await Promise.all(
     Object.entries(variables).map(async ([argName, recordedValue]) => {
-      const hydratedVariableRecording = await hydrateRecordedVariable(
+      const { value, matchStrategy } = await hydrateRecordedVariable(
         recordedValue
       );
-      hydratedVariables[argName] = hydratedVariableRecording;
+      variablesRecording[argName] = value;
+      matchStrategies[argName] = matchStrategy;
     })
   );
-  return hydratedVariables;
+
+  return { variablesRecording, matchStrategies };
 };
 
 export const getValuesInstanceId: GetValuesInstanceId = async ({
@@ -62,12 +69,15 @@ export const getValuesInstanceId: GetValuesInstanceId = async ({
       variablesRecordings[variableRecordingId];
 
     if (variablesRecording !== undefined) {
-      const variablesHydratedFromRecording = await hydrateRecordedVariables(
-        variablesRecording
-      );
+      const {
+        variablesRecording: hydratedVariablesRecording,
+        matchStrategies,
+      } = await hydrateRecordedVariables(variablesRecording);
+
       const doArgsMatch = determineIfArgsMatch({
-        variableRecordings: variablesHydratedFromRecording,
         args,
+        variableRecordings: hydratedVariablesRecording,
+        matchStrategies: matchStrategies,
       });
 
       if (doArgsMatch) {
