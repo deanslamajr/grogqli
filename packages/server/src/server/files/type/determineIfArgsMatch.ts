@@ -2,7 +2,6 @@ import diff from 'deep-diff';
 import getValue from 'get-value';
 
 import {
-  Args,
   HydratedVariables,
   HydratedMatchStrategies,
   MatchStrategy,
@@ -38,10 +37,10 @@ import {
 //   };
 // };
 
-type DetermineIfArgsMatch = (params: {
-  args: Args;
-  variableRecordings: HydratedVariables;
-  matchStrategies: HydratedMatchStrategies;
+type DetermineIfArgsMatch = <T>(params: {
+  args: T;
+  variableRecordings: HydratedVariables<Partial<T>>;
+  matchStrategies: HydratedMatchStrategies<T>;
 }) => boolean;
 
 export const determineIfArgsMatch: DetermineIfArgsMatch = ({
@@ -49,65 +48,39 @@ export const determineIfArgsMatch: DetermineIfArgsMatch = ({
   matchStrategies,
   variableRecordings,
 }) => {
-  // before performing any diff work,
-  // remove any parts of the variables that have SKIP strategies
-  // why do this?
-  // 1. it allows for a simpler diff alg that correctly SKIPs args that exist
-  // 2. prevents wasted diff work
-  // const { argsWithoutSkips, variableRecordingsWithoutSkips } = pruneSkippedArgs(
-  //   {
-  //     args,
-  //     matchStrategies,
-  //     variableRecordings,
-  //   }
-  // );
-
-  // const result = diff.diff(variableRecordingsWithoutSkips, argsWithoutSkips);
-
-  // TODO sort both before computing diff
-  const result = diff.orderIndependentDiff(variableRecordings, args);
-  console.log('result', result);
+  const result = diff.diff(variableRecordings, args);
 
   if (result === undefined) {
     return true;
   }
 
   const hasAMiss = result.some((diff) => {
-    console.log('diff.path', diff.path);
-
-    if (diff.kind !== 'A') {
-      if (diff.path !== undefined) {
-        const fixedPathTokens: string[] = diff.path.map((pathToken) => {
-          // match strategies for arrays only have a single element
-          if (typeof pathToken === 'number') {
-            return '0';
-          }
-          return pathToken;
-        });
-        // const pathAsString = fixedPath.join('.');
-        const matchStrategyForMiss: MatchStrategy = getValue(
-          matchStrategies,
-          fixedPathTokens
-        );
-
-        if (matchStrategyForMiss === 'EXACT') {
-          return true;
+    if (diff.path !== undefined) {
+      const fixedPathTokens: string[] = diff.path.map((pathToken) => {
+        // match strategies for arrays only have a single element
+        if (typeof pathToken === 'number') {
+          return pathToken.toString();
         }
-        if (matchStrategyForMiss === undefined) {
-          // TODO handle case where a given arg
-          // does not exist in the recorded variable
-          // Allow the client to set how this is handled
-          // e.g. some workflows might want to be more strict
-          // about this case than others
-          console.log(
-            'TODO handle case where no match strategy found. fixedPathTokens',
-            fixedPathTokens
-          );
-        }
+        return pathToken;
+      });
+
+      const matchStrategyForMiss: MatchStrategy<typeof args> = getValue(
+        matchStrategies,
+        fixedPathTokens
+      );
+
+      if (matchStrategyForMiss === 'EXACT') {
+        return true;
       }
-    } else {
-      // TODO handle array case
+      if (matchStrategyForMiss === undefined) {
+        // TODO handle case where a given arg
+        // does not exist in the recorded variable
+        // Allow the client to set how this is handled
+        // e.g. some workflows might want to be more strict
+        // about this case than others
+      }
     }
+
     return false;
   });
 
