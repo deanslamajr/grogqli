@@ -1,12 +1,11 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-
-import { sessionId } from './constants.json';
-
-import { MockingPage } from '../src/App/SessionsContainer/Session/MockingPage';
+import { MockingPage } from '../../../../../src/App/SessionsContainer/Session/MockingPage';
+import { sessionId } from '../../../../constants.json';
+import title from './title';
 
 const meta: Meta = {
-  title: 'MockingPage',
+  title,
   component: MockingPage,
   args: {
     url: `/session/${sessionId}/mocking`,

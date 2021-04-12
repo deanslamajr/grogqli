@@ -1,10 +1,11 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { SessionsContainer } from '../src/App/SessionsContainer';
+import { SessionsContainer } from '../../../src/App/SessionsContainer';
+import title from './title';
 
 const meta: Meta = {
-  title: 'SessionsContainer',
+  title,
   component: SessionsContainer,
   args: {
     url: '/?s=2WQUdOU4S',

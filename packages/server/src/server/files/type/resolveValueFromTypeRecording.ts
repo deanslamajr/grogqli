@@ -59,7 +59,7 @@ export const getValuesInstanceId: GetValuesInstanceId = async ({
     return typeRecording.default;
   }
 
-  let matchedTypeRecordingValueId: string | undefined;
+  let matchedTypeRecordingValueId: string | null = null;
 
   for (const {
     variableRecordingId,
@@ -69,6 +69,7 @@ export const getValuesInstanceId: GetValuesInstanceId = async ({
       variablesRecordings[variableRecordingId];
 
     if (variablesRecording !== undefined) {
+      // TODO cache hydration work so that it is not repeated too frequently
       const {
         variablesRecording: hydratedVariablesRecording,
         matchStrategies,

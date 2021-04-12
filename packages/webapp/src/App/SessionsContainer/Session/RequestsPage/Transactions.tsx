@@ -61,7 +61,7 @@ const StyledRow = styled.tr<{ isOdd: boolean }>`
   }
 `;
 
-interface TransactionsProps {
+export interface TransactionsProps {
   allAreChecked: boolean;
   checkedState: CheckedState;
   temporaryOperationRecordings: GetTempOpRecordings.TemporaryOperationRecording[];
@@ -93,37 +93,39 @@ const Transactions: React.FC<TransactionsProps> = ({
 
   return (
     <TransactionsContainer>
-      <StyledTable>
-        <thead>
-          <tr>
-            <CheckAllHeader
-              isChecked={allAreChecked}
-              onClick={toggleAllChecked}
-            />
-            <StyledHeader width={'20%;'}>operation</StyledHeader>
-            <StyledHeader width={'24%;'}>variables</StyledHeader>
-            <StyledHeader width={'30%;'}>data</StyledHeader>
-            <StyledHeader width={'25%;'}>errors</StyledHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {temporaryOperationRecordings.map((tempOpRecording, index) => (
-            <StyledRow key={tempOpRecording.id} isOdd={index % 2 === 1}>
-              <Transaction
-                tempOpRecording={tempOpRecording}
-                isChecked={checkedState[tempOpRecording.id]}
-                toggleCheck={() => toggleCheck(tempOpRecording.id)}
-              />
-            </StyledRow>
-          ))}
-        </tbody>
-      </StyledTable>
       {areAnyTransactionsChecked(checkedState) ? (
         <ReviewRecordingsBeforeSaveButton
           onClick={() => setShowSaveDrawer(!showSaveDrawer)}
           showSaveIcon={!showSaveDrawer}
         />
       ) : null}
+      {!showSaveDrawer && (
+        <StyledTable>
+          <thead>
+            <tr>
+              <CheckAllHeader
+                isChecked={allAreChecked}
+                onClick={toggleAllChecked}
+              />
+              <StyledHeader width={'20%;'}>operation</StyledHeader>
+              <StyledHeader width={'24%;'}>variables</StyledHeader>
+              <StyledHeader width={'30%;'}>data</StyledHeader>
+              <StyledHeader width={'25%;'}>errors</StyledHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {temporaryOperationRecordings.map((tempOpRecording, index) => (
+              <StyledRow key={tempOpRecording.id} isOdd={index % 2 === 1}>
+                <Transaction
+                  tempOpRecording={tempOpRecording}
+                  isChecked={checkedState[tempOpRecording.id]}
+                  toggleCheck={() => toggleCheck(tempOpRecording.id)}
+                />
+              </StyledRow>
+            ))}
+          </tbody>
+        </StyledTable>
+      )}
       <SaveDrawer
         handleClose={() => setShowSaveDrawer(false)}
         show={showSaveDrawer}

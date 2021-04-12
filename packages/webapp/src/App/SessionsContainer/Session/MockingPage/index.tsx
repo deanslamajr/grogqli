@@ -6,8 +6,8 @@ import {
   UpdateHandlerSession,
   HandlerState,
 } from '@grogqli/schema';
-
 import { useSessionState } from '../../SessionContext';
+import { Select } from '../../../../components/Select';
 
 const StyledMainSubMenuBar = styled.div`
   width: 100%;
@@ -28,25 +28,6 @@ const PlayButton = styled.span`
   &:hover {
     color: ${(props) => props.theme.colors.selectedMenuItemUnderline};
     background-color: ${({ theme }) => theme.colors.selectedMenuItemBackground};
-  }
-`;
-
-const WorkflowsDropdown = styled.select`
-  // A reset of styles, including removing the default dropdown arrow
-  appearance: none;
-  color: ${({ theme }) => theme.colors.selectedMenuItemText};
-  background-color: ${({ theme }) => theme.colors.generalBackgroundColor};
-  border: none;
-  margin: 0 5px;
-  padding: 0 5px;
-  width: 300px;
-  height: calc(${({ theme }) => theme.sizes.menuBarHeight} - 5px);
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-
-  &:focus {
-    outline: none;
   }
 `;
 
@@ -74,7 +55,7 @@ export const MockingPage: React.FC<{}> = ({}) => {
           'LOADING WORKFLOWS'
         ) : (
           <>
-            <WorkflowsDropdown
+            <Select
               name="workflows"
               onChange={(e) => {
                 const newValue = e.target.value;
@@ -90,7 +71,7 @@ export const MockingPage: React.FC<{}> = ({}) => {
                   ))
                 : null}
               <option value={noValueOptionValue}>No workflow selected</option>
-            </WorkflowsDropdown>
+            </Select>
             {workflowId !== noValueOptionValue && (
               <PlayButton
                 onClick={async () => {

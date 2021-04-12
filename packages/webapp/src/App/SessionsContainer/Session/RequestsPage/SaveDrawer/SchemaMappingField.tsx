@@ -1,30 +1,10 @@
 import React from 'react';
 import { Field } from 'react-final-form';
-import styled from 'styled-components';
 import { SchemaRecording } from '@grogqli/schema';
-
+import { Select } from '../../../../../components/Select';
 import { FormFieldContainer, InvalidFieldMessage } from './common';
 
 export const NEW_SCHEMA_ID = 'NEW';
-
-const SchemasDropdown = styled.select`
-  // A reset of styles, including removing the default dropdown arrow
-  appearance: none;
-  color: ${({ theme }) => theme.colors.selectedMenuItemText};
-  background-color: ${({ theme }) => theme.colors.generalBackgroundColor};
-  border: none;
-  margin: 0 5px;
-  padding: 0 5px;
-  width: 300px;
-  height: calc(${({ theme }) => theme.sizes.menuBarHeight} - 5px);
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 export interface SchemasMapping {
   opsRecordingsSchemaUrl: string;
@@ -62,7 +42,7 @@ export const SchemaMappingField: React.FC<Props> = ({
                     <div key={opsRecordingsSchemaHash}>
                       <span>{opsRecordingsSchemaUrl}</span>
                       <div>
-                        <SchemasDropdown
+                        <Select
                           disabled={isGettingSchemas}
                           value={targetSchemaId}
                           onChange={(e) => {
@@ -102,7 +82,7 @@ export const SchemaMappingField: React.FC<Props> = ({
                                 : null}
                             </>
                           )}
-                        </SchemasDropdown>
+                        </Select>
                       </div>
                       {targetSchemaId === NEW_SCHEMA_ID ? (
                         <Field name={`schemasMappings[${index}].schemaName`}>

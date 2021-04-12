@@ -5,12 +5,12 @@ import { GetTempOpRecordings } from '@grogqli/schema';
 import {
   SaveDrawer,
   SaveDrawerProps,
-} from '../src/App/SessionsContainer/Session/RequestsPage/SaveDrawer';
-
+} from '../../../../../../src/App/SessionsContainer/Session/RequestsPage/SaveDrawer';
 import mock from './SaveDrawer.mock.json';
+import title from './title';
 
 const meta: Meta = {
-  title: 'SaveDrawer',
+  title,
   component: SaveDrawer,
   args: {
     url: '/',

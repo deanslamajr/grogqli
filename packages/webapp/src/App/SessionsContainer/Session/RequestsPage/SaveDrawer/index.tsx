@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { Form, Field } from 'react-final-form';
 import styled from 'styled-components';
-import { format } from 'graphql-formatter';
 import {
   GetSchemas,
   GetTempOpRecordings,
@@ -10,6 +9,7 @@ import {
 } from '@grogqli/schema';
 import useKey from '@rooks/use-key';
 import { useMutation, useQuery } from '@apollo/client';
+import { Operation } from './Operation';
 
 import { SaveRecordingsButton } from '../SaveRecordingsButton';
 
@@ -28,27 +28,7 @@ export interface SaveDrawerProps {
   show: boolean;
 }
 
-const OperationContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 3rem;
-  margin-bottom: 5rem;
-  padding: 1rem;
-  background-color: ${(props) => props.theme.colors.whiteDark};
-`;
-
-const OperationName = styled.div`
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-`;
-
-const Code = styled.pre`
-  padding: 0.15rem 0.25rem;
-  background-color: ${(props) => props.theme.colors.white};
-`;
-
 const SaveDrawerContainer = styled.div<{ show: boolean }>`
-  position: absolute;
   width: 100%;
   height: ${(props) => (props.show ? '100%' : 0)};
   top: ${(props) => (props.show ? 0 : '100%')};
@@ -234,13 +214,13 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
               />
 
               {tempOpRecordingsToSave.map((recording) => (
-                <OperationContainer key={recording.id}>
-                  <OperationName>{recording.operationName}</OperationName>
-                  <Code>{format(recording.query)}</Code>
-                  <Code>
-                    {JSON.stringify(recording?.response || {}, null, 2)}
-                  </Code>
-                </OperationContainer>
+                <Operation
+                  operationName={recording.operationName}
+                  query={recording.query}
+                  recordingId={recording.id}
+                  response={recording.response}
+                  variablesString={recording.variables}
+                />
               ))}
               {show && valid ? (
                 <SaveRecordingsButton onClick={() => form.submit()} />

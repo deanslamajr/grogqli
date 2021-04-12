@@ -12,20 +12,27 @@ import { cssTheme } from '../src/App/constants';
 const apolloClient = createApolloClient();
 
 export const decorators = [
-  (Story, { args: { url } }) => (
-    <MemoryRouter initialEntries={[url]}>
-      <Route
-        render={({ location }) => (
-          <>
-            <div>{`${location.pathname}${location.search}`}</div>
-            <Providers apolloClient={apolloClient} cssTheme={cssTheme}>
-              <SessionProvider sessionId={sessionId}>
-                <Story />
-              </SessionProvider>
-            </Providers>
-          </>
-        )}
-      />
-    </MemoryRouter>
-  ),
+  (Story, { args: { url } }) =>
+    url !== undefined ? (
+      <MemoryRouter initialEntries={[url]}>
+        <Route
+          render={({ location }) => (
+            <>
+              <div>{`${location.pathname}${location.search}`}</div>
+              <Providers apolloClient={apolloClient} cssTheme={cssTheme}>
+                <SessionProvider sessionId={sessionId}>
+                  <Story />
+                </SessionProvider>
+              </Providers>
+            </>
+          )}
+        />
+      </MemoryRouter>
+    ) : (
+      <Providers apolloClient={apolloClient} cssTheme={cssTheme}>
+        <SessionProvider sessionId={sessionId}>
+          <Story />
+        </SessionProvider>
+      </Providers>
+    ),
 ];
