@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ApolloError } from '@apollo/client';
-import { GetTempOpRecordings } from '@grogqli/schema';
+import { ApolloError, useMutation } from '@apollo/client';
+import { CreateWorkflow, GetTempOpRecordings } from '@grogqli/schema';
 
-import { CheckedState } from '.';
+import { CheckedState } from '..';
 import Transaction from './Transaction';
 import { ReviewRecordingsBeforeSaveButton } from './ReviewRecordingsBeforeSaveButton';
-import { SaveDrawer } from './SaveDrawer';
+import { CreateWorkflowForm, SaveDrawer } from './SaveDrawer';
+
+const { CreateWorkflowDocument } = CreateWorkflow;
+
+const getIsChecked = (checkedState: CheckedState) => (
+  recording: GetTempOpRecordings.TemporaryOperationRecording
+) => checkedState[recording.id];
 
 const TransactionsContainer = styled.div`
   width: 100%;
@@ -86,10 +92,51 @@ const Transactions: React.FC<TransactionsProps> = ({
 }) => {
   useEffect(() => {
     const unsubscribe = subscribeToRecordings();
-    return () => unsubscribe();
+    return () => {
+      unsubscribe && typeof unsubscribe === 'function' && unsubscribe();
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [createWorkflow, { loading: isMutationLoading, error }] = useMutation(
+    CreateWorkflowDocument
+  );
+
   const [showSaveDrawer, setShowSaveDrawer] = useState(false);
+
+  const createWorkflowAction = async ({
+    workflowName,
+    workflowDescription,
+    schemasMappings,
+  }: CreateWorkflowForm) => {
+    const tempOpRecordingsToSave = temporaryOperationRecordings.filter(
+      getIsChecked(checkedState)
+    );
+    const operations = tempOpRecordingsToSave.map(({ id, sessionId }) => ({
+      sessionId,
+      tempRecordingId: id,
+    }));
+
+    try {
+      await createWorkflow({
+        variables: {
+          input: {
+            operations,
+            workflow: {
+              name: workflowName,
+              description: workflowDescription,
+            },
+            schemasMappings: schemasMappings.map((schemaMapping) => ({
+              ...schemaMapping,
+              schemaName: schemaMapping.schemaName || null,
+            })),
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setShowSaveDrawer(false);
+  };
 
   return (
     <TransactionsContainer>
@@ -128,9 +175,11 @@ const Transactions: React.FC<TransactionsProps> = ({
       )}
       <SaveDrawer
         handleClose={() => setShowSaveDrawer(false)}
+        isMutationLoading={isMutationLoading}
         show={showSaveDrawer}
+        onCreateWorkflow={createWorkflowAction}
         tempOpRecordingsToSave={temporaryOperationRecordings.filter(
-          (recording) => checkedState[recording.id]
+          getIsChecked(checkedState)
         )}
       />
     </TransactionsContainer>

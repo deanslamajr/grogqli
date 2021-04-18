@@ -11,7 +11,8 @@ import { onError } from '@apollo/client/link/error';
 
 // same port that the grogqli data in @grogqli/server is associated
 // TODO add webapp functionality to set the target schema for playback
-const port = 5678;
+// const port = 5678;
+const port = 1234;
 const grogqliPath = `http://localhost:${port}/grogqli`;
 const grogqliWsPath = `ws://localhost:${port}/grogqli`;
 
@@ -23,7 +24,7 @@ const httpLink = new HttpLink({
 const wsLink = new WebSocketLink({
   uri: grogqliWsPath,
   options: {
-    reconnect: true,
+    reconnect: false,
   },
 });
 

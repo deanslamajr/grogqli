@@ -1,12 +1,12 @@
 import { ApolloServerBase } from 'apollo-server-core';
 
-import { getSchemaRecordingFile } from '../../files/schema';
+import { get as getTempSchemaRecordingFile } from '../../files/tempSchemaRecording';
 import { createSchemaSDL } from '../../utils/createSchemaSDL';
 
 import { createResolvers } from './createResolvers';
 
 type CreateRecorderApolloServer = (params: {
-  schemaId: string;
+  schemaHash: string;
 }) => Promise<ApolloServerBase>;
 
 export interface RootTypeRecordingsIds {
@@ -26,7 +26,7 @@ interface RuntimeVariablesContainer {
 }
 
 export interface Context {
-  schemaId: string;
+  schemaHash: string;
   runTimeVariables: RuntimeVariablesContainer;
 }
 
@@ -36,34 +36,34 @@ export interface TypeRecordingPlan {
   value: any;
 }
 
-export interface OperationRecordingPlan {
-  schemaId: string;
+export type OperationRecordingPlan = {
+  schemaHash: string;
   name?: string;
   rootTypeRecordingIds: Set<string>;
   typeRecordings: {
     [typeRecordingId: string]: TypeRecordingPlan;
   };
-}
+};
 
 export const createRecorderApolloServer: CreateRecorderApolloServer = async ({
-  schemaId,
+  schemaHash,
 }) => {
-  const schemaRecordingFile = await getSchemaRecordingFile(schemaId);
+  const schemaRecordingFile = await getTempSchemaRecordingFile(schemaHash);
   if (schemaRecordingFile === null) {
     throw new Error(`
       Error while creating apollo server:
-      Cannot find a file for a schema recording associated with the following schemaId:${schemaId}
+      Cannot find a file for a schema recording associated with the following schemaHash:${schemaHash}
     `);
   }
 
   const [schemaSDL, resolvers] = await Promise.all([
     createSchemaSDL(schemaRecordingFile.introspectionQuery),
-    createResolvers(schemaRecordingFile),
+    createResolvers(schemaRecordingFile.introspectionQuery),
   ]);
 
   const runTimeVariables = {} as RuntimeVariablesContainer;
 
-  const context: Context = { schemaId, runTimeVariables };
+  const context: Context = { schemaHash, runTimeVariables };
 
   return new ApolloServerBase({
     resolvers,

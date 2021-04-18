@@ -1,4 +1,4 @@
-import { OperationRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+import { OperationRecordingPlan } from '../../graphql/schema/resolvers/mutations/createWorkflow';
 import {
   createNewOperationRecordingsFile,
   addNewRecordingToOperationRecordingsFile,

@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import Transactions, {
   TransactionsProps,
 } from '../../../../../../src/App/SessionsContainer/Session/RequestsPage/Transactions';
-import temporaryOperationRecordingsMock from '../SaveDrawer/SaveDrawer.mock.json';
+import temporaryOperationRecordingsMock from './SaveDrawer/SaveDrawer.mock.json';
 import title from './title';
 
 const meta: Meta = {

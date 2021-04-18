@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'react-final-form';
 import { SchemaRecording } from '@grogqli/schema';
-import { Select } from '../../../../../components/Select';
+import { Select } from '../../../../../../components/Select';
 import { FormFieldContainer, InvalidFieldMessage } from './common';
 
 export const NEW_SCHEMA_ID = 'NEW';

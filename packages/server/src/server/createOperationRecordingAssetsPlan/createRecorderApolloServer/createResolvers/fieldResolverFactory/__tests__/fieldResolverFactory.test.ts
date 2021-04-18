@@ -85,13 +85,13 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           typeRecordings: {},
           rootTypeRecordingIds: new Set(),
         };
 
         context = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           runTimeVariables: {
             grogqli: {
               parsedOpRecording,
@@ -175,13 +175,13 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           typeRecordings: {},
           rootTypeRecordingIds: new Set(),
         };
 
         context = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           runTimeVariables: {
             grogqli: {
               parsedOpRecording,
@@ -270,13 +270,13 @@ describe('fieldResolverFactory', () => {
           });
 
           recordingsPlan = {
-            schemaId: schemaFile.id,
+            schemaHash: schemaFile.id,
             typeRecordings: {},
             rootTypeRecordingIds: new Set(),
           };
 
           context = {
-            schemaId: schemaFile.id,
+            schemaHash: schemaFile.id,
             runTimeVariables: {
               grogqli: {
                 parsedOpRecording,
@@ -362,13 +362,13 @@ describe('fieldResolverFactory', () => {
         });
 
         recordingsPlan = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           typeRecordings: {},
           rootTypeRecordingIds: new Set(),
         };
 
         context = {
-          schemaId: schemaFile.id,
+          schemaHash: schemaFile.id,
           runTimeVariables: {
             grogqli: {
               parsedOpRecording,

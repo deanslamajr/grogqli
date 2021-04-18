@@ -1,7 +1,7 @@
 module.exports = {
   stories: ['../stories/**/*.stories.@(ts|tsx|js|jsx)'],
   addons: [
-    '@grogqli/storybook',
+    // '@grogqli/storybook',
     '@storybook/addon-links',
     {
       name: '@storybook/addon-essentials',

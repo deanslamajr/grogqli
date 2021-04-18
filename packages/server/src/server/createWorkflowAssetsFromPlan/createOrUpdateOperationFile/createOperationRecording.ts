@@ -1,6 +1,6 @@
 import { getTypeIdFromTypeNameAndSchemaId } from '../../files/type';
 import { OperationRecordingWithoutId } from '../../files/operation';
-import { OperationRecordingPlan } from '../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+import { OperationRecordingPlan } from '../../graphql/schema/resolvers/mutations/createWorkflow';
 
 type CreateOpRecording = (params: {
   opPlan: OperationRecordingPlan;

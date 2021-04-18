@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import {
   GetSchemas,
   GetTempOpRecordings,
-  CreateWorkflow,
   SchemaRecording,
+  CreateWorkflowRecordingPlan,
 } from '@grogqli/schema';
 import useKey from '@rooks/use-key';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { Operation } from './Operation';
+import { OperationRecordingPlan } from './Operation/types';
 
-import { SaveRecordingsButton } from '../SaveRecordingsButton';
+import { SaveRecordingsButton } from './SaveRecordingsButton';
 
 import {
   NEW_SCHEMA_ID,
@@ -19,14 +20,6 @@ import {
   SchemasMapping,
 } from './SchemaMappingField';
 import { FormFieldContainer, InvalidFieldMessage } from './common';
-
-const { CreateWorkflowDocument } = CreateWorkflow;
-
-export interface SaveDrawerProps {
-  handleClose: () => void;
-  tempOpRecordingsToSave: GetTempOpRecordings.TemporaryOperationRecording[];
-  show: boolean;
-}
 
 const SaveDrawerContainer = styled.div<{ show: boolean }>`
   width: 100%;
@@ -38,7 +31,13 @@ const SaveDrawerContainer = styled.div<{ show: boolean }>`
   transition: all 0.25s;
 `;
 
-interface CreateWorkflowForm {
+const WorkflowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+export interface CreateWorkflowForm {
   workflowName: string;
   workflowDescription: string;
   schemasMappings: Array<SchemasMapping>;
@@ -49,15 +48,22 @@ type ValidationErrors = Partial<
   Pick<CreateWorkflowForm, 'workflowName' | 'workflowDescription'>
 > & { schemasMappings?: SchemaMappingValidationErrors };
 
+export interface SaveDrawerProps {
+  handleClose: () => void;
+  isMutationLoading: boolean;
+  onCreateWorkflow: (values: CreateWorkflowForm) => Promise<void>;
+  tempOpRecordingsToSave: GetTempOpRecordings.TemporaryOperationRecording[];
+  show: boolean;
+}
+
 export const SaveDrawer: FC<SaveDrawerProps> = ({
   handleClose,
+  isMutationLoading,
+  onCreateWorkflow,
   tempOpRecordingsToSave,
   show,
 }) => {
   useKey(['Escape'], handleClose);
-  const [createWorkflow, { loading, error }] = useMutation(
-    CreateWorkflowDocument
-  );
 
   const { data: schemasData, loading: isGettingSchemas } = useQuery(
     GetSchemas.GetSchemasDocument,
@@ -67,73 +73,62 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     }
   );
 
-  const _createWorkflow = async ({
-    workflowName,
-    workflowDescription,
-    schemasMappings,
-  }: CreateWorkflowForm) => {
-    const operations = tempOpRecordingsToSave.map(({ id, sessionId }) => ({
-      sessionId,
-      tempRecordingId: id,
-    }));
+  // TODO query CreateWorkflowRecordingPlan on mount
+  const [
+    createWorkflowRecordingPlan,
+    {
+      data: createWorkflowRecordingPlanResult,
+      loading: createWorkflowRecordingPlanIsLoading,
+    },
+  ] = useMutation(
+    CreateWorkflowRecordingPlan.CreateWorkflowRecordingPlanDocument
+  );
 
-    try {
-      await createWorkflow({
-        variables: {
-          input: {
-            operations,
-            workflow: {
-              name: workflowName,
-              description: workflowDescription,
-            },
-            schemasMappings: schemasMappings.map((schemaMapping) => ({
-              ...schemaMapping,
-              schemaName: schemaMapping.schemaName || null,
-            })),
-          },
+  React.useEffect(() => {
+    const operations = tempOpRecordingsToSave.map<CreateWorkflowRecordingPlan.OperationRecordingsInput>(
+      (operation) => ({
+        tempRecordingId: operation.id,
+        sessionId: operation.sessionId,
+      })
+    );
+    createWorkflowRecordingPlan({
+      variables: {
+        input: {
+          operations,
         },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    handleClose();
-  };
-
-  const validateSchemaMappings = (
-    schemaMappings: SchemasMapping[],
-    errors: ValidationErrors
-  ): ValidationErrors => {
-    // don't mutate original data
-    const copiedErrorData: ValidationErrors = {
-      ...errors,
-    };
-    const schemaMappingsErrors = [] as SchemaMappingValidationErrors;
-    schemaMappings.forEach((schemaMapping, index) => {
-      if (
-        schemaMapping.targetSchemaId === NEW_SCHEMA_ID &&
-        (!schemaMapping.schemaName || schemaMapping.schemaName === '')
-      ) {
-        schemaMappingsErrors[index] = { schemaName: 'Required' };
-      }
+      },
     });
+  }, []);
 
-    copiedErrorData.schemasMappings = schemaMappingsErrors;
+  const plan: OperationRecordingPlan =
+    createWorkflowRecordingPlanResult?.createWorkflowRecordingPlan.newPlan
+      .operationRecordingPlans;
 
-    return copiedErrorData;
-  };
+  console.log('plan', plan);
 
   const validateForm = (values: CreateWorkflowForm): ValidationErrors => {
     const errors: ValidationErrors = {};
-    const requiredError = 'Required';
 
     if (!values.workflowName) {
-      errors.workflowName = requiredError;
-    }
-    if (!values.workflowDescription) {
-      errors.workflowDescription = requiredError;
+      errors.workflowName = 'Required';
     }
 
-    return validateSchemaMappings(values.schemasMappings, errors);
+    // validateSchemaMappings
+    (() => {
+      const schemaMappingsErrors = [] as SchemaMappingValidationErrors;
+      values.schemasMappings.forEach((schemaMapping, index) => {
+        if (
+          schemaMapping.targetSchemaId === NEW_SCHEMA_ID &&
+          (!schemaMapping.schemaName || schemaMapping.schemaName === '')
+        ) {
+          schemaMappingsErrors[index] = { schemaName: 'Required' };
+        }
+      });
+
+      errors.schemasMappings = schemaMappingsErrors;
+    })();
+
+    return errors;
   };
 
   const initialValues = useMemo<CreateWorkflowForm>(() => {
@@ -164,12 +159,12 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
         opsRecordingsSchemaUrl: tempOpRecording.schemaUrl,
         opsRecordingsSchemaHash: tempOpRecording.schemaHash,
         targetSchemaId: matchedSchema ? matchedSchema.id : NEW_SCHEMA_ID,
-        schemaName: undefined,
+        schemaName: 'New Schema',
       };
     });
 
     return {
-      workflowName: '',
+      workflowName: 'New Workflow',
       workflowDescription: '',
       schemasMappings,
     };
@@ -177,14 +172,14 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
 
   return (
     <SaveDrawerContainer show={show}>
-      {loading && <div>Loading...</div>}
+      {isMutationLoading && <div>Loading...</div>}
       <Form
-        onSubmit={(values) => _createWorkflow(values)}
+        onSubmit={(values) => onCreateWorkflow(values)}
         initialValues={initialValues}
         validate={validateForm}
         render={({ form, valid }) => (
           <form>
-            <div>
+            <WorkflowContainer>
               <Field name="workflowName">
                 {({ input, meta }) => (
                   <FormFieldContainer>
@@ -207,25 +202,21 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
                   </FormFieldContainer>
                 )}
               </Field>
+            </WorkflowContainer>
 
-              <SchemaMappingField
-                isGettingSchemas={isGettingSchemas}
-                schemas={schemasData?.schemas || undefined}
-              />
+            <SchemaMappingField
+              isGettingSchemas={isGettingSchemas}
+              schemas={schemasData?.schemas || undefined}
+            />
 
-              {tempOpRecordingsToSave.map((recording) => (
-                <Operation
-                  operationName={recording.operationName}
-                  query={recording.query}
-                  recordingId={recording.id}
-                  response={recording.response}
-                  variablesString={recording.variables}
-                />
-              ))}
-              {show && valid ? (
-                <SaveRecordingsButton onClick={() => form.submit()} />
-              ) : null}
-            </div>
+            {plan && plan.length && (
+              <>
+                <Operation plan={plan} />
+                {show && valid ? (
+                  <SaveRecordingsButton onClick={() => form.submit()} />
+                ) : null}
+              </>
+            )}
           </form>
         )}
       />

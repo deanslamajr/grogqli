@@ -1,11 +1,12 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { GetTempOpRecordings } from '@grogqli/schema';
+import { action } from '@storybook/addon-actions';
 
 import {
   SaveDrawer,
   SaveDrawerProps,
-} from '../../../../../../src/App/SessionsContainer/Session/RequestsPage/SaveDrawer';
+} from '../../../../../../../src/App/SessionsContainer/Session/RequestsPage/Transactions/SaveDrawer';
 import mock from './SaveDrawer.mock.json';
 import title from './title';
 
@@ -26,15 +27,17 @@ const meta: Meta = {
 export default meta;
 
 const defaultProps: SaveDrawerProps = {
-  handleClose: () => console.log('handleClose'),
+  handleClose: () => action('handleClose')(),
+  isMutationLoading: false,
+  onCreateWorkflow: async (values) => action('onCreateWorkflow')(values),
   tempOpRecordingsToSave: mock as GetTempOpRecordings.TemporaryOperationRecording[],
   show: true,
 };
 
-const Template: Story<{}> = () => <SaveDrawer {...defaultProps} />;
+const Template: Story<SaveDrawerProps> = (args) => <SaveDrawer {...args} />;
 
-// By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
-// https://storybook.js.org/docs/react/workflows/unit-testing
-export const Default = Template.bind({});
+export const Default: Story<SaveDrawerProps> = Template.bind({});
+Default.args = { ...defaultProps };
 
-Default.args = {};
+export const MutationLoading: Story<SaveDrawerProps> = Template.bind({});
+MutationLoading.args = { ...defaultProps, isMutationLoading: true };
