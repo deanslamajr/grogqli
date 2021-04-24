@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { format } from 'graphql-formatter';
 // import { Response } from './Response';
 import { Recording } from './Recording';
-import { OperationRecordingPlan } from './types';
+import { OperationRecordingPlans } from './types';
 
 const OperationContainer = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const Query = styled.pre`
 `;
 
 export type OperationProps = {
-  plan: OperationRecordingPlan;
+  plan: OperationRecordingPlans[number];
 };
 
 export const Operation: React.FC<OperationProps> = ({ plan, children }) => {
@@ -34,14 +34,14 @@ export const Operation: React.FC<OperationProps> = ({ plan, children }) => {
   return (
     <OperationContainer key={plan.id}>
       <OperationName onClick={() => setShowQuery(!showQuery)}>
-        {plan.name}
+        {plan.opName}
       </OperationName>
-      {showQuery && <Query>{format(plan.query)}</Query>}
+      {showQuery && <Query>{format(plan.sdl)}</Query>}
       {children}
       {/* <Response responseString={response} /> */}
       <Recording
         rootTypeRecordingIds={plan.rootTypeRecordingIds}
-        typeRecordings={plan.typeRecordings}
+        typeRecordings={plan.typeRecordingPlans}
       />
     </OperationContainer>
   );

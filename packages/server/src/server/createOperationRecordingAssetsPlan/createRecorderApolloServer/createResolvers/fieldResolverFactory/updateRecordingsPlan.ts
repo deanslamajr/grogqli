@@ -50,6 +50,7 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   let fieldResolverValue;
 
   // handle the different return type cases
+
   // 1. the field return type is a scalar or list of scalars (or the value is null/undefined)
   //  e.g. we don't want to create a type recording of this data, the parent type can own the data
   //  * return the fieldValue as is
@@ -78,7 +79,6 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
     fieldResolverValue = [];
 
     fieldValue.forEach((returnListItem) => {
-      // TODO verify this recordingId is not already in use
       const recordingId = shortid.generate();
       parentTypeRecordingFieldValue.push(recordingId);
 
@@ -91,7 +91,6 @@ export const updateRecordingsPlan: UpdateRecordingsPlan = ({
   }
   // 2b. if a single non-scalar (e.g. non-list), return {value: fieldValue, parentTypeRecordingId}
   else {
-    // TODO verify this recordingId is not already in use
     const recordingId = shortid.generate();
     parentTypeRecordingFieldValue = recordingId;
 

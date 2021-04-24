@@ -10,7 +10,7 @@ import {
 import useKey from '@rooks/use-key';
 import { useQuery, useMutation } from '@apollo/client';
 import { Operation } from './Operation';
-import { OperationRecordingPlan } from './Operation/types';
+import { OperationRecordingPlans } from './Operation/types';
 
 import { SaveRecordingsButton } from './SaveRecordingsButton';
 
@@ -100,11 +100,11 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
     });
   }, []);
 
-  const plan: OperationRecordingPlan =
+  const operationRecordingPlans: OperationRecordingPlans | undefined =
     createWorkflowRecordingPlanResult?.createWorkflowRecordingPlan.newPlan
       .operationRecordingPlans;
 
-  console.log('plan', plan);
+  console.log('operationRecordingPlans', operationRecordingPlans);
 
   const validateForm = (values: CreateWorkflowForm): ValidationErrors => {
     const errors: ValidationErrors = {};
@@ -209,9 +209,11 @@ export const SaveDrawer: FC<SaveDrawerProps> = ({
               schemas={schemasData?.schemas || undefined}
             />
 
-            {plan && plan.length && (
+            {operationRecordingPlans && operationRecordingPlans.length && (
               <>
-                <Operation plan={plan} />
+                {operationRecordingPlans.map((plan) => (
+                  <Operation plan={plan} />
+                ))}
                 {show && valid ? (
                   <SaveRecordingsButton onClick={() => form.submit()} />
                 ) : null}

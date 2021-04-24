@@ -58,7 +58,8 @@
     "querystring": "^0.2.0",
     "react-final-form": "^6.5.2",
     "react-icons": "^3.11.0",
-    "react-json-view": "^1.21.1"
+    "react-json-view": "^1.21.1",
+    "tslib": "^2.2.0"
   },
   "peerDependencies": {
     "@apollo/client": "^3.3.7",

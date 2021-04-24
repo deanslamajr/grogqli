@@ -22,6 +22,4 @@ export type TypeRecordingPlan = {
   value: Record<string, TypeRecordingValue>;
 };
 
-export type OperationRecordingPlan =
-  | CreateWorkflowRecordingPlan.CreateWorkflowRecordingPlanMutation['createWorkflowRecordingPlan']['newPlan']['operationRecordingPlans']
-  | undefined;
+export type OperationRecordingPlans = CreateWorkflowRecordingPlan.CreateWorkflowRecordingPlanMutation['createWorkflowRecordingPlan']['newPlan']['operationRecordingPlans'];

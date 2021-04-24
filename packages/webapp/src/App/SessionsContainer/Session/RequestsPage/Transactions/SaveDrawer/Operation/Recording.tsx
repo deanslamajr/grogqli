@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  OperationRecordingPlan,
+  OperationRecordingPlans,
   TypeRecordingPlan,
   TypeRecordingValue,
 } from './types';
@@ -13,7 +13,7 @@ const Header = styled.div`
 
 const getTypeFromTypeId = (
   typeRecordingId: string,
-  types: OperationRecordingPlan['typeRecordings']
+  types: OperationRecordingPlans[number]['typeRecordingPlans']
 ) => {
   const typeRecording = types[typeRecordingId];
   if (typeRecording === undefined) {
@@ -27,7 +27,7 @@ const getTypeFromTypeId = (
 
 type GetValue = (params: {
   level: number;
-  typeRecordings: OperationRecordingPlan['typeRecordings'];
+  typeRecordings: OperationRecordingPlans[number]['typeRecordingPlans'];
   valueConfig: TypeRecordingValue;
 }) => JSX.Element;
 const getValue: GetValue = ({ level, typeRecordings, valueConfig }) => {
@@ -56,7 +56,7 @@ const StyledField = styled.div<{ level: number }>`
 `;
 
 type FieldProps = {
-  typeRecordings: OperationRecordingPlan['typeRecordings'];
+  typeRecordings: OperationRecordingPlans[number]['typeRecordingPlans'];
   value: TypeRecordingPlan['value'];
   level?: number;
 };
@@ -72,8 +72,8 @@ const Field: React.FC<FieldProps> = ({ level = 0, typeRecordings, value }) => (
 );
 
 export type RecordingProps = {
-  rootTypeRecordingIds: OperationRecordingPlan['rootTypeRecordingIds'];
-  typeRecordings: OperationRecordingPlan['typeRecordings'];
+  rootTypeRecordingIds: OperationRecordingPlans[number]['rootTypeRecordingIds'];
+  typeRecordings: OperationRecordingPlans[number]['typeRecordingPlans'];
 };
 
 export const Recording: React.FC<RecordingProps> = ({
