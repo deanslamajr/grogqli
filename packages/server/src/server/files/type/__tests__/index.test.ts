@@ -29,10 +29,14 @@ describe('type', () => {
   });
 
   describe('getTypeRecording', () => {
+    // TODO: this hardcoded value is arbitrary and should be considered replaceable.
+    // This was done to satisfy the type checker.
+    const args = {};
+
     it('should return the correct type recording', async () => {
       const typeId = 'someTypeId';
       const recordingId = 'someTypeRecordingId';
-      const actual = await getTypeRecording({ typeId, recordingId });
+      const actual = await getTypeRecording({ args, typeId, recordingId });
       expect(actual).toMatchSnapshot();
     });
 
@@ -41,7 +45,7 @@ describe('type', () => {
         const typeId = 'nonexistentTypeId';
         const recordingId = 'someTypeRecordingId';
         await expect(
-          getTypeRecording({ typeId, recordingId })
+          getTypeRecording({ args, typeId, recordingId })
         ).rejects.toThrow();
       });
     });
@@ -51,7 +55,7 @@ describe('type', () => {
         const typeId = 'someTypeId';
         const recordingId = 'nonexistentRecordingId';
         await expect(
-          getTypeRecording({ typeId, recordingId })
+          getTypeRecording({ args, typeId, recordingId })
         ).rejects.toThrow();
       });
     });

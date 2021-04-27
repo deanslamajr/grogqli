@@ -38,6 +38,7 @@ export const fieldResolverFactory = ({
       }
 
       const rootTypeRecording = await fetchRootTypeRecording({
+        args,
         opName,
         operationsData,
         rootTypeName: parentTypeName,

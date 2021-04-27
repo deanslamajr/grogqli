@@ -227,7 +227,7 @@ describe('fieldResolverFactory', () => {
               operations: {
                 ...operationsData.operations,
                 someOpName: {
-                  ...operationsData.operations.someOpName,
+                  ...operationsData.operations.GetValues,
                   id: 'nonExistentOpId',
                 },
               },

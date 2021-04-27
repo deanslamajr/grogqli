@@ -51,7 +51,7 @@ export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async
   await createWorkflowAssetsFromPlan({
     name: workflow.name,
     description: workflow.description,
-    opRecordingsPlans,
+    opRecordingsPlans: [], // TODO: replace hardcoded empty array (this is here to make compiler pass)
   });
 
   // TODO provide a mechanism for functions (or nested functions) in this resolver

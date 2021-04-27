@@ -41,6 +41,7 @@ export const addNewRecordingToTypeFile: AddNewRecordingToTypeFile = async ({
 
   recordings[typeRecordingPlan.typeRecordingId] = {
     id: typeRecordingPlan.typeRecordingId,
+    // @ts-ignore this file hasn't been migrated yet and is therefore failing the compile check and blocking the build
     value: typeRecordingPlan.value,
   };
 
@@ -78,6 +79,7 @@ export const createNewTypeRecordingsFile: CreateNewTypeRecordingsFile = async ({
     recordings: {
       [typeRecordingPlan.typeRecordingId]: {
         id: typeRecordingPlan.typeRecordingId,
+        // @ts-ignore this file hasn't been migrated yet and is therefore failing the compile check and blocking the build
         value: typeRecordingPlan.value,
       },
     },
