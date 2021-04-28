@@ -21,11 +21,22 @@ type OperationRecordingPlan {
   typeRecordingPlans: [TypeRecordingPlan!]!
 }
 
+enum TypeRecordingValueType {
+  VALUE
+  REFERENCE
+}
+
+type TypeRecordingValue {
+  type: TypeRecordingValueType!
+  reference: String
+  value: JSONObject
+}
+
 type TypeRecordingPlan {
   typeName: String!
   typeRecordingId: ID!
   # TODO implement actual type
-  value: String!
+  value: TypeRecordingValue!
 }
 
 type SchemaMatchResult {

@@ -12,8 +12,11 @@ mutation CreateWorkflowRecordingPlan(
         typeRecordingPlans {
           typeName
           typeRecordingId
-          # TODO implement actual type
-          value
+          value {
+            type
+            reference
+            value
+          }
         }
       }
       schemaMatchResults {
