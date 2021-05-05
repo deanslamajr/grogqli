@@ -24,7 +24,8 @@
     "start": "start-storybook -p 6006 -s public --no-manager-cache"
   },
   "dependencies": {
-    "msw": "^0.26.2"
+    "msw": "^0.26.2",
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.7",

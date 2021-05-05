@@ -30,6 +30,7 @@ export const startServiceWorker: StartServiceWorker = async ({
     serviceWorker: {
       url: `/${publicPathWithSlash}mockServiceWorker.js`,
     },
+    onUnhandledRequest: 'warn',
   });
 
   return swRegistration;

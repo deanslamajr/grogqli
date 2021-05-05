@@ -4,9 +4,9 @@
 
 - install dependency
 
-```bash
-npm i D @grogqli/storybook
-```
+  ```bash
+  npm i D @grogqli/storybook
+  ```
 
 - add addon reference to storybook configuration
 
@@ -18,15 +18,15 @@ npm i D @grogqli/storybook
   }
   ```
 
-- added msw service worker to the next.js public subdirectory
+- add msw service worker to the storybook's public subdirectory
 
   - `mkdir public && npx msw init ./public`
 
 - pass static assets option to npm storybook start script
 
-  - `"storybook": "start-storybook -p 6006 -s public"`
+  - `"storybook": "start-storybook -p 9001 -s ./public"`
 
-- pass the static assets path (same from above) to the addon
+- (optional) if storybook requires a path prefix (e.g. /static/someStaticAsset.ico) for static asset requests, this can be configured in the addon (this is mostly a concern for deployments):
 
   - method 1: via storybook parameters
 
@@ -34,7 +34,7 @@ npm i D @grogqli/storybook
   // .storybook/preview.js
   export const parameters = {
     grogqli: {
-      publicPath: 'public'
+      publicPath: 'static'
     },
   };
   ```
@@ -67,3 +67,5 @@ npm i D @grogqli/storybook
     ```bash
     npm link ../grogqli/packages/storybook/
     ```
+  - Add the `--no-manager-cache` flag to the external application's `storybook` script created in [Setup Instructions](#Setup)
+    - e.g. `start-storybook -p 9001 -s ./public --no-manager-cache`

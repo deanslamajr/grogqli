@@ -3,12 +3,17 @@ import { Placeholder, OptionsControl } from '@storybook/components';
 import { useChannel } from '@storybook/api';
 import { EVENTS } from '../constants';
 
-export const WorkflowConfigurationView = ({
+type WorkflowConfigurationViewProps = {
+  defaultWorkflowId?: string;
+  workflowIds: string[];
+};
+
+export const WorkflowConfigurationView: React.FC<WorkflowConfigurationViewProps> = ({
   defaultWorkflowId,
   workflowIds,
 }) => {
-  const [workflowId, setWorkflowId] = React.useState(
-    defaultWorkflowId || workflowIds[0]
+  const [workflowId, setWorkflowId] = React.useState<string | undefined>(
+    defaultWorkflowId || workflowIds?.[0]
   );
 
   const [isSwInitialized, setIsSwInitialized] = React.useState(false);
@@ -19,7 +24,7 @@ export const WorkflowConfigurationView = ({
   });
 
   React.useEffect(() => {
-    if (isSwInitialized) {
+    if (isSwInitialized && workflowId !== undefined) {
       emit(EVENTS.SET_WORKFLOW_ID, workflowId);
     }
   }, [emit, isSwInitialized, workflowId]);

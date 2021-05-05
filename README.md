@@ -45,4 +45,8 @@ To enable automatic prettier lint error correction on save (in vscode editor), i
 #### add a dependency (this method prevents breaking lerna symlinks during dev)
 
 - `lerna add <name-of-package-to-import> packages/<name-of-importing-package>/`
+  e.g.
+  ```bash
+  lerna add tslib@^2.2.0 packages/storybook
+  ```
 - devDependencies - `lerna add <name-of-package-to-import> packages/<name-of-package>/ --dev`
