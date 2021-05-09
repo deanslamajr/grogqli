@@ -3,6 +3,7 @@ import { themes, convert } from '@storybook/theming';
 import { TabsState, Placeholder, Button } from '@storybook/components';
 import { useChannel, useParameter } from '@storybook/api';
 
+import { IntOp, Notification } from '../interfaces';
 import { EVENTS, PARAM_KEY } from '../constants';
 
 import { WorkflowConfigurationView } from './WorkflowConfigurationView';
@@ -14,13 +15,6 @@ interface GrogqliParameters {
 
 const WORKFLOW = 'WORKFLOW';
 const CONSOLE = 'CONSOLE';
-
-type Notification = {
-  id: number;
-  type: 'unhandled_mock';
-  values: object;
-  isResolved: boolean;
-};
 
 /**
  * Checkout https://github.com/storybookjs/storybook/blob/next/addons/jest/src/components/Panel.tsx
@@ -36,13 +30,13 @@ export const PanelContent = () => {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
 
   const emit = useChannel({
-    [EVENTS.NEED_HELP_WITH_MOCK]: (requestSubSet: object) =>
+    [EVENTS.NEED_HELP_WITH_MOCK]: (intOp: IntOp) =>
       setNotifications((notifications) => {
         const copyOfNotifications = Array.from(notifications);
         const newNotification: Notification = {
-          id: Date.now(),
+          id: intOp.timestamp,
           type: 'unhandled_mock',
-          values: requestSubSet,
+          values: intOp,
           isResolved: false,
         };
         copyOfNotifications.push(newNotification);
@@ -87,9 +81,7 @@ export const PanelContent = () => {
                     primary={!notification.isResolved}
                     disabled={notification.isResolved}
                     onClick={() => {
-                      emit(EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, {
-                        message: 'ok',
-                      });
+                      emit(EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, notification);
                       setNotifications((notifications) => {
                         const copyOfNotifications = Array.from(notifications);
                         const activeNotification = copyOfNotifications.find(

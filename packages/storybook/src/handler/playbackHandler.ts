@@ -1,8 +1,9 @@
 import addons from '@storybook/addons';
 import { EVENTS } from '../constants';
+import { IntOp, Notification } from '../interfaces';
 
 // TODO implement this
-const resolveRecording = async ({ query, variables, schemaId, workflowId }) => {
+const resolveRecording = async (intOp: IntOp) => {
   return {
     data: null,
     errors: null,
@@ -23,40 +24,38 @@ export const playbackHandler = async (req, res, ctx) => {
   const schemaUrl = `${req.url.host}${req.url.pathname}`;
   const schemaId = getSchemaId(schemaUrl);
 
+  let intOp: IntOp = {
+    timestamp: Date.now(),
+    schemaUrl: `${req.url.host}${req.url.pathname}`,
+    workflowId: workflowId,
+    query: req.body!.query,
+    variables: req.body!.variables || {},
+  };
+
   if (workflowId === null) {
-    const requestSubSet = {
-      schemaUrl: `${req.url.host}${req.url.pathname}`,
-      workflowId: workflowId,
-      query: req.body!.query,
-      variables: req.body!.variables || {},
-    };
+    console.log('intOp', intOp);
 
     const channel = addons.getChannel();
-    channel.emit(EVENTS.NEED_HELP_WITH_MOCK, requestSubSet);
+    channel.emit(EVENTS.NEED_HELP_WITH_MOCK, intOp);
 
-    await new Promise((resolve) =>
-      channel.once(EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, (data) => {
-        console.log(
-          'received EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, data:',
-          data
-        );
-        resolve(data);
-      })
+    const responseHelp = await new Promise<Notification>((resolve) =>
+      channel.once(
+        EVENTS.NEED_HELP_WITH_MOCK_RESPONSE,
+        (data: Notification) => {
+          console.log(
+            'received EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, data:',
+            data
+          );
+          resolve(data);
+        }
+      )
     );
-    throw new Error(`
-      Invalid handler state:
-      workflowId === null
-      
-      Please set workflowId.
-    `);
+
+    console.log('responseHelp', responseHelp);
+    // responseHelp.values.
   }
 
-  const { data, errors } = await resolveRecording({
-    query: req.body.query,
-    variables: req.body.variables || {},
-    schemaId,
-    workflowId,
-  });
+  const { data, errors } = await resolveRecording(intOp);
 
   // TODO find a way to respond errors and data in same response
   const response = errors
