@@ -4,11 +4,6 @@ input CreateWorkflowInput {
   workflow: NewWorkflowInput!
 }
 
-input OperationRecordingsInput {
-  tempRecordingId: ID!
-  sessionId: ID!
-}
-
 input SchemasMappingsInput {
   opsRecordingsSchemaHash: ID!
   opsRecordingsSchemaUrl: String!

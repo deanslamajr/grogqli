@@ -1,0 +1,36 @@
+mutation CreateWorkflowRecordingPlan(
+  $input: CreateWorkflowRecordingPlanInput!
+) {
+  createWorkflowRecordingPlan(input: $input) {
+    newPlan {
+      operationRecordingPlans {
+        id
+        opName
+        sdl
+        temporarySchemaRecordingHash
+        rootTypeRecordingIds
+        typeRecordingPlans {
+          typeName
+          typeRecordingId
+          value {
+            type
+            reference
+            value
+          }
+        }
+      }
+      schemaMatchResults {
+        temporarySchemaRecordingHash
+        schemaMatch {
+          schemaId
+          schemaHash
+        }
+      }
+      schemas {
+        id
+        hash
+        name
+      }
+    }
+  }
+}

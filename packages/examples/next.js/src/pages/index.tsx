@@ -8,6 +8,7 @@ import {
 import { useGetThingLazyQuery } from '../generated/schema';
 import { initializeApollo, LOCAL_GQL_KEY } from '../lib/apollo';
 
+import { ValuesContainer } from '../components/ValuesContainer';
 import styles from '../components/index.module.css';
 
 type Artist = NonNullable<
@@ -48,6 +49,7 @@ const Index = () => {
 
   return (
     <div className={styles['flex-container']}>
+      <ValuesContainer />
       <div className={styles['form']}>
         <div>
           <input value="Get thing!" type="button" onClick={() => getThing()} />

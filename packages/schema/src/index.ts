@@ -12,6 +12,7 @@ export * as GetWorkflows from './generated/src/queries/query/GetWorkflows.graphq
 export * as CreateHandlerSession from './generated/src/queries/mutation/CreateHandlerSession.graphql';
 export * as CreateTemporarySchemaRecording from './generated/src/queries/mutation/CreateTemporarySchemaRecording.graphql';
 export * as CreateTemporaryOperationRecording from './generated/src/queries/mutation/CreateTemporaryOperationRecording.graphql';
+export * as CreateWorkflowRecordingPlan from './generated/src/queries/mutation/CreateWorkflowRecordingPlan.graphql';
 export * as CreateWorkflow from './generated/src/queries/mutation/CreateWorkflow.graphql';
 export * as PlaybackRecording from './generated/src/queries/mutation/PlaybackRecording.graphql';
 export * as UpdateHandlerSession from './generated/src/queries/mutation/UpdateHandlerSession.graphql';

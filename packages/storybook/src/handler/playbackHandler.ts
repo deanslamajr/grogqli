@@ -1,7 +1,9 @@
-// TODO implement this
-const resolveRecording = async ({ query, variables, schemaId, workflowId }) => {
-  console.log({ schemaId, workflowId, query, variables });
+import addons from '@storybook/addons';
+import { EVENTS } from '../constants';
+import { IntOp, Notification } from '../interfaces';
 
+// TODO implement this
+const resolveRecording = async (intOp: IntOp) => {
   return {
     data: null,
     errors: null,
@@ -22,21 +24,38 @@ export const playbackHandler = async (req, res, ctx) => {
   const schemaUrl = `${req.url.host}${req.url.pathname}`;
   const schemaId = getSchemaId(schemaUrl);
 
+  let intOp: IntOp = {
+    timestamp: Date.now(),
+    schemaUrl: `${req.url.host}${req.url.pathname}`,
+    workflowId: workflowId,
+    query: req.body!.query,
+    variables: req.body!.variables || {},
+  };
+
   if (workflowId === null) {
-    throw new Error(`
-      Invalid handler state:
-      workflowId === null
-      
-      Please set workflowId.
-    `);
+    console.log('intOp', intOp);
+
+    const channel = addons.getChannel();
+    channel.emit(EVENTS.NEED_HELP_WITH_MOCK, intOp);
+
+    const responseHelp = await new Promise<Notification>((resolve) =>
+      channel.once(
+        EVENTS.NEED_HELP_WITH_MOCK_RESPONSE,
+        (data: Notification) => {
+          console.log(
+            'received EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, data:',
+            data
+          );
+          resolve(data);
+        }
+      )
+    );
+
+    console.log('responseHelp', responseHelp);
+    // responseHelp.values.
   }
 
-  const { data, errors } = await resolveRecording({
-    query: req.body.query,
-    variables: req.body.variables || {},
-    schemaId,
-    workflowId,
-  });
+  const { data, errors } = await resolveRecording(intOp);
 
   // TODO find a way to respond errors and data in same response
   const response = errors

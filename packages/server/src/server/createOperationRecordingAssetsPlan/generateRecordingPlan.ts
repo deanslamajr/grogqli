@@ -19,24 +19,25 @@ export const generateRootTypeRecordingsIds: GenerateRootTypeRecordingsIds = () =
 type GenerateRecordingPlan = (params: {
   parsedOpRecording: any;
   operationSDL: string;
-  schemaId: string;
+  schemaHash: string;
   variables: any;
 }) => Promise<OperationRecordingPlan>;
 
 export const generateRecordingPlan: GenerateRecordingPlan = async ({
   parsedOpRecording,
   operationSDL,
-  schemaId,
+  schemaHash,
   variables,
 }) => {
+  // TODO cascade the change from schemaId to schemaHash
   const apolloServer = await createRecorderApolloServer({
-    schemaId,
+    schemaHash,
   });
 
   // This will be mutated by apolloServer
   const recordingsPlan: OperationRecordingPlan = {
     rootTypeRecordingIds: new Set(),
-    schemaId,
+    schemaHash,
     typeRecordings: {},
   };
   const unusedRootTypeRecordingsIds = generateRootTypeRecordingsIds();

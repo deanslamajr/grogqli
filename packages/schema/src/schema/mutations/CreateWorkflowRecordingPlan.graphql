@@ -1,0 +1,51 @@
+input CreateWorkflowRecordingPlanInput {
+  operations: [OperationRecordingsInput!]!
+}
+
+type CreateWorkflowRecordingPlanResponse {
+  newPlan: WorkflowRecordingPlan!
+}
+
+type WorkflowRecordingPlan {
+  operationRecordingPlans: [OperationRecordingPlan!]!
+  schemaMatchResults: [SchemaMatchResult!]!
+  schemas: [SchemaRecording!]!
+}
+
+type OperationRecordingPlan {
+  id: ID!
+  opName: String!
+  sdl: String!
+  temporarySchemaRecordingHash: String!
+  rootTypeRecordingIds: [String!]!
+  typeRecordingPlans: [TypeRecordingPlan!]!
+}
+
+enum TypeRecordingValueType {
+  VALUE
+  REFERENCE
+}
+
+type TypeRecordingValue {
+  type: TypeRecordingValueType!
+  reference: String
+  value: JSONObject
+}
+
+type TypeRecordingPlan {
+  typeName: String!
+  typeRecordingId: ID!
+  # TODO implement actual type
+  value: TypeRecordingValue!
+}
+
+type SchemaMatchResult {
+  temporarySchemaRecordingHash: String!
+  schemaMatch: SchemaMatch!
+}
+
+type SchemaMatch {
+  schemaId: ID!
+  schemaHash: String!
+  # diffs
+}

@@ -73,10 +73,8 @@ export const getSchemaRecordingFile = async (
   return schemaRecordingFile;
 };
 
-export const all = async () => {
+export const all = async (): Promise<SchemaRecordingFile[]> => {
   const schemasFolderPath = await getSchemasFolderPath();
-
-  console.log('schemasFolderPath', schemasFolderPath);
 
   const schemasFilenames = await new Promise<string[]>((resolve, reject) => {
     // glob path should always use forward slash, even in windows

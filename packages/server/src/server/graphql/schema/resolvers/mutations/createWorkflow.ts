@@ -1,10 +1,24 @@
 import { MutationResolvers, CreateWorkflowResultCode } from '@grogqli/schema';
 
-import { createOperationRecordingAssetsPlan } from '../../../../createOperationRecordingAssetsPlan';
-import { OperationRecordingPlan } from '../../../../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+// import { createOperationRecordingAssetsPlan } from '../../../../createOperationRecordingAssetsPlan';
 import { createWorkflowAssetsFromPlan } from '../../../../createWorkflowAssetsFromPlan';
 
 import { conditionallyCreateOrUpdateSchemaRecordings } from '../../../../files/schema';
+
+export interface TypeRecordingPlan {
+  typeName: string;
+  typeRecordingId: string;
+  value: any;
+}
+
+export interface OperationRecordingPlan {
+  schemaId: string;
+  name?: string;
+  rootTypeRecordingIds: Set<string>;
+  typeRecordings: {
+    [typeRecordingId: string]: TypeRecordingPlan;
+  };
+}
 
 export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async (
   _parent: {},
@@ -21,22 +35,23 @@ export const createWorkflowResolver: MutationResolvers['createWorkflow'] = async
     schemasMappings
   );
 
+  // Shouldn't need this anymore as this is done in CreateOperationRecordingAssetsPlanResolver
   // Next, generate plans for creating recording assets
-  const opRecordingsPlans = await Promise.all<OperationRecordingPlan>(
-    operations.map(({ sessionId, tempRecordingId }) =>
-      createOperationRecordingAssetsPlan({
-        schemasMapping: updatedSchemasMapping,
-        sessionId,
-        tempRecordingId,
-      })
-    )
-  );
+  // const opRecordingsPlans = await Promise.all<OperationRecordingPlan>(
+  //   operations.map(({ sessionId, tempRecordingId }) =>
+  //     createOperationRecordingAssetsPlan({
+  //       schemasMapping: updatedSchemasMapping,
+  //       sessionId,
+  //       tempRecordingId,
+  //     })
+  //   )
+  // );
 
   // Finally, create the recording assets from the plans
   await createWorkflowAssetsFromPlan({
     name: workflow.name,
     description: workflow.description,
-    opRecordingsPlans,
+    opRecordingsPlans: [], // TODO: replace hardcoded empty array (this is here to make compiler pass)
   });
 
   // TODO provide a mechanism for functions (or nested functions) in this resolver

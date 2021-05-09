@@ -1,15 +1,14 @@
 import shortid from 'shortid';
 import faker from 'faker';
 
-import { thingResolver } from './thing';
 import { anotherThingResolver } from './anotherThing';
 
+import { getRandomNumber } from '../../../lib/randomNumber';
+
 const resolversOfUnion = [
-  // 0: Thing
-  thingResolver,
-  // 1: AnotherThing
+  // 0: AnotherThing
   anotherThingResolver,
-  // 2: HeresAnotherThing
+  // 1: HeresAnotherThing
   async () => {
     return {
       id: shortid.generate(),
@@ -20,7 +19,7 @@ const resolversOfUnion = [
 ];
 
 export const someUnionResolver = async (_parent, _args, _context, _info) => {
-  const randomUnionIndex = Math.floor(Math.random() * 2);
+  const randomUnionIndex = getRandomNumber({ max: 1 });
 
   const resolverFunction = resolversOfUnion[randomUnionIndex];
 

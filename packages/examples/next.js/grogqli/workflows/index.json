@@ -1,9 +1,13 @@
 {
   "version": 1,
   "workflows": {
-    "testing unions": {
-      "name": "testing unions",
-      "id": "aJoGK3DjxJ0"
+    "testing variables": {
+      "name": "testing variables",
+      "id": "u33U7TWkJS"
+    },
+    "tester": {
+      "name": "tester",
+      "id": "N0mXMPVJmy"
     }
   }
 }

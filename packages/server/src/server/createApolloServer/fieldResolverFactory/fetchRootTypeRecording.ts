@@ -113,6 +113,7 @@ export const getRootTypeRecordingIdFromOpRecording: GetRootTypeRecordingIdFromOp
 };
 
 export interface FetchRootTypeRecordingParams {
+  args: { [argName: string]: any };
   opName: string;
   operationsData: OperationNameToIdMapping;
   rootTypeName: string;
@@ -127,6 +128,7 @@ export interface FetchRootTypeRecordingParams {
 //  * If exists, release semaphore and return value
 //  * Else, do the work below, set cache, release semaphore, and return value
 export const fetchRootTypeRecording = async ({
+  args,
   opName,
   operationsData,
   rootTypeName,
@@ -171,9 +173,9 @@ export const fetchRootTypeRecording = async ({
     );
   }
 
-  const typeRecording = await getTypeRecording({
-    typeId: rootTypeId,
+  return await getTypeRecording({
+    args,
     recordingId: rootTypeRecordingId,
+    typeId: rootTypeId,
   });
-  return typeRecording.value;
 };

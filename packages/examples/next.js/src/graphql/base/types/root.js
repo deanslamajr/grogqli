@@ -1,10 +1,12 @@
-const gql = require('graphql-tag');
-
 const Query = `
   type Query {
     thing: Thing
     anotherThing: AnotherThing
     someUnion: SomeUnion
+    inputThings (
+      input: InputThingInput!
+      optionalInput: InputThingOptionalInput
+    ): [InputThing]
   }
 `;
 

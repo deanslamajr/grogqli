@@ -1,0 +1,4 @@
+input OperationRecordingsInput {
+  tempRecordingId: ID!
+  sessionId: ID!
+}

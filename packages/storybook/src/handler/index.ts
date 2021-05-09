@@ -23,7 +23,6 @@ export const startServiceWorker: StartServiceWorker = async ({
       graphql.mutation(anyAlphaNumericStringReqExp, playbackHandler),
     ]
   );
-  console.log('worker', worker);
 
   const publicPathWithSlash =
     publicPath && publicPath !== '' ? `${publicPath}/` : '';
@@ -31,9 +30,8 @@ export const startServiceWorker: StartServiceWorker = async ({
     serviceWorker: {
       url: `/${publicPathWithSlash}mockServiceWorker.js`,
     },
+    onUnhandledRequest: 'warn',
   });
-
-  console.log('swRegistration', swRegistration);
 
   return swRegistration;
 };

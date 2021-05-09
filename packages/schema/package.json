@@ -29,6 +29,7 @@
   "scripts": {
     "build:types": "graphql-let",
     "watch:build:types": "npm-watch build:types",
+    "start": "concurrently --raw npm:watch:build:types npm:watch:tsdx",
     "start:dev": "concurrently --raw npm:watch:build:types npm:watch:tsdx",
     "watch:tsdx": "tsdx watch --verbose",
     "build:publish": "tsdx build",

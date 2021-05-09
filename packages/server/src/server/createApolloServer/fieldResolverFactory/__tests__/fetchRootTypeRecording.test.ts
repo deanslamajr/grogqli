@@ -14,6 +14,7 @@ jest.mock('../../../files/getConfig');
 
 describe('fetchRootTypeRecording', () => {
   const rootTypeName = 'Query';
+  const args = {}; // TODO: this hardcoded value is arbitrary and should be considered replaceable. This was done to satisfy the type checker.
 
   beforeEach(() => {
     const mockedGetConfig = getConfig as jest.MockedFunction<typeof getConfig>;
@@ -28,6 +29,7 @@ describe('fetchRootTypeRecording', () => {
   it('should resolve a recording', async () => {
     const opName = 'someOpName';
     const config: FetchRootTypeRecordingParams = {
+      args,
       opName,
       workflowId: 'someWorkflowId',
       operationsData: operationsData as OperationNameToIdMapping,
@@ -42,6 +44,7 @@ describe('fetchRootTypeRecording', () => {
     it('should throw', async () => {
       const opName = 'DoThing';
       const config: FetchRootTypeRecordingParams = {
+        args,
         opName,
         rootTypeName,
         workflowId: 'workflowDoesNotExist',

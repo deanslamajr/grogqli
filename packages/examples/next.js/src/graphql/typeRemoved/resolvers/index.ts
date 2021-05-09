@@ -1,7 +1,15 @@
-import { thingResolver } from './thing';
+import baseResolvers from '../../base/resolvers';
 
-const Query = {
-  thing: thingResolver,
+type QueryType = Omit<typeof baseResolvers.Query, 'thing'> & {
+  thing?: typeof baseResolvers.Query['thing'];
+};
+const Query: QueryType = {
+  ...baseResolvers.Query,
 };
 
-export default { Query };
+delete Query.thing;
+
+export default {
+  ...baseResolvers,
+  Query,
+};

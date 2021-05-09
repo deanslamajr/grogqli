@@ -5,4 +5,17 @@ query GetThing {
     streetName
   }
   anotherThing
+  someUnion {
+    __typename
+    ... on AnotherThing {
+      id
+      name
+      product
+    }
+    ... on HeresAnotherThing {
+      id
+      accountName
+      currencySymbol
+    }
+  }
 }

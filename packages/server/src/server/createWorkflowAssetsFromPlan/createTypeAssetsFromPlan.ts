@@ -1,7 +1,7 @@
 import {
   OperationRecordingPlan,
   TypeRecordingPlan,
-} from '../createOperationRecordingAssetsPlan/createRecorderApolloServer';
+} from '../graphql/schema/resolvers/mutations/createWorkflow';
 import {
   addNewRecordingToTypeFile,
   createNewTypeRecordingsFile,

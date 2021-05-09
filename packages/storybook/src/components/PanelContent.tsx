@@ -1,16 +1,20 @@
-import React, { Fragment } from "react";
-import { themes, convert } from "@storybook/theming";
-import { TabsState, Placeholder, Button } from "@storybook/components";
-import { useParameter } from "@storybook/api";
+import React, { Fragment } from 'react';
+import { themes, convert } from '@storybook/theming';
+import { TabsState, Placeholder, Button } from '@storybook/components';
+import { useChannel, useParameter } from '@storybook/api';
 
-import { PARAM_KEY } from "../constants";
+import { IntOp, Notification } from '../interfaces';
+import { EVENTS, PARAM_KEY } from '../constants';
 
-import { WorkflowConfigurationView } from "./WorkflowConfigurationView";
+import { WorkflowConfigurationView } from './WorkflowConfigurationView';
 
 interface GrogqliParameters {
-  defaultWorkflowId: string;
-  workflowIds: string[];
+  defaultWorkflowId?: string;
+  workflowIds?: string[];
 }
+
+const WORKFLOW = 'WORKFLOW';
+const CONSOLE = 'CONSOLE';
 
 /**
  * Checkout https://github.com/storybookjs/storybook/blob/next/addons/jest/src/components/Panel.tsx
@@ -23,33 +27,83 @@ export const PanelContent = () => {
     {} as GrogqliParameters
   );
 
-  const workflowsExist = Array.isArray(workflowIds) && workflowIds.length;
+  const [notifications, setNotifications] = React.useState<Notification[]>([]);
+
+  const emit = useChannel({
+    [EVENTS.NEED_HELP_WITH_MOCK]: (intOp: IntOp) =>
+      setNotifications((notifications) => {
+        const copyOfNotifications = Array.from(notifications);
+        const newNotification: Notification = {
+          id: intOp.timestamp,
+          type: 'unhandled_mock',
+          values: intOp,
+          isResolved: false,
+        };
+        copyOfNotifications.push(newNotification);
+        return copyOfNotifications;
+      }),
+  });
+
+  const workflowsExist = Array.isArray(workflowIds) && workflowIds.length > 0;
 
   return (
     <TabsState
-      initial="workflow"
+      initial={workflowsExist ? WORKFLOW : CONSOLE}
       backgroundColor={convert(themes.normal).background.hoverable}
     >
-      <div
-        id="workflow"
-        title="Workflow"
-        color={convert(themes.normal).color.seafoam}
-      >
-        {workflowsExist ? (
+      {workflowsExist ? (
+        <div
+          id={WORKFLOW}
+          title="Workflow"
+          color={convert(themes.normal).color.seafoam}
+        >
           <WorkflowConfigurationView
             defaultWorkflowId={defaultWorkflowId}
-            workflowIds={workflowIds}
+            workflowIds={workflowIds!}
           />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       <div
-        id="console"
+        id={CONSOLE}
         title="Console"
         color={convert(themes.normal).color.positive}
       >
-        <Placeholder>
-          <Fragment>TODO - add Console data view here</Fragment>
-        </Placeholder>
+        {notifications.length > 0 ? (
+          <>
+            {notifications
+              .sort((n1, n2) => n2.id - n1.id)
+              .map((notification) => (
+                <div key={notification.id}>
+                  <div>{JSON.stringify(notification)}</div>
+                  <Button
+                    small
+                    outline
+                    primary={!notification.isResolved}
+                    disabled={notification.isResolved}
+                    onClick={() => {
+                      emit(EVENTS.NEED_HELP_WITH_MOCK_RESPONSE, notification);
+                      setNotifications((notifications) => {
+                        const copyOfNotifications = Array.from(notifications);
+                        const activeNotification = copyOfNotifications.find(
+                          (n) => notification.id === n.id
+                        );
+                        if (activeNotification) {
+                          activeNotification.isResolved = true;
+                        }
+                        return copyOfNotifications;
+                      });
+                    }}
+                  >
+                    {notification.isResolved ? 'Set Mock' : 'Mock set'}
+                  </Button>
+                </div>
+              ))}
+          </>
+        ) : (
+          <Placeholder>
+            <Fragment>Empty</Fragment>
+          </Placeholder>
+        )}
       </div>
     </TabsState>
   );

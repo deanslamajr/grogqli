@@ -34,8 +34,9 @@ export const fetchNestedTypeRecording = async ({
   }
 
   const typeRecording = await getTypeRecording({
+    args: {}, // TODO: replace hardcoded args value (this was done to make compiler pass)
     typeId,
     recordingId,
   });
-  return typeRecording.value;
+  return typeRecording; //.value;
 };

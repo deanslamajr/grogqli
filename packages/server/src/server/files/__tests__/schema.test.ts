@@ -2,8 +2,6 @@ import { BreakingChangeType } from 'graphql';
 import { SchemasMappingsInput } from '@grogqli/schema';
 import path from 'path';
 
-import testSchema from './schema_tests_grogqli/schemas/someSchemaId/schema.json';
-
 import { getConfig } from '../getConfig';
 import {
   NEW_SCHEMA_NAME,
@@ -13,8 +11,11 @@ import {
 
 jest.mock('../getConfig');
 
-// const targetSchemaId = 'Od5QkpbV+yJciwVzmanhc5QG8x8=';
-const targetSchemaId = 'gUZH7FMXL4Xcr+UNftUw8QEhU0=';
+const targetSchemaId = 'eyTM1L3ePih+d1+vZwCnzlnGN5o=';
+
+const typeRemovedSchemaId = '97jD87sI+JLUb99xYkPXlVtvtHk=';
+const fieldChangedKindSchemaId = 'B6FHTGjY5ejQq2ckbPXxMvMzzbA=';
+const typeRemovedFromUnionSchemaId = 'eOTkDl4oHYMTKMNQkBh548JAzTM=';
 
 describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
   beforeEach(() => {
@@ -50,7 +51,7 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
           it('should detect FIELD_CHANGED_KIND', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
-                opsRecordingsSchemaHash: 'uxaL8sBB8AfRNgo6SLDhf052dvs=',
+                opsRecordingsSchemaHash: fieldChangedKindSchemaId,
                 opsRecordingsSchemaUrl: '',
                 targetSchemaId: targetSchemaId,
                 schemaName: null,
@@ -75,7 +76,7 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
           it('should return info about the breaking change', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
-                opsRecordingsSchemaHash: 'zvSSFn5pRuwYggaWFliVi1Z7niY=',
+                opsRecordingsSchemaHash: typeRemovedSchemaId,
                 opsRecordingsSchemaUrl: '',
                 targetSchemaId: targetSchemaId,
                 schemaName: null,
@@ -103,7 +104,7 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
           it('should return info about the breaking change', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
-                opsRecordingsSchemaHash: 'CpdbVWL14AfL2eiLlyTYtWDYic=',
+                opsRecordingsSchemaHash: fieldChangedKindSchemaId,
                 opsRecordingsSchemaUrl: '',
                 targetSchemaId: targetSchemaId,
                 schemaName: null,
@@ -131,7 +132,7 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
           it('should return info about the breaking change', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
-                opsRecordingsSchemaHash: 'uxaL8sBB8AfRNgo6SLDhf052dvs=',
+                opsRecordingsSchemaHash: typeRemovedFromUnionSchemaId,
                 opsRecordingsSchemaUrl: '',
                 targetSchemaId: targetSchemaId,
                 schemaName: null,
@@ -159,9 +160,9 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
           xit('should return info about the breaking change', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
-                opsRecordingsSchemaHash: 'hashOfSomeSchemaWithATypeRemoved',
+                opsRecordingsSchemaHash: typeRemovedFromUnionSchemaId,
                 opsRecordingsSchemaUrl: '',
-                targetSchemaId: 'someSchemaId',
+                targetSchemaId: targetSchemaId,
                 schemaName: null,
               },
             ];
@@ -172,7 +173,14 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
 
             expect(actual).toHaveLength(1);
             expect(actual[0]).toHaveProperty('breakingChanges');
-            expect(actual).toMatchSnapshot();
+
+            expect((actual[0] as SchemaDifferences).breakingChanges).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  type: BreakingChangeType.VALUE_REMOVED_FROM_ENUM,
+                }),
+              ])
+            );
           });
         });
 
@@ -219,7 +227,7 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
         });
 
         describe('if there is a breaking change: FIELD_REMOVED', () => {
-          it('should return info about the breaking change', async () => {
+          xit('should return info about the breaking change', async () => {
             const schemaMappings: SchemasMappingsInput[] = [
               {
                 opsRecordingsSchemaHash: 'zvSSFn5pRuwYggaWFliVi1Z7niY=',
@@ -439,11 +447,13 @@ describe('conditionallyCreateOrUpdateSchemaRecordings', () => {
 
     describe('if the given schemaMapping.opsRecordingsSchemaHash matches the hash associated with the given schemaMapping.targetSchemaId', () => {
       it('should resolve the expected data', async () => {
+        const testSchema = require(`./schema_tests_grogqli/schemas/${targetSchemaId}/schema.json`);
+
         const schemaMappings: SchemasMappingsInput[] = [
           {
             opsRecordingsSchemaHash: testSchema.hash,
             opsRecordingsSchemaUrl: '',
-            targetSchemaId: 'someSchemaId',
+            targetSchemaId,
             schemaName: null,
           },
         ];

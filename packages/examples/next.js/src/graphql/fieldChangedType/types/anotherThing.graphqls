@@ -1,5 +1,0 @@
-type AnotherThing {
-  id: ID!
-  name: String!
-  product: String!
-}

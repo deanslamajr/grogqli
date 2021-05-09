@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "id": "jU2_uBirM",
+  "operationName": "GetValues",
+  "query": "query GetValues($input: InputThingInput!, $optionalInput: InputThingOptionalInput) {\n  inputThings(input: $input, optionalInput: $optionalInput) {\n    id\n    type\n    value\n    __typename\n  }\n}\n",
+  "variables": {
+    "input": {
+      "type": "MAC"
+    }
+  },
+  "response": {
+    "data": {
+      "inputThings": [
+        {
+          "id": "PmzZE5yoW",
+          "type": "MAC",
+          "value": "83:e5:78:25:e3:80",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "Leh6oE4aDn",
+          "type": "MAC",
+          "value": "61:d0:e5:b0:c2:9a",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "5CERD8etVJ",
+          "type": "MAC",
+          "value": "d5:49:81:1b:87:ca",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "7WYbNrZMnv",
+          "type": "MAC",
+          "value": "6b:64:db:d5:12:32",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "mR_7g-r5Gv",
+          "type": "MAC",
+          "value": "7a:44:be:52:c0:21",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "HeQ7vgJJot",
+          "type": "MAC",
+          "value": "46:83:70:fc:d8:bd",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "KWccv2Y1Ci",
+          "type": "MAC",
+          "value": "9c:18:d0:6f:86:ea",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "Vf8tIMc5u1",
+          "type": "MAC",
+          "value": "28:6c:7e:a5:11:65",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "MSpmAlhzZd",
+          "type": "MAC",
+          "value": "12:8c:5b:a6:3e:50",
+          "__typename": "InputThing"
+        },
+        {
+          "id": "yJQEhZBPvq",
+          "type": "MAC",
+          "value": "48:8f:13:c5:df:fc",
+          "__typename": "InputThing"
+        }
+      ]
+    }
+  },
+  "referrer": "http://localhost:3000/",
+  "sessionId": "SOITb_A0T",
+  "schemaUrl": "localhost:3000/api/graphql",
+  "schemaHash": "S3GIX8kH7EgAOsKhfmZNzOHN9cQ="
+}

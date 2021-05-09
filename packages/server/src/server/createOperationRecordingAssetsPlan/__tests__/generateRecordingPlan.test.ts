@@ -13,7 +13,7 @@ jest.mock('shortid', () => {
 });
 
 describe('generateRecordingPlan', () => {
-  const schemaId = 'anotherSchemaId';
+  const schemaHash = 'anotherSchemaHash';
   const parsedOpRecording = {
     data: {
       search: {
@@ -53,7 +53,7 @@ describe('generateRecordingPlan', () => {
     const actual = await generateRecordingPlan({
       parsedOpRecording,
       operationSDL,
-      schemaId,
+      schemaHash,
       variables,
     });
 

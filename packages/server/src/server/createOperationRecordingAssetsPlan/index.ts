@@ -1,17 +1,13 @@
 import { get as getTempOpRecording } from '../files/tempOpRecording';
-import { UpdatedSchemasMapping } from '../files/schema';
-
 import { OperationRecordingPlan } from './createRecorderApolloServer';
 import { generateRecordingPlan } from './generateRecordingPlan';
 
 type CreateOperationRecordingAssetsPlan = (params: {
-  schemasMapping: UpdatedSchemasMapping[];
   sessionId: string;
   tempRecordingId: string;
 }) => Promise<OperationRecordingPlan>;
 
 export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsPlan = async ({
-  schemasMapping,
   sessionId,
   tempRecordingId,
 }) => {
@@ -23,7 +19,7 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
   const {
     response,
     query: operationSDL,
-    schemaHash: schemaHashFromOpRecording,
+    schemaHash: schemaHashFromTempOpRecording,
     variables,
   } = tempOpRecording;
 
@@ -37,20 +33,15 @@ export const createOperationRecordingAssetsPlan: CreateOperationRecordingAssetsP
     `);
   }
 
-  const schemaMapping = schemasMapping.find(
-    ({ schemaHash: schemaHashFromMapping }) =>
-      schemaHashFromMapping === schemaHashFromOpRecording
-  );
-  if (schemaMapping === undefined) {
-    throw new Error(
-      `Could not find a schemaId mapping for the given schemaHash:${schemaHashFromOpRecording}`
-    );
-  }
+  // TODO
+  //  * have the resolver functions in apolloServer.executeOperation parse args and include in the generated plan
+  //    * this will provide SaveDrawer with the args data at the correct nesting
+  //  * add schema to @grogqli/schema
 
   return generateRecordingPlan({
     parsedOpRecording: response,
     operationSDL,
-    schemaId: schemaMapping.schemaId,
+    schemaHash: schemaHashFromTempOpRecording,
     variables,
   });
 };

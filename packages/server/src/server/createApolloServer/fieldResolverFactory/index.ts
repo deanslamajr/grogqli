@@ -26,6 +26,9 @@ export const fieldResolverFactory = ({
   return async (parent, args, context, info) => {
     let fieldValueFromRecording;
 
+    console.log('fieldName', fieldName);
+    console.log('args', args);
+
     const isRootField = isRootType({ schema, typeName: parentTypeName });
     if (isRootField) {
       const opName = info.operation?.name?.value;
@@ -35,12 +38,16 @@ export const fieldResolverFactory = ({
       }
 
       const rootTypeRecording = await fetchRootTypeRecording({
+        args,
         opName,
         operationsData,
         rootTypeName: parentTypeName,
         typeNameToIdMappingData,
         workflowId: context.runTimeVariables.grogqli!.workflowId,
       });
+
+      // TODO parse the response to determine if a value was returned
+      // OR if a MISS error was returned
 
       // TODO (optionally) use args to destructure the recording associated with the given args
       fieldValueFromRecording = rootTypeRecording[fieldName];

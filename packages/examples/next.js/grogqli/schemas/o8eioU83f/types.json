@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "types": {
+    "Query": {
+      "name": "Query",
+      "id": "PsmCvelbo"
+    },
+    "InputThing": {
+      "name": "InputThing",
+      "id": "GdApOkfRP4"
+    }
+  }
+}
